@@ -1,16 +1,47 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import AppSidebar from "@/components/AppSidebar";
+import AppHeader from "@/components/AppHeader";
+import ActivateModal from "@/components/ActivateModal";
+import AnalysisContext from "@/components/AnalysisContext";
+import PromptTable from "@/components/PromptTable";
+import ExecutionHistory from "@/components/ExecutionHistory";
+import ExecutionComparison from "@/components/ExecutionComparison";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [status, setStatus] = useState<"DRAFT" | "ACTIVE">("DRAFT");
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="flex min-h-screen">
+      <AppSidebar />
+
+      <div className="ml-[220px] flex-1 flex flex-col min-h-screen">
+        <AppHeader
+          status={status}
+          onActivate={() => setModalOpen(true)}
+          onDeactivate={() => setStatus("DRAFT")}
+        />
+
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="flex flex-col gap-6 max-w-full">
+            <AnalysisContext />
+            <PromptTable />
+            <ExecutionHistory />
+            <ExecutionComparison />
+          </div>
+        </main>
+      </div>
+
+      <ActivateModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={() => {
+          setStatus("ACTIVE");
+          setModalOpen(false);
+        }}
+      />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
