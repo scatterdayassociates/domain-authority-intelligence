@@ -12,6 +12,16 @@ export default {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      sans: ['Inter', 'system-ui', 'sans-serif'],
+    },
+    fontSize: {
+      'xs': ['11px', { lineHeight: '16px' }],
+      'sm': ['13px', { lineHeight: '20px' }],
+      'base': ['14px', { lineHeight: '22px' }],
+      'lg': ['16px', { lineHeight: '24px' }],
+      'xl': ['18px', { lineHeight: '28px' }],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
