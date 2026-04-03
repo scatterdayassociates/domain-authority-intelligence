@@ -1,11 +1,18 @@
-import { Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
+import { Folder, Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const modules = [
+  { name: "Projects", icon: Folder, path: "/projects" },
   { name: "Prompt Manager", icon: Layers, path: "/" },
   { name: "Execution", icon: PlayCircle, path: "/execution" },
   { name: "Parsing", icon: Filter, path: "/parsing" },
   { name: "Scoring Engine", icon: BarChart2, path: "/scoring" },
+];
+
+const recentProjects = [
+  { name: "Dell — Laptops — US", active: true },
+  { name: "Sony — Headphones — UK", active: false },
+  { name: "Nike — Running — US", active: false },
 ];
 
 const AppSidebar = () => {
