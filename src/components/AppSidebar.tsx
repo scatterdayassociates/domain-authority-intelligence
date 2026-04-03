@@ -1,11 +1,18 @@
-import { Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
+import { Folder, Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const modules = [
+  { name: "Projects", icon: Folder, path: "/projects" },
   { name: "Prompt Manager", icon: Layers, path: "/" },
   { name: "Execution", icon: PlayCircle, path: "/execution" },
   { name: "Parsing", icon: Filter, path: "/parsing" },
   { name: "Scoring Engine", icon: BarChart2, path: "/scoring" },
+];
+
+const recentProjects = [
+  { name: "Dell — Laptops — US", active: true },
+  { name: "Sony — Headphones — UK", active: false },
+  { name: "Nike — Running — US", active: false },
 ];
 
 const AppSidebar = () => {
@@ -46,6 +53,24 @@ const AppSidebar = () => {
               </button>
             );
           })}
+        </nav>
+      </div>
+
+      {/* Recent Projects */}
+      <div className="px-3 mt-4">
+        <span className="text-xs text-slate-500 uppercase tracking-wide px-4 py-2 block">Recent Projects</span>
+        <nav className="flex flex-col gap-0.5">
+          {recentProjects.map((p) => (
+            <button
+              key={p.name}
+              onClick={() => navigate("/projects")}
+              className="flex items-center gap-2 h-8 px-4 rounded-md text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 w-full text-left mx-0"
+            >
+              {p.active && <span className="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0" />}
+              {!p.active && <span className="w-1.5 h-1.5 flex-shrink-0" />}
+              <span className="flex-1 truncate">{p.name}</span>
+            </button>
+          ))}
         </nav>
       </div>
 
