@@ -34,23 +34,15 @@ const AppSidebar = () => {
             return (
               <button
                 key={mod.name}
-                disabled={mod.soon}
                 onClick={() => mod.path && navigate(mod.path)}
                 className={`flex items-center gap-2 h-9 px-3 rounded-md text-sm w-full transition-colors ${
                   isActive
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-                    : mod.soon
-                    ? "text-sidebar-foreground cursor-not-allowed"
                     : "text-sidebar-foreground hover:bg-sidebar-accent/50"
                 }`}
               >
                 <mod.icon className="w-4 h-4 flex-shrink-0" />
                 <span className="flex-1 text-left">{mod.name}</span>
-                {mod.soon && (
-                  <span className="text-xs px-1.5 py-px rounded bg-[hsl(var(--status-soon-bg))] text-[hsl(var(--status-soon-fg))]">
-                    Soon
-                  </span>
-                )}
               </button>
             );
           })}
