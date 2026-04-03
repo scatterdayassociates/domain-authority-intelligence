@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Execution from "./pages/Execution.tsx";
 import Parsing from "./pages/Parsing.tsx";
 import Scoring from "./pages/Scoring.tsx";
+import Projects from "./pages/Projects.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
