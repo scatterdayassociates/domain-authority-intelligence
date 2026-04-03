@@ -5,7 +5,7 @@ const modules = [
   { name: "Prompt Manager", icon: Layers, path: "/" },
   { name: "Execution", icon: PlayCircle, path: "/execution" },
   { name: "Parsing", icon: Filter, path: "/parsing" },
-  { name: "Scoring Engine", icon: BarChart2, soon: true },
+  { name: "Scoring Engine", icon: BarChart2, path: "/scoring" },
 ];
 
 const AppSidebar = () => {
