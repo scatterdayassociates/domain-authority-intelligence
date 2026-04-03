@@ -55,6 +55,12 @@
     --status-completed-fg: 142 60% 30%;
     --status-soon-bg: 215 25% 27%;
     --status-soon-fg: 215 16% 47%;
+    --status-failed-bg: 0 86% 94%;
+    --status-failed-fg: 0 72% 42%;
+    --status-running-bg: 213 94% 94%;
+    --status-running-fg: 213 76% 42%;
+    --status-queued-bg: 215 20% 93%;
+    --status-queued-fg: 215 16% 47%;
   }
 }
 
