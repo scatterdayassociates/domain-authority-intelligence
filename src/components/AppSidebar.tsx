@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const modules = [
   { name: "Prompt Manager", icon: Layers, path: "/" },
   { name: "Execution", icon: PlayCircle, path: "/execution" },
-  { name: "Parsing", icon: Filter, soon: true },
+  { name: "Parsing", icon: Filter, path: "/parsing" },
   { name: "Scoring Engine", icon: BarChart2, soon: true },
 ];
 
