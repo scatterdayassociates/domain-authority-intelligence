@@ -10,11 +10,11 @@ interface ParsingHeaderProps {
 }
 
 const statusOptions = ["All Statuses", "Parsed", "Parsing", "Failed", "Pending"];
-const packOptions = ["All Packs", "Dell — Laptops — US", "Sony — Headphones — UK", "Nike — Running — US"];
+const packOptions = ["All Contexts", "Best laptops for home office", "Best noise cancelling headphones", "Best running shoes 2024"];
 
 const ParsingHeader = ({ view, executionId, activeTab, onTabChange, onBack }: ParsingHeaderProps) => {
   const [statusFilter, setStatusFilter] = useState("All Statuses");
-  const [packFilter, setPackFilter] = useState("All Packs");
+  const [packFilter, setPackFilter] = useState("All Contexts");
   const [statusOpen, setStatusOpen] = useState(false);
   const [packOpen, setPackOpen] = useState(false);
 
