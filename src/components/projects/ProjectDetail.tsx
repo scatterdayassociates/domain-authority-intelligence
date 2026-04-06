@@ -1,17 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { Check, Clock, AlertTriangle, Play, Edit2, ArrowRight, ChevronDown, ChevronUp, ChevronRight, Download, TrendingUp, TrendingDown, Rocket, Info, Plus, MoreHorizontal, Link, Layers } from "lucide-react";
+import { Check, Clock, AlertTriangle, Play, Edit2, ArrowRight, ChevronDown, ChevronUp, Download, TrendingUp, TrendingDown, Rocket } from "lucide-react";
 
 interface ProjectDetailProps {
   projectName: string;
-  onOpenContext?: (contextName: string) => void;
 }
 
-const sections = ["Overview", "Contexts", "Execution", "Validation", "Analysis", "Comparison"];
-const contextSections = ["Overview", "Prompt Pack", "Execution", "Validation", "Analysis", "Comparison"];
+const sections = ["Overview", "Prompt Pack", "Execution", "Validation", "Analysis", "Comparison"];
 
 const isDraft = (name: string) => name.includes("Samsung") || name.includes("Philips") || name.includes("Air Purifiers");
 
-// Pipeline step component
 const PipelineStep = ({ label, status }: { label: string; status: "done" | "running" | "pending" | "error" }) => {
   const styles = {
     done: "bg-teal-500 text-white",
@@ -35,7 +32,6 @@ const PipelineStep = ({ label, status }: { label: string; status: "done" | "runn
 
 const Arrow = () => <span className="text-slate-300 text-sm mt-[-8px]">→</span>;
 
-// Authority type badge
 const typeBadge = (type: string) => {
   const s: Record<string, string> = {
     "Publisher / Media": "bg-blue-50 text-blue-600",
@@ -46,30 +42,10 @@ const typeBadge = (type: string) => {
   return <span className={`text-xs rounded-full px-2 py-0.5 ${s[type] || "bg-slate-100 text-slate-500"}`}>{type}</span>;
 };
 
-const contextData = [
-  { name: "Best laptops for home office", description: "Broad shortlist context for home and professional use", status: "Active" as const, prompts: 7, lastExecution: "Apr 3, 2026" },
-  { name: "Best budget laptops under £800", description: "Price-constrained context targeting mid-market segment", status: "Draft" as const, prompts: 4, lastExecution: null },
-  { name: "Best gaming laptops 2024", description: "Performance-first gaming context — prompts not yet added", status: "Draft" as const, prompts: 0, lastExecution: null },
-];
-
-const statusDotColor: Record<string, string> = {
-  Active: "bg-teal-500",
-  Draft: "bg-amber-400",
-  Archived: "bg-slate-300",
-};
-
-const statusBadgeStyle: Record<string, string> = {
-  Active: "bg-green-100 text-green-700",
-  Draft: "bg-amber-100 text-amber-700",
-  Archived: "bg-slate-100 text-slate-500",
-};
-
-// Context Detail sub-view
-const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: string; projectName: string; onBack: () => void }) => {
+const ProjectDetail = ({ projectName }: ProjectDetailProps) => {
   const [activeSection, setActiveSection] = useState("Overview");
   const [expandedRun, setExpandedRun] = useState<number | null>(null);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const ctx = contextData.find(c => c.name === contextName) || contextData[0];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -91,12 +67,38 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
     sectionRefs.current[name]?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  if (isDraft(projectName)) {
+    return (
+      <div>
+        <div className="flex items-center justify-center gap-3 mb-8 mt-4">
+          <PipelineStep label="Prompt Pack" status="pending" />
+          <Arrow />
+          <PipelineStep label="Execution" status="pending" />
+          <Arrow />
+          <PipelineStep label="Parsing" status="pending" />
+          <Arrow />
+          <PipelineStep label="Scoring" status="pending" />
+        </div>
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-10 text-center max-w-md mx-auto mt-8">
+          <Rocket className="w-9 h-9 text-slate-300 mx-auto" />
+          <p className="font-medium text-slate-500 mt-3">This project has no executions yet</p>
+          <p className="text-sm text-slate-400 mt-1 max-w-xs mx-auto">Activate your prompt pack and run your first execution to begin.</p>
+          <button className="mt-4 h-9 bg-teal-600 text-white text-sm px-4 rounded-md hover:bg-teal-700">Set Up Prompt Pack</button>
+          <br />
+          <button className="mt-2 h-9 border border-slate-200 text-slate-500 text-sm px-4 rounded-md opacity-60 cursor-not-allowed" title="Activate a prompt pack first">
+            Run First Execution
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Sticky sub-nav */}
       <div className="sticky top-12 z-30 bg-white border-b border-slate-100 shadow-sm -mx-6 px-6 mb-6">
         <div className="flex gap-4 py-2">
-          {contextSections.map(s => (
+          {sections.map(s => (
             <button key={s} onClick={() => scrollTo(s)}
               className={`text-xs pb-1 transition-colors ${activeSection === s ? "text-teal-600 font-medium border-b-2 border-teal-600" : "text-slate-500 hover:text-slate-700"}`}
             >{s}</button>
@@ -104,43 +106,65 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
         </div>
       </div>
 
-      {/* Context Header */}
+      {/* PANEL A: Overview */}
       <div ref={setRef("Overview")} data-section="Overview">
         <div className="bg-slate-50 border border-slate-200 rounded-lg px-6 py-4 mb-4">
           <div className="flex items-start justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-slate-800">{ctx.name}</h2>
-                <span className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${statusBadgeStyle[ctx.status]}`}>{ctx.status}</span>
-              </div>
-              {ctx.description && <p className="text-sm text-slate-400 italic mt-0.5">{ctx.description}</p>}
+            <div className="flex gap-8">
+              {[
+                ["Advertiser", "Dell Technologies"],
+                ["Vertical", "Consumer Electronics"],
+                ["Category", "Laptops"],
+                ["Market", "United States"],
+                ["Target Brand", "Dell"],
+              ].map(([l, v]) => (
+                <div key={l}>
+                  <span className="text-xs text-slate-500">{l}</span>
+                  <p className="text-sm text-slate-800">{v}</p>
+                </div>
+              ))}
             </div>
             <div className="flex gap-2">
+              <button className="flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm h-8 px-3 rounded-md hover:bg-slate-50">
+                <Edit2 className="w-3.5 h-3.5" /> Edit Project
+              </button>
               <button className="flex items-center gap-1.5 bg-teal-600 text-white text-sm h-8 px-3 rounded-md hover:bg-teal-700">
                 <Play className="w-3.5 h-3.5" /> Run Execution →
-              </button>
-              <button onClick={onBack} className="flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm h-8 px-3 rounded-md hover:bg-slate-50">
-                ← Back to Project
               </button>
             </div>
           </div>
           <div className="flex gap-8 mt-4 pt-3 border-t border-slate-200">
-            <div><span className="text-xs text-slate-500">Prompts</span><p className="text-lg font-semibold text-slate-800">{ctx.prompts}</p></div>
-            <div><span className="text-xs text-slate-500">Executions</span><p className="text-lg font-semibold text-slate-800">3</p></div>
-            <div><span className="text-xs text-slate-500">Last Run</span><p className="text-sm text-slate-400 mt-1">{ctx.lastExecution || "Never"}</p></div>
-            <div><span className="text-xs text-slate-500">Pack Version</span><p className="text-lg font-semibold text-slate-800">v3</p></div>
+            <div><span className="text-xs text-slate-500">Total Executions</span><p className="text-xl font-semibold text-slate-800">3</p></div>
+            <div>
+              <span className="text-xs text-slate-500">Latest Status</span>
+              <div className="mt-0.5">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium rounded-full px-2.5 py-0.5 bg-blue-100 text-blue-700">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />Running
+                </span>
+              </div>
+            </div>
+            <div><span className="text-xs text-slate-500">Latest Inclusion Rate</span><p className="text-xl font-semibold text-green-600">82%</p></div>
+            <div><span className="text-xs text-slate-500">Competitor Set</span><p className="text-sm text-slate-500">HP · Lenovo · Apple</p></div>
           </div>
         </div>
+
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <PipelineStep label="Prompt Pack" status="done" />
+          <Arrow />
+          <PipelineStep label="Execution" status="running" />
+          <Arrow />
+          <PipelineStep label="Parsing" status="done" />
+          <Arrow />
+          <PipelineStep label="Scoring" status="done" />
+        </div>
+        <p className="text-xs text-slate-400 italic text-center mb-8">Pipeline last fully completed: Apr 3, 2026 · Execution in progress</p>
       </div>
 
-      {/* Prompt Pack Panel (scoped to context) */}
+      {/* PANEL B: Prompt Pack */}
       <div ref={setRef("Prompt Pack")} data-section="Prompt Pack" className="mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-slate-700">Prompt Pack</h3>
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1 text-xs text-slate-400">
-              <Link className="w-3 h-3 text-slate-300" /> 1 context → 1 prompt pack
-            </span>
             <span className="inline-flex items-center gap-1 text-xs text-green-600"><span className="w-1.5 h-1.5 rounded-full bg-green-500" />v3 · Active</span>
             <button className="text-sm text-teal-600 hover:text-teal-700">Edit Pack →</button>
           </div>
@@ -155,24 +179,25 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
         </div>
         <table className="w-full">
           <thead><tr className="border-b border-slate-100">
-            {["#", "Label", "Prompt Text"].map(h => (
+            {["#", "Label", "Customer Type", "Scenario"].map(h => (
               <th key={h} className="text-xs text-slate-400 uppercase tracking-wide font-medium text-left pb-1.5 px-3">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {[
-              ["1", "Best laptop search", "What are the best laptops for home office use in 2024?..."],
-              ["2", "Budget laptop", "What laptops do you recommend under $800?..."],
-              ["3", "Gaming laptop", "What are the top gaming laptops available right now?..."],
-              ["4", "Ultrabook comparison", "Compare the best thin and light laptops for business..."],
-              ["5", "AI laptop features", "Which laptops have the best AI processing capabilities?..."],
-              ["6", "Laptop for elderly", "What laptops are easiest to use for older adults?..."],
-              ["7", "Premium laptop", "What are the best premium laptops above $1500?..."],
-            ].map(([n, l, t]) => (
+              ["1", "Best laptop search", "Professional", "Home office use"],
+              ["2", "Budget laptop", "Student", "University"],
+              ["3", "Gaming laptop", "Gamer", "Gaming setup"],
+              ["4", "Ultrabook comparison", "Executive", "Business travel"],
+              ["5", "AI laptop features", "Tech professional", "Work productivity"],
+              ["6", "Laptop for elderly", "Elderly parent", "Easy daily use"],
+              ["7", "Premium laptop", "Professional", "Premium performance"],
+            ].map(([n, l, ct, sc]) => (
               <tr key={n} className="border-b border-slate-100 h-7">
                 <td className="px-3 text-xs text-slate-400">{n}</td>
-                <td className="px-3 text-xs font-medium text-slate-700">{l}</td>
-                <td className="px-3 text-xs text-slate-600 truncate max-w-0"><p className="truncate">{t}</p></td>
+                <td className="px-3 text-xs text-slate-700">{l}</td>
+                <td className="px-3 text-xs text-slate-400">{ct}</td>
+                <td className="px-3 text-xs text-slate-400 italic">{sc}</td>
               </tr>
             ))}
           </tbody>
@@ -180,7 +205,7 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
         <p className="text-sm text-teal-600 mt-3 flex items-center gap-1 cursor-pointer hover:text-teal-700">View full prompt pack <ArrowRight className="w-3 h-3" /></p>
       </div>
 
-      {/* Execution Panel */}
+      {/* PANEL C: Execution */}
       <div ref={setRef("Execution")} data-section="Execution" className="mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-slate-700">Execution</h3>
@@ -189,6 +214,8 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
           </button>
         </div>
         <div className="border-b border-slate-200 mb-3" />
+
+        {/* In-progress card */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-blue-700">In Progress — EX-0403-006</span>
@@ -202,7 +229,7 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
               <div key={l}><span className="text-xs text-slate-500">{l}</span><p className="text-sm font-medium text-slate-700">{v}</p></div>
             ))}
           </div>
-          <p className="text-xs text-slate-400 mt-2">Started Apr 3, 2026 · 9:08 AM · Estimated 3–5 min remaining</p>
+          <p className="text-xs text-slate-400 mt-2">Started Apr 3, 2026 · 9:08 AM · Estimated 3–5 min remaining · Refreshing every 5s</p>
         </div>
 
         <span className="text-xs text-slate-500 uppercase tracking-wide block mt-4 mb-2">Execution History</span>
@@ -241,13 +268,14 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
         <p className="text-sm text-teal-600 mt-3 flex items-center gap-1 cursor-pointer hover:text-teal-700">View all executions <ArrowRight className="w-3 h-3" /></p>
       </div>
 
-      {/* Validation Panel */}
+      {/* PANEL D: Validation */}
       <div ref={setRef("Validation")} data-section="Validation" className="mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-slate-700">Validation</h3>
           <span className="text-xs text-green-600">35 runs · 0 parse errors</span>
         </div>
         <div className="border-b border-slate-200 mb-3" />
+
         <div className="bg-slate-50 rounded-lg border border-slate-200 p-4 mb-4">
           <div className="flex gap-8">
             <div><span className="text-xs text-slate-400">Execution</span><p className="text-sm text-slate-700 font-mono">EX-0329-001</p></div>
@@ -285,7 +313,7 @@ const ContextDetailView = ({ contextName, projectName, onBack }: { contextName: 
                 {expandedRun === r.id && (
                   <tr>
                     <td colSpan={7} className="p-0">
-                      <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 border-t border-slate-200">
+                      <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 border-t border-slate-200 transition-all">
                         <div>
                           <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Raw Response</span>
                           <div className="bg-white rounded p-3 text-xs font-mono text-slate-600 max-h-40 overflow-y-auto border border-slate-100 whitespace-pre-wrap leading-relaxed">
@@ -339,7 +367,7 @@ https://www.theverge.com/23832390/best-laptops`}
         <p className="text-sm text-teal-600 mt-3 flex items-center gap-1 cursor-pointer hover:text-teal-700">View full validation detail <ArrowRight className="w-3 h-3" /></p>
       </div>
 
-      {/* Analysis Panel */}
+      {/* PANEL E: Analysis */}
       <div ref={setRef("Analysis")} data-section="Analysis" className="mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-slate-700">Analysis</h3>
@@ -453,7 +481,7 @@ https://www.theverge.com/23832390/best-laptops`}
         <p className="text-sm text-teal-600 mt-3 flex items-center gap-1 cursor-pointer hover:text-teal-700">View full scoring detail <ArrowRight className="w-3 h-3" /></p>
       </div>
 
-      {/* Comparison Panel */}
+      {/* PANEL F: Comparison */}
       <div ref={setRef("Comparison")} data-section="Comparison" className="mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-slate-700">Comparison</h3>
@@ -493,6 +521,7 @@ https://www.theverge.com/23832390/best-laptops`}
         </div>
         <p className="text-sm text-teal-600 mt-3 flex items-center gap-1 cursor-pointer hover:text-teal-700">View full comparison <ArrowRight className="w-3 h-3" /></p>
 
+        {/* Export strip */}
         <div className="bg-slate-50 border border-slate-100 rounded-lg px-4 py-3 flex items-center justify-between mt-6">
           <span className="text-xs text-slate-500">Export data for this project:</span>
           <div className="flex gap-2">
@@ -506,179 +535,6 @@ https://www.theverge.com/23832390/best-laptops`}
             </button>
           </div>
         </div>
-      </div>
-
-      <div className="h-20" />
-    </div>
-  );
-};
-
-const ProjectDetail = ({ projectName, onOpenContext }: ProjectDetailProps) => {
-  const [activeSection, setActiveSection] = useState("Overview");
-  const [selectedContext, setSelectedContext] = useState<string | null>(null);
-  const [showAddContext, setShowAddContext] = useState(false);
-  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  useEffect(() => {
-    if (selectedContext) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.getAttribute("data-section") || "Overview");
-          }
-        }
-      },
-      { rootMargin: "-80px 0px -60% 0px" }
-    );
-    Object.values(sectionRefs.current).forEach(el => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, [selectedContext]);
-
-  const setRef = (name: string) => (el: HTMLDivElement | null) => { sectionRefs.current[name] = el; };
-  const scrollTo = (name: string) => {
-    sectionRefs.current[name]?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  if (selectedContext) {
-    return <ContextDetailView contextName={selectedContext} projectName={projectName} onBack={() => setSelectedContext(null)} />;
-  }
-
-  if (isDraft(projectName)) {
-    const hasNoContexts = true;
-    return (
-      <div>
-        <div className="flex items-center justify-center gap-3 mb-8 mt-4">
-          <PipelineStep label="Prompt Pack" status="pending" />
-          <Arrow />
-          <PipelineStep label="Execution" status="pending" />
-          <Arrow />
-          <PipelineStep label="Parsing" status="pending" />
-          <Arrow />
-          <PipelineStep label="Scoring" status="pending" />
-        </div>
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-10 text-center max-w-md mx-auto mt-8">
-          <Rocket className="w-9 h-9 text-slate-300 mx-auto" />
-          <p className="font-medium text-slate-500 mt-3">This project has no executions yet</p>
-          <p className="text-sm text-slate-400 mt-1 max-w-xs mx-auto">Add contexts and activate your prompt pack to begin.</p>
-          <button className="mt-4 h-9 bg-teal-600 text-white text-sm px-4 rounded-md hover:bg-teal-700">Add First Context →</button>
-          <br />
-          <button className="mt-2 h-9 border border-slate-200 text-slate-500 text-sm px-4 rounded-md opacity-60 cursor-not-allowed" title="Add contexts first">
-            Run First Execution
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      {/* Sticky sub-nav */}
-      <div className="sticky top-12 z-30 bg-white border-b border-slate-100 shadow-sm -mx-6 px-6 mb-6">
-        <div className="flex gap-4 py-2">
-          {sections.map(s => (
-            <button key={s} onClick={() => scrollTo(s)}
-              className={`text-xs pb-1 transition-colors ${activeSection === s ? "text-teal-600 font-medium border-b-2 border-teal-600" : "text-slate-500 hover:text-slate-700"}`}
-            >{s}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* PANEL A: Overview */}
-      <div ref={setRef("Overview")} data-section="Overview">
-        <div className="bg-slate-50 border border-slate-200 rounded-lg px-6 py-4 mb-4">
-          <div className="flex items-start justify-between">
-            <div className="flex gap-8">
-              {[
-                ["Brand", "Dell Technologies"],
-                ["Category", "Laptops"],
-                ["Market", "United States"],
-                ["Target Brand", "Dell"],
-              ].map(([l, v]) => (
-                <div key={l}>
-                  <span className="text-xs text-slate-500">{l}</span>
-                  <p className="text-sm text-slate-800">{v}</p>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <button className="flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm h-8 px-3 rounded-md hover:bg-slate-50">
-                <Edit2 className="w-3.5 h-3.5" /> Edit Project
-              </button>
-              <button className="flex items-center gap-1.5 bg-teal-600 text-white text-sm h-8 px-3 rounded-md hover:bg-teal-700">
-                <Play className="w-3.5 h-3.5" /> Run Execution →
-              </button>
-            </div>
-          </div>
-          <div className="flex gap-8 mt-4 pt-3 border-t border-slate-200">
-            <div><span className="text-xs text-slate-500">Total Executions</span><p className="text-xl font-semibold text-slate-800">3</p></div>
-            <div>
-              <span className="text-xs text-slate-500">Active Contexts</span>
-              <p className="text-xl font-semibold text-slate-800">2</p>
-              <span className="text-xs text-slate-400">of 3 total</span>
-            </div>
-            <div><span className="text-xs text-slate-500">Latest Inclusion Rate</span><p className="text-xl font-semibold text-green-600">82%</p></div>
-            <div><span className="text-xs text-slate-500">Competitor Set</span><p className="text-sm text-slate-500">HP · Lenovo · Apple</p></div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <PipelineStep label="Prompt Pack" status="done" />
-          <Arrow />
-          <PipelineStep label="Execution" status="running" />
-          <Arrow />
-          <PipelineStep label="Parsing" status="done" />
-          <Arrow />
-          <PipelineStep label="Scoring" status="done" />
-        </div>
-        <p className="text-xs text-slate-400 italic text-center mb-8">Pipeline last fully completed: Apr 3, 2026 · Execution in progress</p>
-      </div>
-
-      {/* PANEL B: Contexts */}
-      <div ref={setRef("Contexts")} data-section="Contexts" className="mt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-slate-700">Contexts</h3>
-          <button className="flex items-center gap-1.5 bg-teal-600 text-white text-sm h-8 px-3 rounded-md hover:bg-teal-700">
-            <Plus className="w-3.5 h-3.5" /> Add Context
-          </button>
-        </div>
-        <div className="border-b border-slate-200 mb-3" />
-
-        {contextData.map(ctx => (
-          <div
-            key={ctx.name}
-            onClick={() => {
-              setSelectedContext(ctx.name);
-              onOpenContext?.(ctx.name);
-            }}
-            className="rounded-lg border border-slate-200 bg-white p-4 mb-3 cursor-pointer hover:border-teal-300 hover:shadow-sm transition-all flex items-center"
-          >
-            <div className="flex items-center gap-3 flex-1">
-              <span className={`w-2 h-2 rounded-full ${statusDotColor[ctx.status]} flex-shrink-0`} />
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-800">{ctx.name}</p>
-                {ctx.description && <p className="text-xs text-slate-400 italic mt-0.5">{ctx.description}</p>}
-              </div>
-            </div>
-            <div className="flex items-center gap-6">
-              <div className="text-center">
-                <span className="text-xs text-slate-500">Prompts</span>
-                <p className="text-sm font-medium text-slate-700">{ctx.prompts} prompts</p>
-              </div>
-              <div className="text-center">
-                <span className="text-xs text-slate-500">Last Execution</span>
-                <p className="text-sm font-medium text-slate-700">{ctx.lastExecution || "Never"}</p>
-              </div>
-              <span className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${statusBadgeStyle[ctx.status]}`}>{ctx.status}</span>
-              <button className="text-slate-400 hover:text-slate-600" onClick={e => e.stopPropagation()}>
-                <MoreHorizontal className="w-4 h-4" />
-              </button>
-              <ChevronRight className="w-4 h-4 text-slate-300" />
-            </div>
-          </div>
-        ))}
-
-        <p className="text-xs text-slate-400 italic mt-3">Recommended: 3–5 contexts per project. Each context represents a distinct discovery lens.</p>
       </div>
 
       <div className="h-20" />
