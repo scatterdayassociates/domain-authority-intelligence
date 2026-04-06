@@ -8,12 +8,12 @@ interface Props {
 }
 
 const rows = [
-  { id: "EX-0329-001", pack: "Dell — Laptops — US", model: "GPT-4o", scored: "Apr 3, 2026 9:07 AM", domains: 24, top5: 68.4, hhi: 0.142, inclusion: 82 },
-  { id: "EX-0322-002", pack: "Dell — Laptops — US", model: "GPT-4o", scored: "Mar 29, 2026 2:17 PM", domains: 21, top5: 71.2, hhi: 0.161, inclusion: 78 },
-  { id: "EX-0315-003", pack: "Dell — Laptops — US", model: "GPT-4o", scored: "Mar 22, 2026 10:34 AM", domains: 18, top5: 74.8, hhi: 0.183, inclusion: 71 },
-  { id: "EX-0401-004", pack: "Sony — Headphones — UK", model: "Claude 3.5 Sonnet", scored: "Apr 1, 2026 4:50 PM", domains: 28, top5: 62.1, hhi: 0.118, inclusion: 64 },
-  { id: "EX-0403-006", pack: "Nike — Running — US", model: "GPT-4o", scored: "Apr 3, 2026 9:20 AM", domains: 31, top5: 57.8, hhi: 0.098, inclusion: 55 },
-  { id: "EX-0402-008", pack: "Nike — Running — US", model: "GPT-4o", scored: "Apr 2, 2026 3:38 PM", domains: 29, top5: 59.4, hhi: 0.104, inclusion: 52 },
+  { id: "EX-0329-001", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", scored: "Apr 3, 2026 9:07 AM", domains: 24, top5: 68.4, hhi: 0.142, inclusion: 82 },
+  { id: "EX-0322-002", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", scored: "Mar 29, 2026 2:17 PM", domains: 21, top5: 71.2, hhi: 0.161, inclusion: 78 },
+  { id: "EX-0315-003", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", scored: "Mar 22, 2026 10:34 AM", domains: 18, top5: 74.8, hhi: 0.183, inclusion: 71 },
+  { id: "EX-0401-004", pack: "Sony — Headphones — UK", context: "Best noise cancelling head...", model: "Claude 3.5 Sonnet", scored: "Apr 1, 2026 4:50 PM", domains: 28, top5: 62.1, hhi: 0.118, inclusion: 64 },
+  { id: "EX-0403-006", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "GPT-4o", scored: "Apr 3, 2026 9:20 AM", domains: 31, top5: 57.8, hhi: 0.098, inclusion: 55 },
+  { id: "EX-0402-008", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "GPT-4o", scored: "Apr 2, 2026 3:38 PM", domains: 29, top5: 59.4, hhi: 0.104, inclusion: 52 },
 ];
 
 const top5Color = (v: number) => v >= 70 ? "text-amber-600" : "text-foreground";
@@ -35,6 +35,7 @@ const ScoringOverview = ({ onView, onExport, onCompare }: Props) => (
           <tr className="border-b border-border">
             <th className="table-header text-left py-2 w-[130px]">Execution ID</th>
             <th className="table-header text-left py-2">Prompt Pack</th>
+            <th className="table-header text-left py-2 w-[150px]">Context</th>
             <th className="table-header text-left py-2 w-[130px]">Model</th>
             <th className="table-header text-left py-2 w-[140px]">Scored At</th>
             <th className="table-header text-center py-2 w-[110px]">Unique Domains</th>
@@ -49,6 +50,7 @@ const ScoringOverview = ({ onView, onExport, onCompare }: Props) => (
             <tr key={r.id} className={`border-b border-border hover:bg-primary/5 transition-colors ${i % 2 === 1 ? "bg-muted/50" : ""}`}>
               <td className="py-2 font-mono text-muted-foreground">{r.id}</td>
               <td className="py-2 text-foreground">{r.pack}</td>
+              <td className="py-2 text-slate-600 truncate max-w-[150px]">{r.context}</td>
               <td className="py-2 text-foreground">{r.model}</td>
               <td className="py-2 text-muted-foreground">{r.scored}</td>
               <td className="py-2 tabular text-center text-foreground">{r.domains}</td>
