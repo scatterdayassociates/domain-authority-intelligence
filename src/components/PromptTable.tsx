@@ -2,13 +2,13 @@ import { GripVertical, Pencil, Trash2, Plus } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 
 const prompts = [
-  { label: "Best laptop search", text: "What are the best laptops for home office use in 2024? Please include a SOURCES section with HTTPS URLs.", customer: "Professional", scenario: "Home office setup", group: "General" },
-  { label: "Budget laptop", text: "What laptops do you recommend under $800? Please include a SOURCES section with HTTPS URLs.", customer: "Student", scenario: "Budget purchase", group: "Price-led" },
-  { label: "Gaming laptop", text: "What are the top gaming laptops available right now? Include a SOURCES section with HTTPS URLs.", customer: "Gamer", scenario: "High-performance", group: "Gaming" },
-  { label: "Ultrabook comparison", text: "Compare the best thin and light laptops for business travel. Include a SOURCES section.", customer: "Executive", scenario: "Travel use", group: "Business" },
-  { label: "AI laptop features", text: "Which laptops have the best AI processing capabilities in 2024? Include a SOURCES section.", customer: "Tech professional", scenario: "AI workloads", group: "Emerging" },
-  { label: "Laptop for elderly", text: "What laptops are easiest to use for older adults? Include a SOURCES section.", customer: "Elderly parent", scenario: "Gift purchase", group: "Accessibility" },
-  { label: "Premium laptop", text: "What are the best premium laptops above $1500? Include a SOURCES section.", customer: "Professional", scenario: "Upgrade purchase", group: "Premium" },
+  { label: "Best laptop search", text: "What are the best laptops for home office use in 2024? Please include a SOURCES section with HTTPS URLs." },
+  { label: "Budget laptop", text: "What laptops do you recommend under $800? Please include a SOURCES section with HTTPS URLs." },
+  { label: "Gaming laptop", text: "What are the top gaming laptops available right now? Include a SOURCES section with HTTPS URLs." },
+  { label: "Ultrabook comparison", text: "Compare the best thin and light laptops for business travel. Include a SOURCES section." },
+  { label: "AI laptop features", text: "Which laptops have the best AI processing capabilities in 2024? Include a SOURCES section." },
+  { label: "Laptop for elderly", text: "What laptops are easiest to use for older adults? Include a SOURCES section." },
+  { label: "Premium laptop", text: "What are the best premium laptops above $1500? Include a SOURCES section." },
 ];
 
 const PromptTable = () => {
@@ -33,9 +33,6 @@ const PromptTable = () => {
               <th className="table-header text-left py-2 w-10">#</th>
               <th className="table-header text-left py-2 w-[200px]">Label</th>
               <th className="table-header text-left py-2">Prompt Text</th>
-              <th className="table-header text-left py-2 w-[130px]">Customer Type</th>
-              <th className="table-header text-left py-2 w-[150px]">Scenario</th>
-              <th className="table-header text-left py-2 w-[120px]">Group</th>
               <th className="table-header text-right py-2 w-[60px]">Actions</th>
             </tr>
           </thead>
@@ -55,9 +52,6 @@ const PromptTable = () => {
                 <td className="py-2 text-foreground max-w-0">
                   <p className="truncate pr-4">{p.text}</p>
                 </td>
-                <td className="py-2 text-foreground">{p.customer}</td>
-                <td className="py-2 text-foreground">{p.scenario}</td>
-                <td className="py-2 text-foreground">{p.group}</td>
                 <td className="py-2 text-right">
                   <span className="inline-flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button className="text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
