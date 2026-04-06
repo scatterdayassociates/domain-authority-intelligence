@@ -48,6 +48,10 @@ const ExecutionParseDetail = ({ executionId }: ExecutionParseDetailProps) => {
               <span className="text-sm text-foreground">{data.pack}</span>
             </div>
             <div>
+              <span className="text-label block mb-0.5">Context</span>
+              <span className="text-sm font-medium text-teal-700">Best laptops for home office</span>
+            </div>
+            <div>
               <span className="text-label block mb-0.5">Version</span>
               <span className="text-sm text-foreground">{data.version}</span>
             </div>

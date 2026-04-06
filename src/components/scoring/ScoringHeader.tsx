@@ -16,7 +16,7 @@ const ScoringHeader = ({ breadcrumbLabel, view, onViewChange }: Props) => (
     </div>
     <div className="flex items-center gap-3">
       <button className="h-8 px-3 text-sm rounded-md border border-border text-muted-foreground bg-background hover:bg-muted/50 flex items-center gap-1.5">
-        All Packs <ChevronDown className="w-3.5 h-3.5" />
+        All Contexts <ChevronDown className="w-3.5 h-3.5" />
       </button>
       <button className="h-8 px-3 text-sm rounded-md border border-border text-muted-foreground bg-background hover:bg-muted/50 flex items-center gap-1.5">
         All Models <ChevronDown className="w-3.5 h-3.5" />

@@ -33,7 +33,7 @@ const ExecutionScoreDetail = ({ executionId, onBack, onExport }: Props) => {
             {[
               ["Execution ID", executionId, true],
               ["Prompt Pack", "Dell — Laptops — US"],
-              ["Version", "v3"],
+              ["Context", "Best laptops for home office"],
               ["Model", "GPT-4o"],
               ["Scored At", "Apr 3, 2026 · 9:07 AM"],
             ].map(([label, value, mono]) => (

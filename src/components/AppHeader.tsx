@@ -29,7 +29,7 @@ const AppHeader = ({ status, onActivate, onDeactivate }: AppHeaderProps) => {
         )}
 
         <button className="h-8 px-3 text-sm rounded-md border border-border text-muted-foreground hover:bg-muted transition-colors">
-          Duplicate
+          Duplicate Context
         </button>
         <button className="h-8 px-3 text-sm rounded-md border border-border text-muted-foreground hover:bg-muted transition-colors">
           Import CSV
@@ -40,14 +40,14 @@ const AppHeader = ({ status, onActivate, onDeactivate }: AppHeaderProps) => {
             onClick={onActivate}
             className="h-8 px-4 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
           >
-            Activate Pack
+            Activate Context
           </button>
         ) : (
           <button
             onClick={onDeactivate}
             className="h-8 px-4 text-sm rounded-md border border-destructive text-destructive hover:bg-destructive/10 transition-colors font-medium"
           >
-            Deactivate
+            Deactivate Context
           </button>
         )}
       </div>
