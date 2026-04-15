@@ -37,6 +37,7 @@ const ExecutionComparison = () => {
             <tr className="border-b border-border">
               <th className="w-10 py-2" />
               <th className="table-header text-left py-2">Execution Date</th>
+              <th className="table-header text-left py-2">Context</th>
               <th className="table-header text-left py-2">Top 5 Share</th>
               <th className="table-header text-left py-2">HHI</th>
               <th className="table-header text-left py-2">Inclusion Rate</th>
@@ -55,6 +56,7 @@ const ExecutionComparison = () => {
                   />
                 </td>
                 <td className="py-2 text-foreground">{r.date}</td>
+                <td className="py-2 text-xs text-teal-600">Best laptops for home office</td>
                 <td className="py-2 text-foreground tabular">{r.top5}</td>
                 <td className="py-2 text-foreground tabular">{r.hhi}</td>
                 <td className="py-2 text-foreground tabular">{r.inclusion}</td>

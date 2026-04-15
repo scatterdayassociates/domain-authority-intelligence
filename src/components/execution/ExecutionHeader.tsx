@@ -9,11 +9,11 @@ interface ExecutionHeaderProps {
 }
 
 const statusOptions = ["All Statuses", "Queued", "Running", "Completed", "Failed"];
-const packOptions = ["All Packs", "Dell — Laptops — US", "Sony — Headphones — UK", "Nike — Running — US"];
+const contextOptions = ["All Contexts", "Best laptops for home office", "Best noise cancelling headphones", "Best running shoes 2024"];
 
 const ExecutionHeader = ({ view, executionId, onNewExecution, onBack }: ExecutionHeaderProps) => {
   const [statusFilter, setStatusFilter] = useState("All Statuses");
-  const [packFilter, setPackFilter] = useState("All Packs");
+  const [packFilter, setPackFilter] = useState("All Contexts");
   const [statusOpen, setStatusOpen] = useState(false);
   const [packOpen, setPackOpen] = useState(false);
 
@@ -81,7 +81,7 @@ const ExecutionHeader = ({ view, executionId, onNewExecution, onBack }: Executio
               )}
             </div>
 
-            {/* Pack Filter */}
+            {/* Context Filter */}
             <div className="relative">
               <button
                 onClick={() => { setPackOpen(!packOpen); setStatusOpen(false); }}
@@ -92,7 +92,7 @@ const ExecutionHeader = ({ view, executionId, onNewExecution, onBack }: Executio
               </button>
               {packOpen && (
                 <div className="absolute right-0 top-9 bg-background border border-border rounded-md shadow-lg py-1 z-50 min-w-[200px]">
-                  {packOptions.map((opt) => (
+                  {contextOptions.map((opt) => (
                     <button
                       key={opt}
                       onClick={() => { setPackFilter(opt); setPackOpen(false); }}

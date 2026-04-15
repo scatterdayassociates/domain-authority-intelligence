@@ -111,11 +111,21 @@ const NewExecution = ({ onBack, onStartExecution }: NewExecutionProps) => {
       </div>
 
       {/* Summary */}
+      {/* Context (read-only) */}
+      <div>
+        <label className="text-label block mb-1.5">Context</label>
+        <div className="bg-muted/30 rounded px-3 py-1.5 text-sm text-foreground cursor-default border border-border/50 w-full max-w-xs">
+          Best laptops for home office
+        </div>
+      </div>
+
       <div className="bg-muted/30 border border-border rounded-md p-4 max-w-lg">
         <h3 className="text-sm font-medium text-foreground mb-2">Execution Summary</h3>
         <div className="grid grid-cols-2 gap-y-1.5 text-sm">
           <span className="text-muted-foreground">Pack:</span>
           <span className="text-foreground">{selectedPack}</span>
+          <span className="text-muted-foreground">Context:</span>
+          <span className="text-foreground">Best laptops for home office</span>
           <span className="text-muted-foreground">Models:</span>
           <span className="text-foreground">{selectedModels.join(", ") || "None selected"}</span>
           <span className="text-muted-foreground">Total runs:</span>

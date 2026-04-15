@@ -18,7 +18,7 @@ const domainTypeClasses: Record<string, string> = {
 };
 
 const allTypes = ["All Types", "Publisher / Media", "Retail / Marketplace", "Brand / Retail", "Forum / Community", "Review / Affiliate", "Gov / Education"];
-const allPacks = ["All Packs", "Dell Laptops", "Sony Headphones", "Nike Running"];
+const allPacks = ["All Contexts", "Dell Laptops", "Sony Headphones", "Nike Running"];
 
 const registryData = [
   { domain: "rtings.com", type: "Publisher / Media", occurrences: 186, executions: 5, packs: ["Dell Laptops", "Sony Headphones"], lastSeen: "Apr 3, 2026", warning: false },
@@ -41,13 +41,13 @@ const registryData = [
 const DomainRegistry = () => {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("All Types");
-  const [packFilter, setPackFilter] = useState("All Packs");
+  const [packFilter, setPackFilter] = useState("All Contexts");
   const [page, setPage] = useState(0);
 
   const filtered = registryData.filter(d => {
     if (search && !d.domain.toLowerCase().includes(search.toLowerCase())) return false;
     if (typeFilter !== "All Types" && d.type !== typeFilter) return false;
-    if (packFilter !== "All Packs" && !d.packs.includes(packFilter)) return false;
+    if (packFilter !== "All Contexts" && !d.packs.includes(packFilter)) return false;
     return true;
   });
 

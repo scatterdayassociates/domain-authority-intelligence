@@ -122,7 +122,7 @@ const NewProjectPanel = ({ open, onClose }: NewProjectPanelProps) => {
               <div className="mb-3">
                 <label className="text-xs text-slate-500 mb-1 block">Target Brand</label>
                 <input className="w-full h-9 border border-slate-200 rounded-md px-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="e.g. Dell" />
-                <p className="text-xs text-slate-400 mt-0.5">Typically same as advertiser</p>
+                <p className="text-xs text-slate-400 mt-0.5">Typically same as brand</p>
               </div>
               <div className="mb-3">
                 <label className="text-xs text-slate-500 mb-1 block">Competitor Set</label>
