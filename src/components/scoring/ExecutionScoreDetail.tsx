@@ -39,7 +39,7 @@ const ExecutionScoreDetail = ({ executionId, onBack, onExport }: Props) => {
             ].map(([label, value, mono]) => (
               <div key={label as string}>
                 <div className="text-label mb-0.5">{label as string}</div>
-                <div className={`text-sm text-foreground ${mono ? "font-mono" : ""}`}>{value as string}</div>
+                <div className={`text-sm ${label === "Context" ? "font-medium text-teal-700" : `text-foreground ${mono ? "font-mono" : ""}`}`}>{value as string}</div>
               </div>
             ))}
           </div>
