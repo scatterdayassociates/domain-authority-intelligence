@@ -1,8 +1,9 @@
-import { Folder, Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
+import { Folder, Zap, Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const modules = [
   { name: "Projects", icon: Folder, path: "/projects" },
+  { name: "Insights", icon: Zap, path: "/insights" },
   { name: "Prompt Manager", icon: Layers, path: "/" },
   { name: "Execution", icon: PlayCircle, path: "/execution" },
   { name: "Parsing", icon: Filter, path: "/parsing" },
@@ -10,9 +11,9 @@ const modules = [
 ];
 
 const recentProjects = [
-  { name: "Dell — Laptops — US", active: true },
-  { name: "Sony — Headphones — UK", active: false },
-  { name: "Nike — Running — US", active: false },
+  { name: "Dell — Laptops (UK)", context: "Best laptops for home office", active: true },
+  { name: "Sony — Headphones — UK", context: "Best noise cancelling headphones", active: false },
+  { name: "Nike — Running — US", context: "Best running shoes 2024", active: false },
 ];
 
 interface AppSidebarProps {
@@ -121,11 +122,13 @@ const AppSidebar = ({ activeProject, activeContext, onContextClick }: AppSidebar
               <button
                 key={p.name}
                 onClick={() => navigate("/projects")}
-                className="flex items-center gap-2 h-8 px-4 rounded-md text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 w-full text-left mx-0"
+                className="flex items-start gap-2 px-4 py-1.5 rounded-md text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 w-full text-left mx-0"
               >
-                {p.active && <span className="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0" />}
-                {!p.active && <span className="w-1.5 h-1.5 flex-shrink-0" />}
-                <span className="flex-1 truncate">{p.name}</span>
+                <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${p.active ? "bg-teal-500" : ""}`} />
+                <div className="flex-1 min-w-0">
+                  <span className="block truncate">{p.name}</span>
+                  <span className="block text-xs text-slate-400 truncate">Context: {p.context}</span>
+                </div>
               </button>
             ))}
           </nav>
