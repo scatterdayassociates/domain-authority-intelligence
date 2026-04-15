@@ -65,7 +65,7 @@ const ExecutionComparison = ({ onBack }: Props) => {
         <div className="flex items-center justify-between mt-3">
           <button className="h-8 px-4 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 font-medium">Compare →</button>
           <span className="text-xs text-amber-600 flex items-center gap-1">
-            <AlertTriangle className="w-3 h-3" /> For valid comparison, both executions should use the same prompt pack version and model.
+            <AlertTriangle className="w-3 h-3" /> For valid comparison, both executions should share the same context, prompt pack version, and model.
           </span>
         </div>
       </div>
