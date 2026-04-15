@@ -8,6 +8,7 @@ import Execution from "./pages/Execution.tsx";
 import Parsing from "./pages/Parsing.tsx";
 import Scoring from "./pages/Scoring.tsx";
 import Projects from "./pages/Projects.tsx";
+import Insights from "./pages/Insights.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/execution" element={<Execution />} />
           <Route path="/parsing" element={<Parsing />} />
           <Route path="/scoring" element={<Scoring />} />
+          <Route path="/insights" element={<Insights />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
