@@ -94,9 +94,10 @@ const directionStyle = (dir: "up" | "down" | "flat") => {
 interface Props {
   mode: InsightMode;
   onNavigate: (tab: string) => void;
+  onOpenEvidence?: (statement: string) => void;
 }
 
-const ExecutiveInsightPanel = ({ mode, onNavigate }: Props) => {
+const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const baseCards: InsightCard[] = [
