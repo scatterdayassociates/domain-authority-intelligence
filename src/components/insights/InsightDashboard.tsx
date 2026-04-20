@@ -69,7 +69,7 @@ const InsightDashboard = ({ mode, onNavigateTab }: InsightDashboardProps) => {
     </div>
 
     {/* D: Competitive Movement */}
-    <div>
+    <div id="insight-section-movement">
       <SectionHeader
         title="Competitive Movement"
         right={
@@ -86,7 +86,7 @@ const InsightDashboard = ({ mode, onNavigateTab }: InsightDashboardProps) => {
     </div>
 
     {/* E: Structural View */}
-    <div>
+    <div id="insight-section-structural">
       <SectionHeader
         title="Structural View"
         right={<span className="text-xs text-muted-foreground">Publisher vs Brand · Distribution</span>}
@@ -96,6 +96,7 @@ const InsightDashboard = ({ mode, onNavigateTab }: InsightDashboardProps) => {
       </div>
     </div>
   </div>
-);
+  );
+};
 
 export default InsightDashboard;
