@@ -31,7 +31,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         className="relative bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 cursor-pointer transition-all flex flex-col"
         onMouseEnter={() => setHovered("authority")}
         onMouseLeave={() => setHovered(null)}
-        onClick={() => onNavigate("domain")}
+        onClick={() => trigger("Authority: techradar.com persistence", "domain")}
       >
         <div className="flex justify-between items-start">
           <span className="text-xs text-slate-500 uppercase tracking-wide">Authority</span>
@@ -74,7 +74,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         className="relative bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 cursor-pointer transition-all flex flex-col"
         onMouseEnter={() => setHovered("concentration")}
         onMouseLeave={() => setHovered(null)}
-        onClick={() => onNavigate("structural")}
+        onClick={() => trigger("Concentration: Moderate (HHI 0.245)", "structural")}
       >
         <div className="flex justify-between items-start">
           <span className="text-xs text-slate-500 uppercase tracking-wide">Concentration</span>
@@ -117,7 +117,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         className="relative bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 cursor-pointer transition-all flex flex-col"
         onMouseEnter={() => setHovered("brand")}
         onMouseLeave={() => setHovered(null)}
-        onClick={() => onNavigate("brand")}
+        onClick={() => trigger("Brand Inclusion: Dell at 75%", "brand")}
       >
         <div className="flex justify-between items-start">
           <span className="text-xs text-slate-500 uppercase tracking-wide">Brand Inclusion</span>

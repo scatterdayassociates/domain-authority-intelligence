@@ -46,7 +46,7 @@ const Insights = () => {
           {!hasExecutions ? (
             <InsightEmptyState />
           ) : activeTab === "dashboard" ? (
-            <InsightDashboard mode={mode} onNavigateTab={setActiveTab} />
+            <InsightDashboard mode={mode} onNavigateTab={setActiveTab} onModeChange={setMode} context={activeContext} />
           ) : (
             <div className="px-6 py-20 flex flex-col items-center justify-center text-center">
               <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
