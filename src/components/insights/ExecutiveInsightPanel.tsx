@@ -8,6 +8,7 @@ import {
   ArrowDown,
   Minus,
   ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
@@ -199,7 +200,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             className={`relative rounded-xl border p-5 cursor-pointer hover:shadow-md transition-all duration-150 min-w-[280px] flex-1 max-w-[calc(25%-12px)] flex flex-col ${style.card}`}
             onMouseEnter={() => setHoveredIdx(idx)}
             onMouseLeave={() => setHoveredIdx(null)}
-            onClick={() => onNavigate(card.evidenceTab)}
+            onClick={() => onOpenEvidence?.(card.statement)}
           >
             {/* Row 1 */}
             <div className="flex items-start justify-between">
@@ -247,13 +248,14 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             {/* Row 5 footer */}
             <div className={`mt-3 pt-2 border-t ${style.border} opacity-60 flex items-center justify-between mt-auto`}>
               <button
-                className={`text-[11px] underline ${style.link} hover:no-underline`}
+                className={`text-[11px] underline ${style.link} hover:no-underline inline-flex items-center gap-1`}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onNavigate(card.evidenceTab);
+                  onOpenEvidence?.(card.statement);
                 }}
               >
-                View evidence →
+                View evidence
+                <ExternalLink className="w-2.5 h-2.5" />
               </button>
               <ChevronRight className="w-3 h-3 text-slate-300" />
             </div>

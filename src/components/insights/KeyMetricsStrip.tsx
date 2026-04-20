@@ -5,6 +5,7 @@ import type { InsightMode } from "@/pages/Insights";
 interface Props {
   mode: InsightMode;
   onNavigate: (tab: string) => void;
+  onOpenEvidence?: (statement: string) => void;
 }
 
 const Tooltip = ({ text }: { text: string }) => (
@@ -14,9 +15,14 @@ const Tooltip = ({ text }: { text: string }) => (
   </div>
 );
 
-const KeyMetricsStrip = ({ mode, onNavigate }: Props) => {
+const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
   const [hovered, setHovered] = useState<string | null>(null);
   const showCompare = mode === "compare";
+
+  const trigger = (statement: string, tab: string) => {
+    if (onOpenEvidence) onOpenEvidence(statement);
+    else onNavigate(tab);
+  };
 
   return (
     <div className="grid grid-cols-3 gap-4 items-stretch">
