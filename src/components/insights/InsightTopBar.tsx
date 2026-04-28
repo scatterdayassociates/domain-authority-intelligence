@@ -63,12 +63,26 @@ const InsightTopBar = ({ mode, onModeChange }: InsightTopBarProps) => {
               )}
               {mode === "compare" && (
                 <div className="flex items-center gap-2 animate-in fade-in-50 duration-200">
-                  <button className="bg-background border border-border rounded-md h-8 px-3 text-xs text-foreground flex items-center gap-2">
-                    From: Apr 2026 <ChevronDown className="w-3 h-3" />
+                  <button
+                    type="button"
+                    aria-haspopup="listbox"
+                    title="Select the baseline execution to compare from"
+                    className="group bg-background border border-border rounded-md h-9 pl-2 pr-2 text-xs text-foreground flex items-center gap-2 shadow-sm hover:border-primary hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors cursor-pointer"
+                  >
+                    <span className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium leading-none">From execution</span>
+                    <span className="font-medium leading-none">Apr 2026</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </button>
                   <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
-                  <button className="bg-background border border-border rounded-md h-8 px-3 text-xs text-foreground flex items-center gap-2">
-                    To: May 2026 <ChevronDown className="w-3 h-3" />
+                  <button
+                    type="button"
+                    aria-haspopup="listbox"
+                    title="Select the target execution to compare to"
+                    className="group bg-background border border-border rounded-md h-9 pl-2 pr-2 text-xs text-foreground flex items-center gap-2 shadow-sm hover:border-primary hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors cursor-pointer"
+                  >
+                    <span className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium leading-none">To execution</span>
+                    <span className="font-medium leading-none">May 2026</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </button>
                   <span className="bg-slate-100 text-muted-foreground text-xs h-6 px-2 rounded-full inline-flex items-center">Δ Comparison</span>
                 </div>
