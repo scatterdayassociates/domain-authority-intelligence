@@ -302,6 +302,26 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
               );
             })()}
 
+            {/* Trends-mode enrichment: magnitude / range / driver */}
+            {mode === "trends" && card.trendDetail && (
+              <div className={`mt-3 pt-3 border-t ${style.border} space-y-1.5`}>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 min-w-[60px]">Magnitude</span>
+                  <span className="text-[11px] text-slate-700 leading-snug">{card.trendDetail.magnitude}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 min-w-[60px]">Range</span>
+                  <span className="text-[11px] text-slate-700 leading-snug tabular-nums">{card.trendDetail.range}</span>
+                </div>
+                {card.trendDetail.driver && (
+                  <div className="flex items-start gap-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 min-w-[60px]">Driver</span>
+                    <span className="text-[11px] text-slate-600 italic leading-snug">{card.trendDetail.driver}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Row 5 footer */}
             <div className={`mt-3 pt-2 border-t ${style.border} opacity-60 flex items-center justify-between mt-auto`}>
               <button
