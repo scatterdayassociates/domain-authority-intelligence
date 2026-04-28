@@ -6,6 +6,7 @@ import KeyMetricsStrip from "./KeyMetricsStrip";
 import TimeSeriesPanel from "./TimeSeriesPanel";
 import CompetitiveMovement from "./CompetitiveMovement";
 import StructuralView from "./StructuralView";
+import DomainAnalysisView from "./DomainAnalysisView";
 import EvidencePanel, { type EvidenceData } from "./EvidencePanel";
 
 interface InsightDashboardProps {
