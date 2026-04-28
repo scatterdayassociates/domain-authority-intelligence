@@ -218,7 +218,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
   const cards = mode === "compare" ? [...baseCards, movementCard] : baseCards;
 
   return (
-    <div className="flex flex-wrap gap-4 items-stretch">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
       {cards.map((card, idx) => {
         const style = TYPE_STYLES[card.type];
         const Icon = style.icon;
