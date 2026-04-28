@@ -25,6 +25,11 @@ interface InsightCard {
   trendChange?: { direction: "up" | "down" | "flat"; text: string };
   evidenceTab: string;
   tooltip: { source: string; bullets: string[] };
+  trendDetail?: {
+    magnitude: string;
+    range: string;
+    driver?: string;
+  };
 }
 
 const TYPE_STYLES: Record<
