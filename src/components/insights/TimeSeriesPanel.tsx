@@ -249,20 +249,17 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#94a3b8", label: "Lenovo" },
               ]}
             />
-            {isSnapshot && (
-              <p className="text-[11px] text-slate-400 italic text-center mt-2">
-                Switch to Trends mode to view multi-execution chart.
-              </p>
-            )}
             <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
               <TrendingUp className="w-3 h-3" />
               Dell's inclusion rate has increased by +15pp across 6 executions. Competitors Apple and HP show stable or declining trends.
             </div>
           </div>
+          )
         )}
 
         {/* CONCENTRATION TRENDS */}
         {subTab === "concentration" && (
+          isSnapshot ? <SnapshotEmpty /> : (
           <div>
             <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Category Concentration Over Time</span>
             <ResponsiveContainer width="100%" height={200}>
