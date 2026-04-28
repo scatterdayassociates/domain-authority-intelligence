@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { GitCompare, ArrowUpCircle, ArrowDownCircle, ArrowUpDown, Download } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
@@ -8,32 +9,61 @@ interface Props {
   context: string;
 }
 
-const entries = [
-  { rank: 3, domain: "rtings.com" },
-  { rank: 7, domain: "techradar.com/gaming" },
-  { rank: 9, domain: "tomsguide.com" },
+type Kind = "publisher" | "brand";
+type Filter = "all" | "publisher" | "brand";
+
+const entries: { rank: number; domain: string; kind: Kind }[] = [
+  { rank: 3, domain: "rtings.com", kind: "publisher" },
+  { rank: 7, domain: "techradar.com/gaming", kind: "publisher" },
+  { rank: 9, domain: "tomsguide.com", kind: "publisher" },
+  { rank: 5, domain: "lenovo.com", kind: "brand" },
 ];
 
-const exits = [{ rank: "—", domain: "cnet.com/laptops" }];
-
-const rankChanges = [
-  { domain: "techradar.com", from: 4, to: 1, delta: 3 },
-  { domain: "pcmag.com", from: 2, to: 3, delta: -1 },
-  { domain: "notebookcheck.net", from: 6, to: 4, delta: 2 },
-  { domain: "bestbuy.com", from: 3, to: 6, delta: -3 },
+const exits: { rank: string | number; domain: string; kind: Kind }[] = [
+  { rank: "—", domain: "cnet.com/laptops", kind: "publisher" },
+  { rank: "—", domain: "acer.com", kind: "brand" },
 ];
 
-const exportData = (context: string) => {
+const rankChanges: { domain: string; from: number; to: number; delta: number; kind: Kind }[] = [
+  { domain: "techradar.com", from: 4, to: 1, delta: 3, kind: "publisher" },
+  { domain: "pcmag.com", from: 2, to: 3, delta: -1, kind: "publisher" },
+  { domain: "notebookcheck.net", from: 6, to: 4, delta: 2, kind: "publisher" },
+  { domain: "bestbuy.com", from: 3, to: 6, delta: -3, kind: "publisher" },
+  { domain: "dell.com", from: 8, to: 5, delta: 3, kind: "brand" },
+  { domain: "hp.com", from: 5, to: 7, delta: -2, kind: "brand" },
+];
+
+const exportData = (
+  context: string,
+  fEntries: typeof entries,
+  fExits: typeof exits,
+  fRankChanges: typeof rankChanges,
+) => {
   const rows: (string | number)[][] = [
-    ["Type", "Domain", "Apr Rank", "May Rank", "Delta"],
-    ...entries.map((e) => ["Entry", e.domain, "—", e.rank, "NEW"]),
-    ...exits.map((e) => ["Exit", e.domain, e.rank, "—", "EXITED"]),
-    ...rankChanges.map((r) => ["Rank Change", r.domain, r.from, r.to, r.delta > 0 ? `+${r.delta}` : r.delta]),
+    ["Type", "Kind", "Domain", "Apr Rank", "May Rank", "Delta"],
+    ...fEntries.map((e) => ["Entry", e.kind, e.domain, "—", e.rank, "NEW"]),
+    ...fExits.map((e) => ["Exit", e.kind, e.domain, e.rank, "—", "EXITED"]),
+    ...fRankChanges.map((r) => [
+      "Rank Change",
+      r.kind,
+      r.domain,
+      r.from,
+      r.to,
+      r.delta > 0 ? `+${r.delta}` : r.delta,
+    ]),
   ];
   downloadCsv(buildFilename(context, "competitive-movement"), rows);
 };
 
+const FILTERS: { id: Filter; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "publisher", label: "Publishers only" },
+  { id: "brand", label: "Brands only" },
+];
+
 const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
+  const [filter, setFilter] = useState<Filter>("all");
+
   if (mode !== "compare") {
     return (
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center gap-4">
@@ -51,11 +81,36 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
     );
   }
 
+  const matches = (k: Kind) => filter === "all" || filter === k;
+  const fEntries = entries.filter((e) => matches(e.kind));
+  const fExits = exits.filter((e) => matches(e.kind));
+  const fRankChanges = rankChanges.filter((r) => matches(r.kind));
+
+  const emptyHint = (label: string) => (
+    <p className="text-[11px] text-slate-400 italic py-3">No {label} for current filter.</p>
+  );
+
   return (
     <div>
-      <div className="flex justify-end mb-3">
+      <div className="flex items-center justify-between mb-3 gap-3">
+        <div className="inline-flex items-center bg-slate-100 rounded-full p-0.5">
+          {FILTERS.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => setFilter(f.id)}
+              aria-pressed={filter === f.id}
+              className={`text-xs font-medium rounded-full px-3 py-1 transition-colors ${
+                filter === f.id
+                  ? "bg-slate-800 text-white"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
         <button
-          onClick={() => exportData(context)}
+          onClick={() => exportData(context, fEntries, fExits, fRankChanges)}
           className="border border-slate-200 text-slate-600 text-xs h-7 px-3 rounded-md inline-flex items-center gap-1.5 hover:bg-slate-50"
         >
           <Download className="w-3 h-3" /> Export Movement Data
@@ -68,18 +123,25 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
             <span className="text-xs text-slate-500 uppercase tracking-wide">Entries</span>
             <ArrowUpCircle className="w-3.5 h-3.5 text-green-500" />
           </div>
-          <p className="text-xs text-slate-600 mb-3">3 domains entered top 10 (Apr → May)</p>
-          {entries.map((e) => (
-            <div key={e.domain} className="py-2 border-b border-slate-100 flex items-center gap-3">
-              <span className="bg-green-100 text-green-700 text-[11px] rounded-full w-6 h-6 flex items-center justify-center tabular-nums">
-                #{e.rank}
-              </span>
-              <span className="font-mono text-xs text-slate-700 flex-1">{e.domain}</span>
-              <span className="bg-green-50 text-green-600 text-[11px] rounded-full px-2 py-0.5">NEW</span>
-            </div>
-          ))}
+          <p className="text-xs text-slate-600 mb-3">
+            {fEntries.length} {fEntries.length === 1 ? "item" : "items"} entered top 10 (Apr → May)
+          </p>
+          {fEntries.length === 0
+            ? emptyHint("entries")
+            : fEntries.map((e) => (
+                <div key={e.domain} className="py-2 border-b border-slate-100 flex items-center gap-3">
+                  <span className="bg-green-100 text-green-700 text-[11px] rounded-full w-6 h-6 flex items-center justify-center tabular-nums">
+                    #{e.rank}
+                  </span>
+                  <span className="font-mono text-xs text-slate-700 flex-1">{e.domain}</span>
+                  <span className="bg-slate-100 text-slate-500 text-[10px] rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                    {e.kind}
+                  </span>
+                  <span className="bg-green-50 text-green-600 text-[11px] rounded-full px-2 py-0.5">NEW</span>
+                </div>
+              ))}
           <p className="text-[11px] text-slate-400 italic mt-3">
-            Domains that appeared in Top 10 in May but not in April
+            Items that appeared in Top 10 in May but not in April
           </p>
         </div>
 
@@ -89,18 +151,25 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
             <span className="text-xs text-slate-500 uppercase tracking-wide">Exits</span>
             <ArrowDownCircle className="w-3.5 h-3.5 text-red-400" />
           </div>
-          <p className="text-xs text-slate-600 mb-3">1 domain exited top 10 (Apr → May)</p>
-          {exits.map((e) => (
-            <div key={e.domain} className="py-2 border-b border-slate-100 flex items-center gap-3">
-              <span className="bg-slate-100 text-slate-500 text-[11px] rounded-full w-6 h-6 flex items-center justify-center tabular-nums">
-                {e.rank}
-              </span>
-              <span className="font-mono text-xs text-slate-700 flex-1">{e.domain}</span>
-              <span className="bg-red-50 text-red-500 text-[11px] rounded-full px-2 py-0.5">EXITED</span>
-            </div>
-          ))}
+          <p className="text-xs text-slate-600 mb-3">
+            {fExits.length} {fExits.length === 1 ? "item" : "items"} exited top 10 (Apr → May)
+          </p>
+          {fExits.length === 0
+            ? emptyHint("exits")
+            : fExits.map((e) => (
+                <div key={e.domain} className="py-2 border-b border-slate-100 flex items-center gap-3">
+                  <span className="bg-slate-100 text-slate-500 text-[11px] rounded-full w-6 h-6 flex items-center justify-center tabular-nums">
+                    {e.rank}
+                  </span>
+                  <span className="font-mono text-xs text-slate-700 flex-1">{e.domain}</span>
+                  <span className="bg-slate-100 text-slate-500 text-[10px] rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                    {e.kind}
+                  </span>
+                  <span className="bg-red-50 text-red-500 text-[11px] rounded-full px-2 py-0.5">EXITED</span>
+                </div>
+              ))}
           <p className="text-[11px] text-slate-400 italic mt-3">
-            Domains that appeared in Top 10 in April but not in May
+            Items that appeared in Top 10 in April but not in May
           </p>
         </div>
 
@@ -110,27 +179,35 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
             <span className="text-xs text-slate-500 uppercase tracking-wide">Rank Change</span>
             <ArrowUpDown className="w-3.5 h-3.5 text-amber-500" />
           </div>
-          <p className="text-xs text-slate-600 mb-3">4 domains shifted position</p>
-          {rankChanges.map((r) => {
-            const positive = r.delta > 0;
-            return (
-              <div key={r.domain} className="py-2 border-b border-slate-100 flex items-center gap-2">
-                <span className="font-mono text-xs text-slate-700 flex-1">{r.domain}</span>
-                <span className="text-[11px] text-slate-400 tabular-nums">
-                  #{r.from} → #{r.to}
-                </span>
-                <span
-                  className={`text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full ${
-                    positive ? "bg-green-100 text-green-700" : "bg-red-50 text-red-500"
-                  }`}
-                >
-                  {positive ? "↑" : "↓"} {positive ? "+" : ""}{r.delta}
-                </span>
-              </div>
-            );
-          })}
+          <p className="text-xs text-slate-600 mb-3">
+            {fRankChanges.length} {fRankChanges.length === 1 ? "item" : "items"} shifted position
+          </p>
+          {fRankChanges.length === 0
+            ? emptyHint("rank changes")
+            : fRankChanges.map((r) => {
+                const positive = r.delta > 0;
+                return (
+                  <div key={r.domain} className="py-2 border-b border-slate-100 flex items-center gap-2">
+                    <span className="font-mono text-xs text-slate-700 flex-1">{r.domain}</span>
+                    <span className="bg-slate-100 text-slate-500 text-[10px] rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                      {r.kind}
+                    </span>
+                    <span className="text-[11px] text-slate-400 tabular-nums">
+                      #{r.from} → #{r.to}
+                    </span>
+                    <span
+                      className={`text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full ${
+                        positive ? "bg-green-100 text-green-700" : "bg-red-50 text-red-500"
+                      }`}
+                    >
+                      {positive ? "↑" : "↓"} {positive ? "+" : ""}
+                      {r.delta}
+                    </span>
+                  </div>
+                );
+              })}
           <p className="text-[11px] text-slate-400 italic mt-3">
-            Domains present in both executions with changed rank
+            Items present in both executions with changed rank
           </p>
         </div>
       </div>
