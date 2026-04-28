@@ -68,13 +68,24 @@ const ChartTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-const Legend = ({ items }: { items: { color: string; label: string; dashed?: boolean }[] }) => (
-  <div className="flex flex-wrap gap-4 justify-center mt-3 text-xs text-slate-500">
+const Legend = ({ items }: { items: { color: string; label: string; dashed?: boolean; highlight?: boolean }[] }) => (
+  <div className="flex flex-wrap gap-3 justify-center mt-3 text-xs text-slate-500">
     {items.map((it) => (
-      <div key={it.label} className="flex items-center gap-1.5">
+      <div
+        key={it.label}
+        className={`flex items-center gap-1.5 ${
+          it.highlight
+            ? "bg-slate-900 text-white px-2 py-0.5 rounded-full font-semibold ring-1 ring-slate-900/10"
+            : ""
+        }`}
+      >
         <span
-          className="inline-block w-3 h-0.5"
-          style={{ background: it.color, borderTop: it.dashed ? `2px dashed ${it.color}` : undefined }}
+          className="inline-block w-3.5"
+          style={{
+            background: it.color,
+            height: it.highlight ? 3 : 2,
+            borderTop: it.dashed ? `2px dashed ${it.color}` : undefined,
+          }}
         />
         <span className="font-mono">{it.label}</span>
       </div>
@@ -211,20 +222,20 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                   tickLine={false}
                 />
                 <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="techradar" name="techradar.com" stroke="#14b8a6" strokeWidth={2} dot={{ r: 4, fill: "#14b8a6", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="pcmag" name="pcmag.com" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="notebookcheck" name="notebookcheck.net" stroke="#22c55e" strokeWidth={2} dot={{ r: 4, fill: "#22c55e", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="bestbuy" name="bestbuy.com" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4, fill: "#f59e0b", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="dell" name="dell.com" stroke="#f87171" strokeWidth={2} strokeDasharray="5 3" dot={{ r: 4, fill: "#f87171", stroke: "#fff", strokeWidth: 2 }} />
+                <Line type="monotone" dataKey="techradar" name="techradar.com" stroke="#94a3b8" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#94a3b8", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="pcmag" name="pcmag.com" stroke="#cbd5e1" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#cbd5e1", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="notebookcheck" name="notebookcheck.net" stroke="#a3a3a3" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#a3a3a3", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="bestbuy" name="bestbuy.com" stroke="#fbbf24" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#fbbf24", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="dell" name="dell.com" stroke="#dc2626" strokeWidth={3.5} dot={{ r: 5, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} activeDot={{ r: 7, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} />
               </LineChart>
             </ResponsiveContainer>
             <Legend
               items={[
-                { color: "#14b8a6", label: "techradar.com" },
-                { color: "#3b82f6", label: "pcmag.com" },
-                { color: "#22c55e", label: "notebookcheck.net" },
-                { color: "#f59e0b", label: "bestbuy.com" },
-                { color: "#f87171", label: "dell.com (TARGET)", dashed: true },
+                { color: "#dc2626", label: "dell.com (TARGET)", highlight: true },
+                { color: "#94a3b8", label: "techradar.com" },
+                { color: "#cbd5e1", label: "pcmag.com" },
+                { color: "#a3a3a3", label: "notebookcheck.net" },
+                { color: "#fbbf24", label: "bestbuy.com" },
               ]}
             />
             <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
