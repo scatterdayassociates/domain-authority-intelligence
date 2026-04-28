@@ -75,7 +75,7 @@ const StructuralView = ({ context }: Props) => {
           </div>
           <div className="mt-4 bg-teal-50 border border-teal-100 rounded-md px-3 py-2 text-xs text-teal-700 flex items-start gap-2">
             <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
-            <span>Publisher-mediated ecosystem. Discovery is primarily shaped by editorial and review sources, not direct brand destinations.</span>
+            <span>Publisher-mediated ecosystem. Discovery is primarily shaped by editorial and review sources, reinforcing narratives around comparison, performance, and value positioning.</span>
           </div>
         </div>
 
