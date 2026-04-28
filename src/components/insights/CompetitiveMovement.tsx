@@ -9,8 +9,8 @@ interface Props {
   context: string;
 }
 
-type Kind = "publisher" | "brand";
-type Filter = "all" | "publisher" | "brand";
+type Kind = "publisher" | "brand" | "retail";
+type Filter = "all" | "publisher" | "brand" | "retail";
 
 const entries: { rank: number; domain: string; kind: Kind }[] = [
   { rank: 3, domain: "rtings.com", kind: "publisher" },
@@ -22,6 +22,38 @@ const entries: { rank: number; domain: string; kind: Kind }[] = [
 const exits: { rank: string | number; domain: string; kind: Kind }[] = [
   { rank: "—", domain: "cnet.com/laptops", kind: "publisher" },
   { rank: "—", domain: "acer.com", kind: "brand" },
+  { rank: "—", domain: "newegg.com", kind: "retail" },
+];
+
+// Attribute-centric narrative comparison — coverage_rate (%) per brand within attribute
+const attributeComparisons: {
+  attribute: string;
+  rows: { brand: string; from: number; to: number; isTarget?: boolean }[];
+}[] = [
+  {
+    attribute: "Affordability / Budget",
+    rows: [
+      { brand: "Lenovo", from: 65, to: 68 },
+      { brand: "Dell", from: 58, to: 62, isTarget: true },
+      { brand: "HP", from: 60, to: 55 },
+    ],
+  },
+  {
+    attribute: "Performance / Gaming",
+    rows: [
+      { brand: "Dell", from: 54, to: 59, isTarget: true },
+      { brand: "Lenovo", from: 51, to: 50 },
+      { brand: "HP", from: 48, to: 46 },
+    ],
+  },
+  {
+    attribute: "Reliability / Build",
+    rows: [
+      { brand: "Dell", from: 61, to: 60, isTarget: true },
+      { brand: "Lenovo", from: 57, to: 59 },
+      { brand: "HP", from: 55, to: 53 },
+    ],
+  },
 ];
 
 const rankChanges: { domain: string; from: number; to: number; delta: number; kind: Kind }[] = [
@@ -59,6 +91,7 @@ const FILTERS: { id: Filter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "publisher", label: "Publishers only" },
   { id: "brand", label: "Brands only" },
+  { id: "retail", label: "Retail only" },
 ];
 
 const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
@@ -118,19 +151,68 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
       </div>
       {(() => {
         const significant = fRankChanges.filter((r) => Math.abs(r.delta) >= 2).length;
-        const stable = 7; // domains remaining stable within the Top 10
+        const stable = 7;
         const plural = (n: number, s: string, p: string) => `${n} ${n === 1 ? s : p}`;
+
+        // Interpretive layer derived from source mix of entries / exits
+        const counts = (arr: { kind: Kind }[]) => ({
+          publisher: arr.filter((x) => x.kind === "publisher").length,
+          brand: arr.filter((x) => x.kind === "brand").length,
+          retail: arr.filter((x) => x.kind === "retail").length,
+        });
+        const ec = counts(fEntries);
+        const xc = counts(fExits);
+        const dominant = (c: ReturnType<typeof counts>) =>
+          (Object.entries(c).sort((a, b) => b[1] - a[1])[0] ?? ["", 0]) as [string, number];
+        const [eDom, eDomN] = dominant(ec);
+        const [xDom, xDomN] = dominant(xc);
+
+        let interpretation = "";
+        if (fEntries.length > 0 && eDom === "publisher" && eDomN >= 2) {
+          interpretation =
+            "New entries are primarily review-driven publisher sources, reinforcing comparison and performance-led narratives.";
+        } else if (fEntries.length > 0 && eDom === "brand") {
+          interpretation =
+            "New entries are brand-owned domains, suggesting stronger direct-brand visibility in the surfaced set.";
+        } else if (fEntries.length > 0 && eDom === "retail") {
+          interpretation =
+            "New entries skew toward retail sources, indicating purchase-intent surfaces are gaining ground.";
+        }
+
+        // Driver-level explanation: top positive rank-mover with most relevant entries
+        const topGainer = [...fRankChanges].sort((a, b) => b.delta - a.delta)[0];
+        const driverSources = fEntries
+          .filter((e) => e.kind === "publisher")
+          .slice(0, 2)
+          .map((e) => e.domain);
+        const driver =
+          topGainer && topGainer.delta > 0 && driverSources.length > 0
+            ? `Increase in ${topGainer.domain.replace(/\.com.*/, "")} appears to be driven by new entries from ${driverSources.join(" and ")}.`
+            : "";
+
         return (
-          <p className="text-xs text-slate-500 mb-3">
-            {plural(fEntries.length, "entry", "entries")},{" "}
-            {plural(fExits.length, "exit", "exits")},{" "}
-            {plural(significant, "significant rank change", "significant rank changes")}
-            {filter === "all" && (
-              <span className="text-slate-400">
-                {" "}· {stable} domains remained stable within the Top 10
-              </span>
+          <>
+            <p className="text-xs text-slate-500 mb-2">
+              {plural(fEntries.length, "entry", "entries")},{" "}
+              {plural(fExits.length, "exit", "exits")},{" "}
+              {plural(significant, "significant rank change", "significant rank changes")}
+              {filter === "all" && (
+                <span className="text-slate-400">
+                  {" "}· {stable} domains remained stable within the Top 10
+                </span>
+              )}
+            </p>
+            {(interpretation || driver) && (
+              <div className="bg-slate-50 border border-slate-200 rounded-md px-3 py-2 mb-3 space-y-1">
+                {interpretation && (
+                  <p className="text-xs text-slate-600 leading-relaxed">{interpretation}</p>
+                )}
+                {driver && (
+                  <p className="text-xs text-slate-500 leading-relaxed">{driver}</p>
+                )}
+              </div>
             )}
-          </p>
+          </>
         );
       })()}
       <div className="grid grid-cols-3 gap-4">
@@ -227,6 +309,74 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
             Items present in both executions with changed rank
           </p>
         </div>
+      </div>
+
+      {/* Attribute-centric Narrative Comparison */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between mb-2">
+          <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+            Narrative attribute comparison
+          </h4>
+          <span className="text-[11px] text-slate-400">
+            Coverage rate (%) · target + key competitors · Apr → May
+          </span>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          {attributeComparisons.map((card) => {
+            const ranked = [...card.rows].sort((a, b) => b.to - a.to);
+            return (
+              <div key={card.attribute} className="bg-white border border-slate-200 rounded-xl p-4">
+                <p className="text-xs font-medium text-slate-700 mb-2">{card.attribute}</p>
+                <div className="space-y-1.5">
+                  {ranked.map((r) => {
+                    const delta = r.to - r.from;
+                    const positive = delta > 0;
+                    const neutral = delta === 0;
+                    return (
+                      <div
+                        key={r.brand}
+                        className={`flex items-center gap-2 text-[11px] py-1 px-1.5 rounded ${
+                          r.isTarget ? "bg-teal-50/60" : ""
+                        }`}
+                      >
+                        <span
+                          className={`flex-1 truncate ${
+                            r.isTarget ? "font-semibold text-teal-700" : "text-slate-600"
+                          }`}
+                        >
+                          {r.brand}
+                          {r.isTarget && (
+                            <span className="ml-1 text-[9px] uppercase tracking-wide text-teal-500">
+                              target
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-slate-400 tabular-nums">{r.from}%</span>
+                        <span className="text-slate-300">→</span>
+                        <span className="text-slate-700 tabular-nums">{r.to}%</span>
+                        <span
+                          className={`tabular-nums font-semibold w-10 text-right ${
+                            neutral
+                              ? "text-slate-400"
+                              : positive
+                                ? "text-green-600"
+                                : "text-red-500"
+                          }`}
+                        >
+                          {neutral ? "0pp" : `${positive ? "+" : ""}${delta}pp`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-[11px] text-slate-400 italic mt-2">
+          Derived from coverage_rate per brand within each narrative attribute, scoped to the
+          selected From / To execution pair.
+        </p>
       </div>
     </div>
   );
