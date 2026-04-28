@@ -258,17 +258,17 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                   tickLine={false}
                 />
                 <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="Dell" stroke="#0d9488" strokeWidth={2} strokeDasharray="5 3" dot={{ r: 4, fill: "#0d9488", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="Apple" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="HP" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4, fill: "#f59e0b", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="Lenovo" stroke="#94a3b8" strokeWidth={2} dot={{ r: 4, fill: "#94a3b8", stroke: "#fff", strokeWidth: 2 }} />
+                <Line type="monotone" dataKey="Apple" stroke="#cbd5e1" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#cbd5e1", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="HP" stroke="#fbbf24" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#fbbf24", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="Lenovo" stroke="#94a3b8" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#94a3b8", stroke: "#fff", strokeWidth: 1.5 }} />
+                <Line type="monotone" dataKey="Dell" stroke="#dc2626" strokeWidth={3.5} dot={{ r: 5, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} activeDot={{ r: 7, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} />
               </LineChart>
             </ResponsiveContainer>
             <Legend
               items={[
-                { color: "#0d9488", label: "Dell (TARGET)", dashed: true },
-                { color: "#3b82f6", label: "Apple" },
-                { color: "#f59e0b", label: "HP" },
+                { color: "#dc2626", label: "Dell (TARGET)", highlight: true },
+                { color: "#cbd5e1", label: "Apple" },
+                { color: "#fbbf24", label: "HP" },
                 { color: "#94a3b8", label: "Lenovo" },
               ]}
             />
