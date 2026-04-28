@@ -176,6 +176,7 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
       <div className="bg-white rounded-xl border border-slate-200 p-4 mt-3" aria-label={`${subTab} trends chart`}>
         {/* DOMAIN TRENDS */}
         {subTab === "domain" && (
+          isSnapshot ? <SnapshotEmpty /> : (
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-500 uppercase tracking-wide">Domain Visibility Over Time</span>
@@ -210,20 +211,17 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#f87171", label: "dell.com (TARGET)", dashed: true },
               ]}
             />
-            {isSnapshot && (
-              <p className="text-[11px] text-slate-400 italic text-center mt-2">
-                Switch to Trends mode to view multi-execution chart.
-              </p>
-            )}
             <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
               <TrendingUp className="w-3 h-3" />
               dell.com shows a gradual upward trend in persistence across 6 executions (+8pp). Signal strength: Low.
             </div>
           </div>
+          )
         )}
 
         {/* BRAND TRENDS */}
         {subTab === "brand" && (
+          isSnapshot ? <SnapshotEmpty /> : (
           <div>
             <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Brand Inclusion Rate Over Time</span>
             <ResponsiveContainer width="100%" height={200}>
