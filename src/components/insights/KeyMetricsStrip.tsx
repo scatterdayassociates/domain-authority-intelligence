@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, BarChart2, Target, MessageSquareQuote } from "lucide-react";
+import { Globe, BarChart2, Target, MessageSquareQuote, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
 interface Props {
@@ -184,32 +184,69 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       >
         <div className="flex justify-between items-start">
           <span className="text-xs text-slate-500 uppercase tracking-wide">Brand Narrative</span>
-          <MessageSquareQuote className="w-3.5 h-3.5 text-slate-300" />
+          <div className="flex items-center gap-1.5">
+            {showTrends && (
+              <span className="text-[10px] font-medium text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded-full">Medium</span>
+            )}
+            <MessageSquareQuote className="w-3.5 h-3.5 text-slate-300" />
+          </div>
         </div>
         <div className="mt-2 text-sm font-semibold text-slate-800">Dell Technologies</div>
         <div className="mt-1">
           <span className="inline-block bg-rose-50 text-rose-600 text-[11px] px-2 py-0.5 rounded-full">Affordability-led</span>
         </div>
-        <div className="mt-3 space-y-2">
-          {[
-            { theme: "Affordability", rate: "68%", delta: "+6pp", deltaColor: "text-green-600", pill: "bg-green-100 text-green-700", consistency: "High consistency" },
-            { theme: "Home office", rate: "54%", delta: "−2pp", deltaColor: "text-rose-600", pill: "bg-amber-100 text-amber-700", consistency: "Medium consistency" },
-            { theme: "Gaming", rate: "32%", delta: "+1pp", deltaColor: "text-slate-500", pill: "bg-slate-100 text-slate-600", consistency: "Low consistency" },
-          ].map((t) => (
-            <div key={t.theme} className="flex items-center justify-between gap-2">
-              <span className="text-xs text-slate-600">{t.theme}</span>
-              <div className="flex items-center gap-2">
-                <span className={`text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full ${t.pill}`}>{t.rate}</span>
-                {showCompare && <span className={`text-[11px] tabular-nums ${t.deltaColor}`}>{t.delta}</span>}
-                <span className="text-[11px] text-slate-400">{t.consistency}</span>
-              </div>
+
+        {showTrends ? (
+          <>
+            <p className="mt-3 text-[12px] text-slate-700 leading-snug">
+              Positioning is strengthening around <span className="font-semibold">affordability</span>{" "}
+              <span className="text-green-600 tabular-nums">(+6pp across 5 executions)</span>
+            </p>
+            <div className="mt-3 space-y-1.5">
+              {[
+                { theme: "Affordability", trend: "Increasing", detail: "4 / 5 executions", dir: "up" as const },
+                { theme: "Home office", trend: "Declining", detail: "3 / 5 executions", dir: "down" as const },
+                { theme: "Gaming", trend: "Stable", detail: "±1pp range", dir: "flat" as const },
+              ].map((s) => {
+                const Icon = s.dir === "up" ? ArrowUp : s.dir === "down" ? ArrowDown : Minus;
+                const color = s.dir === "up" ? "text-green-600" : s.dir === "down" ? "text-rose-600" : "text-slate-400";
+                return (
+                  <div key={s.theme} className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-slate-600">{s.theme}</span>
+                    <div className={`flex items-center gap-1 ${color}`}>
+                      <Icon className="w-3 h-3" />
+                      <span className="text-[11px] font-medium">{s.trend}</span>
+                      <span className="text-[11px] text-slate-400 tabular-nums">· {s.detail}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
-        {showCompare && (
-          <div className="mt-3 text-[11px] text-slate-400">
-            vs Apr 2026: Affordability +6pp / Home office −2pp
-          </div>
+          </>
+        ) : (
+          <>
+            <div className="mt-3 space-y-2">
+              {[
+                { theme: "Affordability", rate: "68%", delta: "+6pp", deltaColor: "text-green-600", pill: "bg-green-100 text-green-700", consistency: "High consistency" },
+                { theme: "Home office", rate: "54%", delta: "−2pp", deltaColor: "text-rose-600", pill: "bg-amber-100 text-amber-700", consistency: "Medium consistency" },
+                { theme: "Gaming", rate: "32%", delta: "+1pp", deltaColor: "text-slate-500", pill: "bg-slate-100 text-slate-600", consistency: "Low consistency" },
+              ].map((t) => (
+                <div key={t.theme} className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-slate-600">{t.theme}</span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full ${t.pill}`}>{t.rate}</span>
+                    {showCompare && <span className={`text-[11px] tabular-nums ${t.deltaColor}`}>{t.delta}</span>}
+                    <span className="text-[11px] text-slate-400">{t.consistency}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {showCompare && (
+              <div className="mt-3 text-[11px] text-slate-400">
+                vs Apr 2026: Affordability +6pp / Home office −2pp
+              </div>
+            )}
+          </>
         )}
         <div className="border-t border-slate-100 mt-3 pt-2 mt-auto">
           <button
