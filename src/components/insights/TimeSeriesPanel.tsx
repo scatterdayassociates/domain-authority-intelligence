@@ -238,10 +238,6 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#fbbf24", label: "bestbuy.com" },
               ]}
             />
-            <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
-              <TrendingUp className="w-3 h-3" />
-              dell.com shows a gradual upward trend in persistence across 6 executions (+8pp). Signal strength: Low.
-            </div>
           </div>
           )
         )}
