@@ -70,6 +70,14 @@ const TYPE_STYLES: Record<
     link: "text-purple-600",
     border: "border-purple-200",
   },
+  narrative: {
+    card: "bg-rose-50 border-rose-200",
+    badge: "bg-rose-100 text-rose-700",
+    badgeLabel: "Brand Narrative",
+    icon: MessageSquareQuote,
+    link: "text-rose-600",
+    border: "border-rose-200",
+  },
 };
 
 const confidencePill = (type: InsightType, conf: Confidence) => {
