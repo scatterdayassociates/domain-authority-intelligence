@@ -310,6 +310,74 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
           </p>
         </div>
       </div>
+
+      {/* Attribute-centric Narrative Comparison */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between mb-2">
+          <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+            Narrative attribute comparison
+          </h4>
+          <span className="text-[11px] text-slate-400">
+            Coverage rate (%) · target + key competitors · Apr → May
+          </span>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          {attributeComparisons.map((card) => {
+            const ranked = [...card.rows].sort((a, b) => b.to - a.to);
+            return (
+              <div key={card.attribute} className="bg-white border border-slate-200 rounded-xl p-4">
+                <p className="text-xs font-medium text-slate-700 mb-2">{card.attribute}</p>
+                <div className="space-y-1.5">
+                  {ranked.map((r) => {
+                    const delta = r.to - r.from;
+                    const positive = delta > 0;
+                    const neutral = delta === 0;
+                    return (
+                      <div
+                        key={r.brand}
+                        className={`flex items-center gap-2 text-[11px] py-1 px-1.5 rounded ${
+                          r.isTarget ? "bg-teal-50/60" : ""
+                        }`}
+                      >
+                        <span
+                          className={`flex-1 truncate ${
+                            r.isTarget ? "font-semibold text-teal-700" : "text-slate-600"
+                          }`}
+                        >
+                          {r.brand}
+                          {r.isTarget && (
+                            <span className="ml-1 text-[9px] uppercase tracking-wide text-teal-500">
+                              target
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-slate-400 tabular-nums">{r.from}%</span>
+                        <span className="text-slate-300">→</span>
+                        <span className="text-slate-700 tabular-nums">{r.to}%</span>
+                        <span
+                          className={`tabular-nums font-semibold w-10 text-right ${
+                            neutral
+                              ? "text-slate-400"
+                              : positive
+                                ? "text-green-600"
+                                : "text-red-500"
+                          }`}
+                        >
+                          {neutral ? "0pp" : `${positive ? "+" : ""}${delta}pp`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-[11px] text-slate-400 italic mt-2">
+          Derived from coverage_rate per brand within each narrative attribute, scoped to the
+          selected From / To execution pair.
+        </p>
+      </div>
     </div>
   );
 };
