@@ -137,6 +137,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Confidence basis: Consistent across all 3 executions in range",
         ],
       },
+      trendDetail: {
+        magnitude: "Stable trend (±1pp across 5 executions)",
+        range: "58%–62% persistence range",
+        driver: "Consistent inclusion across review-led publisher queries",
+      },
     },
     {
       type: "brand",
