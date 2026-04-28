@@ -295,16 +295,12 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#2dd4bf", label: "Top 5 Share", dashed: true },
               ]}
             />
-            {isSnapshot && (
-              <p className="text-[11px] text-slate-400 italic text-center mt-2">
-                Switch to Trends mode to view multi-execution chart.
-              </p>
-            )}
             <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-xs text-blue-700 flex items-center gap-2 mt-3">
               <Minus className="w-3 h-3" />
               Category structure is stable. HHI has remained within the Moderate range across all 6 executions (0.244–0.262). No structural shift detected.
             </div>
           </div>
+          )
         )}
       </div>
     </div>
