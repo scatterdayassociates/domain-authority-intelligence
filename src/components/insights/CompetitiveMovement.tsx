@@ -151,19 +151,68 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
       </div>
       {(() => {
         const significant = fRankChanges.filter((r) => Math.abs(r.delta) >= 2).length;
-        const stable = 7; // domains remaining stable within the Top 10
+        const stable = 7;
         const plural = (n: number, s: string, p: string) => `${n} ${n === 1 ? s : p}`;
+
+        // Interpretive layer derived from source mix of entries / exits
+        const counts = (arr: { kind: Kind }[]) => ({
+          publisher: arr.filter((x) => x.kind === "publisher").length,
+          brand: arr.filter((x) => x.kind === "brand").length,
+          retail: arr.filter((x) => x.kind === "retail").length,
+        });
+        const ec = counts(fEntries);
+        const xc = counts(fExits);
+        const dominant = (c: ReturnType<typeof counts>) =>
+          (Object.entries(c).sort((a, b) => b[1] - a[1])[0] ?? ["", 0]) as [string, number];
+        const [eDom, eDomN] = dominant(ec);
+        const [xDom, xDomN] = dominant(xc);
+
+        let interpretation = "";
+        if (fEntries.length > 0 && eDom === "publisher" && eDomN >= 2) {
+          interpretation =
+            "New entries are primarily review-driven publisher sources, reinforcing comparison and performance-led narratives.";
+        } else if (fEntries.length > 0 && eDom === "brand") {
+          interpretation =
+            "New entries are brand-owned domains, suggesting stronger direct-brand visibility in the surfaced set.";
+        } else if (fEntries.length > 0 && eDom === "retail") {
+          interpretation =
+            "New entries skew toward retail sources, indicating purchase-intent surfaces are gaining ground.";
+        }
+
+        // Driver-level explanation: top positive rank-mover with most relevant entries
+        const topGainer = [...fRankChanges].sort((a, b) => b.delta - a.delta)[0];
+        const driverSources = fEntries
+          .filter((e) => e.kind === "publisher")
+          .slice(0, 2)
+          .map((e) => e.domain);
+        const driver =
+          topGainer && topGainer.delta > 0 && driverSources.length > 0
+            ? `Increase in ${topGainer.domain.replace(/\.com.*/, "")} appears to be driven by new entries from ${driverSources.join(" and ")}.`
+            : "";
+
         return (
-          <p className="text-xs text-slate-500 mb-3">
-            {plural(fEntries.length, "entry", "entries")},{" "}
-            {plural(fExits.length, "exit", "exits")},{" "}
-            {plural(significant, "significant rank change", "significant rank changes")}
-            {filter === "all" && (
-              <span className="text-slate-400">
-                {" "}· {stable} domains remained stable within the Top 10
-              </span>
+          <>
+            <p className="text-xs text-slate-500 mb-2">
+              {plural(fEntries.length, "entry", "entries")},{" "}
+              {plural(fExits.length, "exit", "exits")},{" "}
+              {plural(significant, "significant rank change", "significant rank changes")}
+              {filter === "all" && (
+                <span className="text-slate-400">
+                  {" "}· {stable} domains remained stable within the Top 10
+                </span>
+              )}
+            </p>
+            {(interpretation || driver) && (
+              <div className="bg-slate-50 border border-slate-200 rounded-md px-3 py-2 mb-3 space-y-1">
+                {interpretation && (
+                  <p className="text-xs text-slate-600 leading-relaxed">{interpretation}</p>
+                )}
+                {driver && (
+                  <p className="text-xs text-slate-500 leading-relaxed">{driver}</p>
+                )}
+              </div>
             )}
-          </p>
+          </>
         );
       })()}
       <div className="grid grid-cols-3 gap-4">
