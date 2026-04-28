@@ -162,6 +162,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Confidence basis: 2 consecutive executions confirming direction",
         ],
       },
+      trendDetail: {
+        magnitude: "Increasing trend (+15pp across 5 executions)",
+        range: "60%–75% inclusion range",
+        driver: "Driven by increased visibility in publisher domains",
+      },
     },
     {
       type: "concentration",
