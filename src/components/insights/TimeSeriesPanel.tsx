@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   ReferenceArea,
 } from "recharts";
-import { TrendingUp, Minus, Download } from "lucide-react";
+import { TrendingUp, Minus, Download, LineChart as LineChartIcon } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
 
