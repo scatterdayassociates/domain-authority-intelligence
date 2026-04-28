@@ -9,8 +9,8 @@ interface Props {
   context: string;
 }
 
-type Kind = "publisher" | "brand";
-type Filter = "all" | "publisher" | "brand";
+type Kind = "publisher" | "brand" | "retail";
+type Filter = "all" | "publisher" | "brand" | "retail";
 
 const entries: { rank: number; domain: string; kind: Kind }[] = [
   { rank: 3, domain: "rtings.com", kind: "publisher" },
@@ -22,6 +22,38 @@ const entries: { rank: number; domain: string; kind: Kind }[] = [
 const exits: { rank: string | number; domain: string; kind: Kind }[] = [
   { rank: "—", domain: "cnet.com/laptops", kind: "publisher" },
   { rank: "—", domain: "acer.com", kind: "brand" },
+  { rank: "—", domain: "newegg.com", kind: "retail" },
+];
+
+// Attribute-centric narrative comparison — coverage_rate (%) per brand within attribute
+const attributeComparisons: {
+  attribute: string;
+  rows: { brand: string; from: number; to: number; isTarget?: boolean }[];
+}[] = [
+  {
+    attribute: "Affordability / Budget",
+    rows: [
+      { brand: "Lenovo", from: 65, to: 68 },
+      { brand: "Dell", from: 58, to: 62, isTarget: true },
+      { brand: "HP", from: 60, to: 55 },
+    ],
+  },
+  {
+    attribute: "Performance / Gaming",
+    rows: [
+      { brand: "Dell", from: 54, to: 59, isTarget: true },
+      { brand: "Lenovo", from: 51, to: 50 },
+      { brand: "HP", from: 48, to: 46 },
+    ],
+  },
+  {
+    attribute: "Reliability / Build",
+    rows: [
+      { brand: "Dell", from: 61, to: 60, isTarget: true },
+      { brand: "Lenovo", from: 57, to: 59 },
+      { brand: "HP", from: 55, to: 53 },
+    ],
+  },
 ];
 
 const rankChanges: { domain: string; from: number; to: number; delta: number; kind: Kind }[] = [
