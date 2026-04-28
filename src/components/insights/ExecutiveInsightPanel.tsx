@@ -173,6 +173,26 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         ],
       },
     },
+    {
+      type: "narrative",
+      confidence: "medium",
+      statement: "Dell is primarily positioned around affordability and general use",
+      metrics: [
+        { label: "Top theme:", value: "Affordability" },
+        { label: "Theme share:", value: "62%" },
+      ],
+      change: { direction: "flat", text: "Narrative consistent vs prior" },
+      trendChange: { direction: "up", text: "Affordability strengthening" },
+      evidenceTab: "brand",
+      tooltip: {
+        source: "Generated from: theme co-occurrence (affordability 62%, general use 41%)",
+        bullets: [
+          "Rule: Top theme share ≥ 40% → dominant positioning",
+          "Threshold met: 62% mentions tied to affordability/value language",
+          "Confidence basis: 9 of 12 runs reference price or budget framing",
+        ],
+      },
+    },
   ];
 
   const movementCard: InsightCard = {
