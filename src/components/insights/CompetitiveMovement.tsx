@@ -91,6 +91,7 @@ const FILTERS: { id: Filter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "publisher", label: "Publishers only" },
   { id: "brand", label: "Brands only" },
+  { id: "retail", label: "Retail only" },
 ];
 
 const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
