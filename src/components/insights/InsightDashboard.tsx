@@ -48,7 +48,12 @@ const InsightDashboard = ({ mode, onNavigateTab, onModeChange, context = "Best l
   const [evidence, setEvidence] = useState<EvidenceData | null>(null);
 
   const handleNavigate = (tab: string) => {
-    if (tab === "domain" || tab === "brand") {
+    if (tab === "domain") {
+      const el = document.getElementById("insight-section-domain-analysis");
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    if (tab === "brand") {
       onNavigateTab?.(tab);
     } else {
       const el = document.getElementById(`insight-section-${tab}`);
