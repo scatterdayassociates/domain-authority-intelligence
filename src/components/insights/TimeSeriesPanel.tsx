@@ -8,6 +8,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceArea,
+  ReferenceDot,
+  ReferenceLine,
 } from "recharts";
 import { TrendingUp, Minus, Download, LineChart as LineChartIcon } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
