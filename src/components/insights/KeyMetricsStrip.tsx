@@ -106,6 +106,17 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             vs Apr 2026: HHI +0.012 / Top 5 Share: no change
           </div>
         )}
+        {showTrends && (
+          <div className="mt-3 space-y-1">
+            <div className="flex items-start gap-1.5 text-[11px] text-slate-500 leading-snug">
+              <span className="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+              <span>Stable structure <span className="text-slate-400 tabular-nums">(HHI 0.24–0.26)</span></span>
+            </div>
+            <div className="text-[11px] text-slate-400 pl-3">
+              Trajectory: <span className="text-slate-600 font-medium">Holding</span> · neither consolidating nor fragmenting
+            </div>
+          </div>
+        )}
         <div className="border-t border-slate-100 mt-3 pt-2 mt-auto">
           <button
             className="text-[11px] text-teal-600 hover:underline"
