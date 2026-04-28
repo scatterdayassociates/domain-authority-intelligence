@@ -48,6 +48,10 @@ const Insights = () => {
             <InsightEmptyState />
           ) : activeTab === "dashboard" ? (
             <InsightDashboard mode={mode} onNavigateTab={setActiveTab} onModeChange={setMode} context={activeContext} />
+          ) : activeTab === "domain" ? (
+            <div className="px-6 py-6">
+              <DomainAnalysisView context={activeContext} />
+            </div>
           ) : (
             <div className="px-6 py-20 flex flex-col items-center justify-center text-center">
               <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
