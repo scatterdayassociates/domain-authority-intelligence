@@ -132,14 +132,23 @@ const ExportDropdown = ({ context }: { context: string }) => {
   );
 };
 
+const SnapshotEmpty = () => (
+  <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+      <LineChartIcon className="w-4 h-4 text-slate-400" />
+    </div>
+    <p className="text-sm font-medium text-slate-600">Trend view unavailable in Snapshot mode</p>
+    <p className="text-xs text-slate-400 mt-1">Switch to Trends mode to view changes over time.</p>
+  </div>
+);
+
 const TimeSeriesPanel = ({ mode, context }: Props) => {
   const [subTab, setSubTab] = useState<SubTab>("domain");
   const isSnapshot = mode === "snapshot";
 
-  // In snapshot mode, slice to last single point
-  const dData = isSnapshot ? domainData.slice(-1) : domainData;
-  const bData = isSnapshot ? brandData.slice(-1) : brandData;
-  const cData = isSnapshot ? concData.slice(-1) : concData;
+  const dData = domainData;
+  const bData = brandData;
+  const cData = concData;
 
   return (
     <div>
