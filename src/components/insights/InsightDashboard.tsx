@@ -133,6 +133,9 @@ const InsightDashboard = ({ mode, onNavigateTab, onModeChange, context = "Best l
         </div>
       </div>
 
+      {/* F: Domain Analysis (Snapshot only) */}
+      {mode === "snapshot" && <DomainAnalysisView context={context} />}
+
       <EvidencePanel open={!!evidence} data={evidence} onClose={() => setEvidence(null)} />
     </div>
   );
