@@ -228,7 +228,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         return (
           <div
             key={idx}
-            className={`relative rounded-xl border p-5 cursor-pointer hover:shadow-md transition-all duration-150 min-w-[280px] flex-1 max-w-[calc(25%-12px)] flex flex-col ${style.card}`}
+            className={`relative rounded-xl border p-5 cursor-pointer hover:shadow-md transition-all duration-150 w-full flex flex-col ${style.card}`}
             onMouseEnter={() => setHoveredIdx(idx)}
             onMouseLeave={() => setHoveredIdx(null)}
             onClick={() => onOpenEvidence?.(card.statement)}
