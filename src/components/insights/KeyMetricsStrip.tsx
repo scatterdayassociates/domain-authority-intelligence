@@ -57,6 +57,12 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             vs Apr 2026: Δ mentions −2 runs / persistence −8pp
           </div>
         )}
+        {showTrends && (
+          <div className="mt-3 flex items-start gap-1.5 text-[11px] text-slate-500 leading-snug">
+            <span className="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
+            <span>Stable over 5 executions <span className="text-slate-400 tabular-nums">(58%–62% persistence range)</span></span>
+          </div>
+        )}
         <div className="border-t border-slate-100 mt-3 pt-2 mt-auto">
           <button
             className="text-[11px] text-teal-600 hover:underline"
