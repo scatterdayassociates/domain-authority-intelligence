@@ -18,7 +18,7 @@ interface Props {
   context: string;
 }
 
-type SubTab = "domain" | "brand" | "concentration";
+type SubTab = "domain" | "brand" | "concentration" | "narrative";
 
 const months = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026"];
 
@@ -43,6 +43,13 @@ const concData = months.map((m, i) => ({
   month: m,
   hhi: [0.262, 0.255, 0.248, 0.25, 0.244, 0.245][i],
   top5: [1.0, 1.0, 0.98, 1.0, 1.0, 1.0][i],
+}));
+
+const narrativeData = months.map((m, i) => ({
+  month: m,
+  affordability: [62, 65, 68, 72, 65, 68][i],
+  generalUse: [56, 54, 54, 50, 58, 54][i],
+  gaming: [30, 33, 32, 35, 30, 32][i],
 }));
 
 const ChartTooltip = ({ active, payload, label }: any) => {
@@ -98,6 +105,14 @@ const ExportDropdown = ({ context }: { context: string }) => {
       label: "Concentration Trends CSV",
       type: "concentration-trends",
       rows: [["Month", "HHI", "Top 5 Share"], ...concData.map((d) => [d.month, d.hhi, d.top5])],
+    },
+    narrative: {
+      label: "Narrative Trends CSV",
+      type: "narrative-trends",
+      rows: [
+        ["Month", "Affordability (%)", "General use (%)", "Gaming (%)"],
+        ...narrativeData.map((d) => [d.month, d.affordability, d.generalUse, d.gaming]),
+      ],
     },
   };
 
@@ -158,6 +173,7 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
             { id: "domain", label: "Domain Trends" },
             { id: "brand", label: "Brand Trends" },
             { id: "concentration", label: "Concentration Trends" },
+            { id: "narrative", label: "Narrative Trends" },
           ].map((t) => (
             <button
               key={t.id}
@@ -252,6 +268,43 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
             <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
               <TrendingUp className="w-3 h-3" />
               Dell's inclusion rate has increased by +15pp across 6 executions. Competitors Apple and HP show stable or declining trends.
+            </div>
+          </div>
+          )
+        )}
+
+        {/* NARRATIVE TRENDS */}
+        {subTab === "narrative" && (
+          isSnapshot ? <SnapshotEmpty /> : (
+          <div>
+            <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Brand Narrative Share Over Time</span>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={narrativeData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
+                <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis
+                  domain={[0, 100]}
+                  label={{ value: "Inclusion (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
+                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip content={<ChartTooltip />} />
+                <Line type="monotone" dataKey="affordability" name="Affordability" stroke="#e11d48" strokeWidth={2} dot={{ r: 4, fill: "#e11d48", stroke: "#fff", strokeWidth: 2 }} />
+                <Line type="monotone" dataKey="generalUse" name="General use" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }} />
+                <Line type="monotone" dataKey="gaming" name="Gaming" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4, fill: "#8b5cf6", stroke: "#fff", strokeWidth: 2 }} />
+              </LineChart>
+            </ResponsiveContainer>
+            <Legend
+              items={[
+                { color: "#e11d48", label: "Affordability" },
+                { color: "#3b82f6", label: "General use" },
+                { color: "#8b5cf6", label: "Gaming" },
+              ]}
+            />
+            <div className="bg-rose-50 border border-rose-100 rounded-lg px-4 py-2 text-xs text-rose-700 flex items-center gap-2 mt-3">
+              <TrendingUp className="w-3 h-3" />
+              Affordability remains the dominant narrative for Dell (avg 67%). General use and Gaming positioning are stable across executions.
             </div>
           </div>
           )
