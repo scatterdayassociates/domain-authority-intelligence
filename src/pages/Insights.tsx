@@ -4,6 +4,7 @@ import InsightTopBar from "@/components/insights/InsightTopBar";
 import InsightTabs from "@/components/insights/InsightTabs";
 import InsightDashboard from "@/components/insights/InsightDashboard";
 import DomainAnalysisView from "@/components/insights/DomainAnalysisView";
+import BrandAnalysisView from "@/components/insights/BrandAnalysisView";
 import InsightEmptyState from "@/components/insights/InsightEmptyState";
 import { ChevronRight } from "lucide-react";
 
@@ -51,6 +52,10 @@ const Insights = () => {
           ) : activeTab === "domain" ? (
             <div className="px-6 py-6">
               <DomainAnalysisView context={activeContext} />
+            </div>
+          ) : activeTab === "brand" ? (
+            <div className="px-6 py-6">
+              <BrandAnalysisView context={activeContext} />
             </div>
           ) : (
             <div className="px-6 py-20 flex flex-col items-center justify-center text-center">
