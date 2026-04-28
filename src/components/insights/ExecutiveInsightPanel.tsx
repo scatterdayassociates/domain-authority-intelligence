@@ -25,6 +25,11 @@ interface InsightCard {
   trendChange?: { direction: "up" | "down" | "flat"; text: string };
   evidenceTab: string;
   tooltip: { source: string; bullets: string[] };
+  trendDetail?: {
+    magnitude: string;
+    range: string;
+    driver?: string;
+  };
 }
 
 const TYPE_STYLES: Record<
@@ -132,6 +137,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Confidence basis: Consistent across all 3 executions in range",
         ],
       },
+      trendDetail: {
+        magnitude: "Stable trend (±1pp across 5 executions)",
+        range: "58%–62% persistence range",
+        driver: "Consistent inclusion across review-led publisher queries",
+      },
     },
     {
       type: "brand",
@@ -151,6 +161,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Threshold met: +15pp shift",
           "Confidence basis: 2 consecutive executions confirming direction",
         ],
+      },
+      trendDetail: {
+        magnitude: "Increasing trend (+15pp across 5 executions)",
+        range: "60%–75% inclusion range",
+        driver: "Driven by increased visibility in publisher domains",
       },
     },
     {
@@ -172,6 +187,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Confidence basis: HHI variance < 0.02 across runs",
         ],
       },
+      trendDetail: {
+        magnitude: "Stable concentration (Δ HHI < 0.02 across 5 executions)",
+        range: "HHI 0.24–0.26",
+        driver: "Top 5 publishers retain consistent share of voice",
+      },
     },
     {
       type: "narrative",
@@ -191,6 +211,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Threshold met: 62% mentions tied to affordability/value language",
           "Confidence basis: 9 of 12 runs reference price or budget framing",
         ],
+      },
+      trendDetail: {
+        magnitude: "Affordability +6pp, general use −2pp across 5 executions",
+        range: "Affordability 62%–68%, general use 54%–58%",
+        driver: "Driven by value-led publisher commentary on new mid-range SKUs",
       },
     },
   ];
@@ -276,6 +301,26 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
                 </div>
               );
             })()}
+
+            {/* Trends-mode enrichment: magnitude / range / driver */}
+            {mode === "trends" && card.trendDetail && (
+              <div className={`mt-3 pt-3 border-t ${style.border} space-y-1.5`}>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 min-w-[60px]">Magnitude</span>
+                  <span className="text-[11px] text-slate-700 leading-snug">{card.trendDetail.magnitude}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 min-w-[60px]">Range</span>
+                  <span className="text-[11px] text-slate-700 leading-snug tabular-nums">{card.trendDetail.range}</span>
+                </div>
+                {card.trendDetail.driver && (
+                  <div className="flex items-start gap-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 min-w-[60px]">Driver</span>
+                    <span className="text-[11px] text-slate-600 italic leading-snug">{card.trendDetail.driver}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Row 5 footer */}
             <div className={`mt-3 pt-2 border-t ${style.border} opacity-60 flex items-center justify-between mt-auto`}>
