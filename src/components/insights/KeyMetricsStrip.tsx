@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, BarChart2, Target } from "lucide-react";
+import { Globe, BarChart2, Target, MessageSquareQuote } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
 interface Props {
@@ -25,7 +25,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-4 items-stretch">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
       {/* Authority */}
       <div
         className="relative bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 cursor-pointer transition-all flex flex-col"
@@ -154,6 +154,55 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         </div>
         {hovered === "brand" && (
           <Tooltip text="Inclusion rate = runs containing brand domain ÷ total runs. Consistency tracks how evenly distributed those appearances are." />
+        )}
+      </div>
+
+      {/* Brand Narrative */}
+      <div
+        className="relative bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 cursor-pointer transition-all flex flex-col"
+        onMouseEnter={() => setHovered("narrative")}
+        onMouseLeave={() => setHovered(null)}
+        onClick={() => trigger("Brand Narrative: Dell positioned around affordability", "brand")}
+      >
+        <div className="flex justify-between items-start">
+          <span className="text-xs text-slate-500 uppercase tracking-wide">Brand Narrative</span>
+          <MessageSquareQuote className="w-3.5 h-3.5 text-slate-300" />
+        </div>
+        <div className="mt-2 text-sm font-semibold text-slate-800">Dell Technologies</div>
+        <div className="mt-1">
+          <span className="inline-block bg-rose-50 text-rose-600 text-[11px] px-2 py-0.5 rounded-full">Affordability-led</span>
+        </div>
+        <div className="mt-3 space-y-2">
+          {[
+            { theme: "Affordability", rate: "68%", delta: "+6pp", deltaColor: "text-green-600", pill: "bg-green-100 text-green-700", consistency: "High consistency" },
+            { theme: "Home office", rate: "54%", delta: "−2pp", deltaColor: "text-rose-600", pill: "bg-amber-100 text-amber-700", consistency: "Medium consistency" },
+            { theme: "Gaming", rate: "32%", delta: "+1pp", deltaColor: "text-slate-500", pill: "bg-slate-100 text-slate-600", consistency: "Low consistency" },
+          ].map((t) => (
+            <div key={t.theme} className="flex items-center justify-between gap-2">
+              <span className="text-xs text-slate-600">{t.theme}</span>
+              <div className="flex items-center gap-2">
+                <span className={`text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full ${t.pill}`}>{t.rate}</span>
+                {showCompare && <span className={`text-[11px] tabular-nums ${t.deltaColor}`}>{t.delta}</span>}
+                <span className="text-[11px] text-slate-400">{t.consistency}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        {showCompare && (
+          <div className="mt-3 text-[11px] text-slate-400">
+            vs Apr 2026: Affordability +6pp / Home office −2pp
+          </div>
+        )}
+        <div className="border-t border-slate-100 mt-3 pt-2 mt-auto">
+          <button
+            className="text-[11px] text-teal-600 hover:underline"
+            onClick={(e) => { e.stopPropagation(); onNavigate("brand"); }}
+          >
+            View evidence →
+          </button>
+        </div>
+        {hovered === "narrative" && (
+          <Tooltip text="Theme share = runs mentioning theme keywords ÷ total runs. Rule-based extraction from co-occurrence in raw outputs. No generative interpretation." />
         )}
       </div>
     </div>
