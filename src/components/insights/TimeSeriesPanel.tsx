@@ -284,39 +284,140 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
 
         {/* NARRATIVE TRENDS */}
         {subTab === "narrative" && (
-          isSnapshot ? <SnapshotEmpty /> : (
-          <div>
-            <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Brand Narrative Share Over Time</span>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={narrativeData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
-                <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-                <YAxis
-                  domain={[0, 100]}
-                  label={{ value: "Inclusion (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
-                  axisLine={false}
-                  tickLine={false}
+          isSnapshot ? <SnapshotEmpty /> : (() => {
+            const isCompare = mode === "compare";
+            // From / To executions for Compare mode (Apr 2026 → May 2026)
+            const fromMonth = "Apr 2026";
+            const toMonth = "May 2026";
+            const fromIdx = narrativeData.findIndex((d) => d.month === fromMonth);
+            const toIdx = narrativeData.findIndex((d) => d.month === toMonth);
+            const from = narrativeData[fromIdx];
+            const to = narrativeData[toIdx];
+            const signals = [
+              { key: "affordability", label: "Affordability", color: "#e11d48" },
+              { key: "generalUse", label: "General use", color: "#3b82f6" },
+              { key: "gaming", label: "Gaming", color: "#8b5cf6" },
+            ] as const;
+            const deltas = signals.map((s) => ({
+              ...s,
+              from: (from as any)[s.key] as number,
+              to: (to as any)[s.key] as number,
+              delta: ((to as any)[s.key] as number) - ((from as any)[s.key] as number),
+            }));
+            const fmt = (n: number) => `${n > 0 ? "+" : ""}${n}pp`;
+            return (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-slate-500 uppercase tracking-wide">Brand Narrative Share Over Time</span>
+                  {isCompare && (
+                    <span className="text-[10px] font-medium text-slate-500 bg-slate-100 rounded-full px-2 py-0.5">
+                      Comparing {fromMonth} → {toMonth}
+                    </span>
+                  )}
+                </div>
+                <ResponsiveContainer width="100%" height={220}>
+                  <LineChart data={narrativeData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
+                    <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                    <YAxis
+                      domain={[0, 100]}
+                      label={{ value: "Inclusion (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
+                      tick={{ fontSize: 11, fill: "#94a3b8" }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip content={<ChartTooltip />} />
+                    {isCompare && (
+                      <ReferenceArea
+                        x1={fromMonth}
+                        x2={toMonth}
+                        fill="#0f172a"
+                        fillOpacity={0.04}
+                        stroke="#0f172a"
+                        strokeOpacity={0.15}
+                        strokeDasharray="3 3"
+                      />
+                    )}
+                    {isCompare && (
+                      <>
+                        <ReferenceLine x={fromMonth} stroke="#0f172a" strokeOpacity={0.4} strokeDasharray="2 2" />
+                        <ReferenceLine x={toMonth} stroke="#0f172a" strokeOpacity={0.4} strokeDasharray="2 2" />
+                      </>
+                    )}
+                    {signals.map((s) => (
+                      <Line
+                        key={s.key}
+                        type="monotone"
+                        dataKey={s.key}
+                        name={s.label}
+                        stroke={s.color}
+                        strokeWidth={2}
+                        dot={{ r: 4, fill: s.color, stroke: "#fff", strokeWidth: 2 }}
+                      />
+                    ))}
+                    {isCompare && deltas.map((d) => (
+                      <ReferenceDot
+                        key={`from-${d.key}`}
+                        x={fromMonth}
+                        y={d.from}
+                        r={6}
+                        fill="#fff"
+                        stroke={d.color}
+                        strokeWidth={2.5}
+                      />
+                    ))}
+                    {isCompare && deltas.map((d) => (
+                      <ReferenceDot
+                        key={`to-${d.key}`}
+                        x={toMonth}
+                        y={d.to}
+                        r={6}
+                        fill={d.color}
+                        stroke="#0f172a"
+                        strokeWidth={2}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+                <Legend
+                  items={signals.map((s) => ({ color: s.color, label: s.label }))}
                 />
-                <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="affordability" name="Affordability" stroke="#e11d48" strokeWidth={2} dot={{ r: 4, fill: "#e11d48", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="generalUse" name="General use" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }} />
-                <Line type="monotone" dataKey="gaming" name="Gaming" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4, fill: "#8b5cf6", stroke: "#fff", strokeWidth: 2 }} />
-              </LineChart>
-            </ResponsiveContainer>
-            <Legend
-              items={[
-                { color: "#e11d48", label: "Affordability" },
-                { color: "#3b82f6", label: "General use" },
-                { color: "#8b5cf6", label: "Gaming" },
-              ]}
-            />
-            <div className="bg-rose-50 border border-rose-100 rounded-lg px-4 py-2 text-xs text-rose-700 flex items-center gap-2 mt-3">
-              <TrendingUp className="w-3 h-3" />
-              Affordability remains the dominant narrative for Dell (avg 67%). General use and Gaming positioning are stable across executions.
-            </div>
-          </div>
-          )
+                {isCompare && (
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    {deltas.map((d) => {
+                      const up = d.delta > 0;
+                      const flat = d.delta === 0;
+                      const tone = flat
+                        ? "bg-slate-50 border-slate-200 text-slate-600"
+                        : up
+                        ? "bg-emerald-50 border-emerald-100 text-emerald-700"
+                        : "bg-rose-50 border-rose-100 text-rose-700";
+                      return (
+                        <div key={d.key} className={`rounded-lg border px-3 py-2 ${tone}`}>
+                          <div className="flex items-center gap-1.5 text-[11px] font-medium">
+                            <span className="w-2 h-2 rounded-full" style={{ background: d.color }} />
+                            {d.label}
+                          </div>
+                          <div className="mt-1 font-mono text-xs tabular-nums text-slate-700">
+                            {d.from}% → {d.to}%
+                            <span className={`ml-1.5 font-semibold ${flat ? "text-slate-500" : up ? "text-emerald-700" : "text-rose-700"}`}>
+                              ({fmt(d.delta)})
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                <div className="bg-rose-50 border border-rose-100 rounded-lg px-4 py-2 text-xs text-rose-700 flex items-center gap-2 mt-3">
+                  <TrendingUp className="w-3 h-3" />
+                  {isCompare
+                    ? "Affordability positioning is strengthening (+6pp), while general-use positioning is declining (−4pp). Gaming remains stable."
+                    : "Affordability remains the dominant narrative for Dell (avg 67%). General use and Gaming positioning are stable across executions."}
+                </div>
+              </div>
+            );
+          })()
         )}
 
         {/* CONCENTRATION TRENDS */}
