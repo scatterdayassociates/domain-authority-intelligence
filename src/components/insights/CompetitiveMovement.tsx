@@ -116,6 +116,23 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
           <Download className="w-3 h-3" /> Export Movement Data
         </button>
       </div>
+      {(() => {
+        const significant = fRankChanges.filter((r) => Math.abs(r.delta) >= 2).length;
+        const stable = 7; // domains remaining stable within the Top 10
+        const plural = (n: number, s: string, p: string) => `${n} ${n === 1 ? s : p}`;
+        return (
+          <p className="text-xs text-slate-500 mb-3">
+            {plural(fEntries.length, "entry", "entries")},{" "}
+            {plural(fExits.length, "exit", "exits")},{" "}
+            {plural(significant, "significant rank change", "significant rank changes")}
+            {filter === "all" && (
+              <span className="text-slate-400">
+                {" "}· {stable} domains remained stable within the Top 10
+              </span>
+            )}
+          </p>
+        );
+      })()}
       <div className="grid grid-cols-3 gap-4">
         {/* Entries */}
         <div className="bg-white border border-slate-200 rounded-xl p-5">
