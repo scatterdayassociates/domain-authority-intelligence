@@ -187,6 +187,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Confidence basis: HHI variance < 0.02 across runs",
         ],
       },
+      trendDetail: {
+        magnitude: "Stable concentration (Δ HHI < 0.02 across 5 executions)",
+        range: "HHI 0.24–0.26",
+        driver: "Top 5 publishers retain consistent share of voice",
+      },
     },
     {
       type: "narrative",
@@ -206,6 +211,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Threshold met: 62% mentions tied to affordability/value language",
           "Confidence basis: 9 of 12 runs reference price or budget framing",
         ],
+      },
+      trendDetail: {
+        magnitude: "Affordability +6pp, general use −2pp across 5 executions",
+        range: "Affordability 62%–68%, general use 54%–58%",
+        driver: "Driven by value-led publisher commentary on new mid-range SKUs",
       },
     },
   ];
