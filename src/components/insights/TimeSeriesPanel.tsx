@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   ReferenceArea,
 } from "recharts";
-import { TrendingUp, Minus, Download } from "lucide-react";
+import { TrendingUp, Minus, Download, LineChart as LineChartIcon } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
 
@@ -132,14 +132,23 @@ const ExportDropdown = ({ context }: { context: string }) => {
   );
 };
 
+const SnapshotEmpty = () => (
+  <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+      <LineChartIcon className="w-4 h-4 text-slate-400" />
+    </div>
+    <p className="text-sm font-medium text-slate-600">Trend view unavailable in Snapshot mode</p>
+    <p className="text-xs text-slate-400 mt-1">Switch to Trends mode to view changes over time.</p>
+  </div>
+);
+
 const TimeSeriesPanel = ({ mode, context }: Props) => {
   const [subTab, setSubTab] = useState<SubTab>("domain");
   const isSnapshot = mode === "snapshot";
 
-  // In snapshot mode, slice to last single point
-  const dData = isSnapshot ? domainData.slice(-1) : domainData;
-  const bData = isSnapshot ? brandData.slice(-1) : brandData;
-  const cData = isSnapshot ? concData.slice(-1) : concData;
+  const dData = domainData;
+  const bData = brandData;
+  const cData = concData;
 
   return (
     <div>
@@ -167,6 +176,7 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
       <div className="bg-white rounded-xl border border-slate-200 p-4 mt-3" aria-label={`${subTab} trends chart`}>
         {/* DOMAIN TRENDS */}
         {subTab === "domain" && (
+          isSnapshot ? <SnapshotEmpty /> : (
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-500 uppercase tracking-wide">Domain Visibility Over Time</span>
@@ -201,20 +211,17 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#f87171", label: "dell.com (TARGET)", dashed: true },
               ]}
             />
-            {isSnapshot && (
-              <p className="text-[11px] text-slate-400 italic text-center mt-2">
-                Switch to Trends mode to view multi-execution chart.
-              </p>
-            )}
             <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
               <TrendingUp className="w-3 h-3" />
               dell.com shows a gradual upward trend in persistence across 6 executions (+8pp). Signal strength: Low.
             </div>
           </div>
+          )
         )}
 
         {/* BRAND TRENDS */}
         {subTab === "brand" && (
+          isSnapshot ? <SnapshotEmpty /> : (
           <div>
             <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Brand Inclusion Rate Over Time</span>
             <ResponsiveContainer width="100%" height={200}>
@@ -242,20 +249,17 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#94a3b8", label: "Lenovo" },
               ]}
             />
-            {isSnapshot && (
-              <p className="text-[11px] text-slate-400 italic text-center mt-2">
-                Switch to Trends mode to view multi-execution chart.
-              </p>
-            )}
             <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-2 text-xs text-green-700 flex items-center gap-2 mt-3">
               <TrendingUp className="w-3 h-3" />
               Dell's inclusion rate has increased by +15pp across 6 executions. Competitors Apple and HP show stable or declining trends.
             </div>
           </div>
+          )
         )}
 
         {/* CONCENTRATION TRENDS */}
         {subTab === "concentration" && (
+          isSnapshot ? <SnapshotEmpty /> : (
           <div>
             <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Category Concentration Over Time</span>
             <ResponsiveContainer width="100%" height={200}>
@@ -291,16 +295,12 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
                 { color: "#2dd4bf", label: "Top 5 Share", dashed: true },
               ]}
             />
-            {isSnapshot && (
-              <p className="text-[11px] text-slate-400 italic text-center mt-2">
-                Switch to Trends mode to view multi-execution chart.
-              </p>
-            )}
             <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-xs text-blue-700 flex items-center gap-2 mt-3">
               <Minus className="w-3 h-3" />
               Category structure is stable. HHI has remained within the Moderate range across all 6 executions (0.244–0.262). No structural shift detected.
             </div>
           </div>
+          )
         )}
       </div>
     </div>
