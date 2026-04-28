@@ -3,6 +3,7 @@ import AppSidebar from "@/components/AppSidebar";
 import InsightTopBar from "@/components/insights/InsightTopBar";
 import InsightTabs from "@/components/insights/InsightTabs";
 import InsightDashboard from "@/components/insights/InsightDashboard";
+import DomainAnalysisView from "@/components/insights/DomainAnalysisView";
 import InsightEmptyState from "@/components/insights/InsightEmptyState";
 import { ChevronRight } from "lucide-react";
 
@@ -47,6 +48,10 @@ const Insights = () => {
             <InsightEmptyState />
           ) : activeTab === "dashboard" ? (
             <InsightDashboard mode={mode} onNavigateTab={setActiveTab} onModeChange={setMode} context={activeContext} />
+          ) : activeTab === "domain" ? (
+            <div className="px-6 py-6">
+              <DomainAnalysisView context={activeContext} />
+            </div>
           ) : (
             <div className="px-6 py-20 flex flex-col items-center justify-center text-center">
               <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
