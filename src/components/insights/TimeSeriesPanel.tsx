@@ -241,9 +241,6 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
           </div>
           )
         )}
-          </div>
-          )
-        )}
 
         {/* BRAND TRENDS */}
         {subTab === "brand" && (
