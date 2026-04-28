@@ -6,6 +6,7 @@ import KeyMetricsStrip from "./KeyMetricsStrip";
 import TimeSeriesPanel from "./TimeSeriesPanel";
 import CompetitiveMovement from "./CompetitiveMovement";
 import StructuralView from "./StructuralView";
+import DomainAnalysisView from "./DomainAnalysisView";
 import EvidencePanel, { type EvidenceData } from "./EvidencePanel";
 
 interface InsightDashboardProps {
@@ -47,7 +48,12 @@ const InsightDashboard = ({ mode, onNavigateTab, onModeChange, context = "Best l
   const [evidence, setEvidence] = useState<EvidenceData | null>(null);
 
   const handleNavigate = (tab: string) => {
-    if (tab === "domain" || tab === "brand") {
+    if (tab === "domain") {
+      const el = document.getElementById("insight-section-domain-analysis");
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    if (tab === "brand") {
       onNavigateTab?.(tab);
     } else {
       const el = document.getElementById(`insight-section-${tab}`);
@@ -126,6 +132,9 @@ const InsightDashboard = ({ mode, onNavigateTab, onModeChange, context = "Best l
           <StructuralView context={context} />
         </div>
       </div>
+
+      {/* F: Domain Analysis (Snapshot only) */}
+      {mode === "snapshot" && <DomainAnalysisView context={context} />}
 
       <EvidencePanel open={!!evidence} data={evidence} onClose={() => setEvidence(null)} />
     </div>
