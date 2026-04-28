@@ -215,31 +215,8 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
     },
   };
 
-  const narrativeCompareCard: InsightCard = {
-    type: "narrative",
-    confidence: "medium",
-    statement: "Positioning is shifting toward value-focused messaging",
-    metrics: [
-      { label: "Affordability:", value: "62% → 68% (+6pp)" },
-      { label: "General use:", value: "58% → 54% (−4pp)" },
-      { label: "Gaming:", value: "30% → 32% (+2pp)" },
-      { label: "Rank movement:", value: "#2 → #1" },
-      { label: "Consistency:", value: "High" },
-    ],
-    change: { direction: "up", text: "Primary shift: Movement toward affordability (+6pp)" },
-    evidenceTab: "brand",
-    tooltip: {
-      source: "Generated from: theme co-occurrence deltas vs prior execution",
-      bullets: [
-        "Rule: Theme share Δ ≥ ±3pp triggers narrative shift signal",
-        "Threshold met: Affordability +6pp, General use −4pp",
-        "Confidence basis: Consistent direction across 2 executions",
-      ],
-    },
-  };
-
   const cards =
-    mode === "compare" ? [...baseCards, movementCard, narrativeCompareCard] : baseCards;
+    mode === "compare" ? [...baseCards, movementCard] : baseCards;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
