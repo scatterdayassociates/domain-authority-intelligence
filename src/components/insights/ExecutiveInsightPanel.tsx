@@ -218,7 +218,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
   const cards = mode === "compare" ? [...baseCards, movementCard] : baseCards;
 
   return (
-    <div className="flex flex-wrap gap-4 items-stretch">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
       {cards.map((card, idx) => {
         const style = TYPE_STYLES[card.type];
         const Icon = style.icon;
@@ -228,7 +228,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         return (
           <div
             key={idx}
-            className={`relative rounded-xl border p-5 cursor-pointer hover:shadow-md transition-all duration-150 min-w-[280px] flex-1 max-w-[calc(25%-12px)] flex flex-col ${style.card}`}
+            className={`relative rounded-xl border p-5 cursor-pointer hover:shadow-md transition-all duration-150 w-full flex flex-col ${style.card}`}
             onMouseEnter={() => setHoveredIdx(idx)}
             onMouseLeave={() => setHoveredIdx(null)}
             onClick={() => onOpenEvidence?.(card.statement)}
