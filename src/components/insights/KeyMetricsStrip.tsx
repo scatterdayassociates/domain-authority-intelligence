@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, BarChart2, Target, MessageSquareQuote } from "lucide-react";
+import { Globe, BarChart2, Target, MessageSquareQuote, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
 interface Props {
