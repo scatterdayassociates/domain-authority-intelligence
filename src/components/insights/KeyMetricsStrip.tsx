@@ -18,6 +18,7 @@ const Tooltip = ({ text }: { text: string }) => (
 const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
   const [hovered, setHovered] = useState<string | null>(null);
   const showCompare = mode === "compare";
+  const showTrends = mode === "trends";
 
   const trigger = (statement: string, tab: string) => {
     if (onOpenEvidence) onOpenEvidence(statement);
