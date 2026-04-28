@@ -3,6 +3,7 @@ import AppSidebar from "@/components/AppSidebar";
 import InsightTopBar from "@/components/insights/InsightTopBar";
 import InsightTabs from "@/components/insights/InsightTabs";
 import InsightDashboard from "@/components/insights/InsightDashboard";
+import DomainAnalysisView from "@/components/insights/DomainAnalysisView";
 import InsightEmptyState from "@/components/insights/InsightEmptyState";
 import { ChevronRight } from "lucide-react";
 
