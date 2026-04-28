@@ -178,10 +178,10 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       confidence: "medium",
       statement: "Dell is primarily positioned around affordability and general use",
       metrics: [
-        { label: "Top theme:", value: "Affordability" },
-        { label: "Theme share:", value: "62%" },
+        { label: "Affordability theme share:", value: "68% (+6pp)" },
+        { label: "General use theme share:", value: "54% (−2pp)" },
       ],
-      change: { direction: "flat", text: "Narrative consistent vs prior" },
+      change: { direction: "up", text: "Affordability strengthening vs prior" },
       trendChange: { direction: "up", text: "Affordability strengthening" },
       evidenceTab: "brand",
       tooltip: {
