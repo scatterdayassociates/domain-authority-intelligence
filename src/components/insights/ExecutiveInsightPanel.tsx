@@ -4,6 +4,7 @@ import {
   Target,
   BarChart2,
   GitCompare,
+  MessageSquareQuote,
   ArrowUp,
   ArrowDown,
   Minus,
@@ -12,7 +13,7 @@ import {
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
-export type InsightType = "authority" | "brand" | "concentration" | "movement";
+export type InsightType = "authority" | "brand" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
 
 interface InsightCard {
@@ -69,6 +70,14 @@ const TYPE_STYLES: Record<
     link: "text-purple-600",
     border: "border-purple-200",
   },
+  narrative: {
+    card: "bg-rose-50 border-rose-200",
+    badge: "bg-rose-100 text-rose-700",
+    badgeLabel: "Brand Narrative",
+    icon: MessageSquareQuote,
+    link: "text-rose-600",
+    border: "border-rose-200",
+  },
 };
 
 const confidencePill = (type: InsightType, conf: Confidence) => {
@@ -83,6 +92,8 @@ const confidencePill = (type: InsightType, conf: Confidence) => {
       return high ? "bg-blue-600 text-white" : "bg-blue-100 text-blue-700";
     case "movement":
       return high ? "bg-purple-600 text-white" : "bg-purple-100 text-purple-700";
+    case "narrative":
+      return high ? "bg-rose-600 text-white" : "bg-rose-100 text-rose-700";
   }
 };
 
@@ -159,6 +170,26 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           "Rule: 0.15 ≤ HHI ≤ 0.30 → Moderate concentration",
           "Threshold met: 0.245 within band",
           "Confidence basis: HHI variance < 0.02 across runs",
+        ],
+      },
+    },
+    {
+      type: "narrative",
+      confidence: "medium",
+      statement: "Dell is primarily positioned around affordability and general use",
+      metrics: [
+        { label: "Top theme:", value: "Affordability" },
+        { label: "Theme share:", value: "62%" },
+      ],
+      change: { direction: "flat", text: "Narrative consistent vs prior" },
+      trendChange: { direction: "up", text: "Affordability strengthening" },
+      evidenceTab: "brand",
+      tooltip: {
+        source: "Generated from: theme co-occurrence (affordability 62%, general use 41%)",
+        bullets: [
+          "Rule: Top theme share ≥ 40% → dominant positioning",
+          "Threshold met: 62% mentions tied to affordability/value language",
+          "Confidence basis: 9 of 12 runs reference price or budget framing",
         ],
       },
     },
