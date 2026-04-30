@@ -13,6 +13,9 @@ import {
   X,
 } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import ExportButton from "@/components/export/ExportButton";
+import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
+import { domainTables } from "@/lib/export/builders";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock dataset (execution-scoped, deterministic)
@@ -568,9 +571,19 @@ const DomainAnalysisView = ({ context = "Best laptops for home office" }: Props)
       <SectionHeader
         title="Domain Analysis"
         right={
-          <span className="text-xs text-muted-foreground">
-            Snapshot · May 2026 · {context}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">
+              Snapshot · May 2026 · {context}
+            </span>
+            <ExportButton
+              sourceView="domain_analysis"
+              context={DEFAULT_CONTEXT}
+              scope={singleExecutionScope()}
+              tablesBuilder={({ topN }) => domainTables(singleExecutionScope(), { topN })}
+              appliedUiFilters={{ context }}
+              label="Export"
+            />
+          </div>
         }
       />
 

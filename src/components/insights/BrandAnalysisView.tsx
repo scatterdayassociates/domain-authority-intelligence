@@ -7,6 +7,9 @@ import {
   Download,
   ChevronDown,
 } from "lucide-react";
+import ExportButton from "@/components/export/ExportButton";
+import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
+import { brandTables } from "@/lib/export/builders";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock dataset — execution-scoped, deterministic, aligned with Domain Analysis
@@ -932,7 +935,21 @@ const BrandAnalysisView = ({ context }: BrandAnalysisViewProps) => {
             Execution-level view of brand presence and positioning in <span className="text-slate-700">{context}</span>.
           </p>
         </div>
-        <BrandSelector brands={ranked} selected={selectedBrand} onChange={handleSelectBrand} />
+        <div className="flex items-center gap-3">
+          <BrandSelector brands={ranked} selected={selectedBrand} onChange={handleSelectBrand} />
+          <ExportButton
+            sourceView="brand_analysis"
+            context={DEFAULT_CONTEXT}
+            scope={singleExecutionScope()}
+            tablesBuilder={() =>
+              brandTables(singleExecutionScope(), {
+                brandFilter: selectedBrand,
+                attributeFilter: selectedAttribute,
+              })
+            }
+            appliedUiFilters={{ brand: selectedBrand, attribute: selectedAttribute }}
+          />
+        </div>
       </div>
 
       {/* Section 2 — Brand Summary */}
