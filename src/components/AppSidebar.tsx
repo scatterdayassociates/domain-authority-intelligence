@@ -1,9 +1,10 @@
-import { Folder, Zap, Layers, PlayCircle, Filter, BarChart2, Settings } from "lucide-react";
+import { Folder, Zap, Layers, PlayCircle, Filter, BarChart2, Settings, ShieldCheck } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const modules = [
   { name: "Projects", icon: Folder, path: "/projects" },
   { name: "Insights", icon: Zap, path: "/insights" },
+  { name: "Validation", icon: ShieldCheck, path: "/validation" },
   { name: "Prompt Manager", icon: Layers, path: "/" },
   { name: "Execution", icon: PlayCircle, path: "/execution" },
   { name: "Parsing", icon: Filter, path: "/parsing" },

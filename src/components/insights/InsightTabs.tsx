@@ -1,11 +1,10 @@
-import { LayoutDashboard, Globe, Target, TrendingUp, Terminal } from "lucide-react";
+import { LayoutDashboard, Globe, Target, TrendingUp } from "lucide-react";
 
 const tabs = [
   { key: "dashboard", label: "Insight Dashboard", icon: LayoutDashboard },
   { key: "domain", label: "Domain Analysis", icon: Globe },
   { key: "brand", label: "Brand Analysis", icon: Target },
   { key: "timeseries", label: "Time Series", icon: TrendingUp },
-  { key: "raw", label: "Raw Output", icon: Terminal },
 ];
 
 interface InsightTabsProps {
