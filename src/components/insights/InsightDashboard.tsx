@@ -8,6 +8,9 @@ import CompetitiveMovement from "./CompetitiveMovement";
 import StructuralView from "./StructuralView";
 import DomainAnalysisView from "./DomainAnalysisView";
 import EvidencePanel, { type EvidenceData } from "./EvidencePanel";
+import ExportButton from "@/components/export/ExportButton";
+import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
+import { dashboardTables } from "@/lib/export/builders";
 
 interface InsightDashboardProps {
   mode: InsightMode;
@@ -76,7 +79,18 @@ const InsightDashboard = ({ mode, onNavigateTab, onModeChange, context = "Best l
       <div>
         <SectionHeader
           title="Executive Insight Panel"
-          right={<span className="text-xs text-muted-foreground">{insightRightLabel}</span>}
+          right={
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-muted-foreground">{insightRightLabel}</span>
+              <ExportButton
+                sourceView="insight_dashboard"
+                context={DEFAULT_CONTEXT}
+                scope={singleExecutionScope()}
+                tablesBuilder={() => dashboardTables(singleExecutionScope())}
+                appliedUiFilters={{ mode, context }}
+              />
+            </div>
+          }
         />
         <div className="mt-4">
           <ExecutiveInsightPanel mode={mode} onNavigate={handleNavigate} onOpenEvidence={openEvidence} />
