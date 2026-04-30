@@ -108,7 +108,7 @@ const computeTrend = (values: number[]) => {
     if (values[i] > values[i - 1]) increasing++;
     else if (values[i] < values[i - 1]) decreasing++;
   }
-  const dir =
+  const dir: "increasing" | "decreasing" | "stable" =
     Math.abs(delta) < 1
       ? "stable"
       : delta > 0
