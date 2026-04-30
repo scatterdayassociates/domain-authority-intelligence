@@ -22,6 +22,9 @@ import {
   Download,
 } from "lucide-react";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
+import ExportButton from "@/components/export/ExportButton";
+import { DEFAULT_CONTEXT, multiExecutionScope } from "@/lib/export/mockContext";
+import { timeSeriesTables } from "@/lib/export/builders";
 
 interface Props {
   context: string;
@@ -782,12 +785,21 @@ const TimeSeriesView = ({ context }: Props) => {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div>
-        <h2 className="text-lg font-semibold text-slate-800">Time Series</h2>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Execution-level view of how key signals evolve over time within{" "}
-          <span className="font-medium text-slate-700">{context}</span>.
-        </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold text-slate-800">Time Series</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Execution-level view of how key signals evolve over time within{" "}
+            <span className="font-medium text-slate-700">{context}</span>.
+          </p>
+        </div>
+        <ExportButton
+          sourceView="time_series"
+          context={DEFAULT_CONTEXT}
+          scope={multiExecutionScope()}
+          tablesBuilder={() => timeSeriesTables(multiExecutionScope())}
+          appliedUiFilters={{ context }}
+        />
       </div>
 
       {/* 1. Controls */}
