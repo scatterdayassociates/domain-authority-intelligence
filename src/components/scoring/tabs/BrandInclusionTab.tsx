@@ -1,52 +1,49 @@
 import SectionHeader from "@/components/SectionHeader";
 import { Info, TrendingUp, TrendingDown } from "lucide-react";
 
-// BNE = Brand Narrative Extraction. All attribute rates below are deterministic,
-// dictionary/rule-based classifications — the % of runs in which the brand
-// co-occurs with terms from the named attribute dictionary. No sentiment or
-// recommendation inference is applied at this layer.
+// Brand Inclusion (Scoring layer) is purely domain-derived and deterministic:
+// a brand is "included" in an execution when one or more domains mapped to that
+// brand appear in the SOURCES of the response. Textual mention frequency,
+// recommendation language, and narrative attribute analysis are NOT computed
+// here — they belong to the Insights / BNE layer.
 const brands = [
   {
     name: "Dell Technologies",
     role: "TARGET",
+    domains: ["dell.com", "dellemc.com"],
     rate: 82.9,
     runs: "in 29 of 35",
     stability: 0.81,
-    coverage: 74.3,
-    attrs: { performance: 82.9, affordability: 14.3, useCase: 48.6 },
     delta: "+4.0pp",
     deltaDir: "up",
   },
   {
     name: "HP",
     role: "COMPETITOR",
+    domains: ["hp.com"],
     rate: 65.7,
     runs: "in 23 of 35",
     stability: 0.67,
-    coverage: 60.0,
-    attrs: { performance: 51.4, affordability: 42.9, useCase: 31.4 },
     delta: "−1.4pp",
     deltaDir: "down",
   },
   {
     name: "Lenovo",
     role: "COMPETITOR",
+    domains: ["lenovo.com"],
     rate: 60.0,
     runs: "in 21 of 35",
     stability: 0.62,
-    coverage: 54.3,
-    attrs: { performance: 45.7, affordability: 37.1, useCase: 40.0 },
     delta: "+0.8pp",
     deltaDir: "up",
   },
   {
     name: "Apple",
     role: "COMPETITOR",
+    domains: ["apple.com"],
     rate: 45.7,
     runs: "in 16 of 35",
     stability: 0.51,
-    coverage: 42.9,
-    attrs: { performance: 40.0, affordability: 5.7, useCase: 34.3 },
     delta: "−2.1pp",
     deltaDir: "down",
   },
@@ -57,21 +54,10 @@ const roleBadge = (r: string) =>
 const stabilityColor = (v: number) =>
   v >= 0.75 ? "text-green-600" : v >= 0.5 ? "text-amber-600" : "text-red-500";
 
-const attrChip = (label: string, value: number) => (
-  <span
-    key={label}
-    className="inline-flex items-center gap-1 rounded-sm border border-border/60 bg-muted/40 px-1.5 py-0.5 text-[11px] text-foreground/80"
-    title={`${label} attribute association: brand co-occurs with ${label.toLowerCase()}-dictionary terms in ${value}% of runs`}
-  >
-    <span className="uppercase tracking-wide text-muted-foreground">{label}</span>
-    <span className="tabular font-medium text-foreground">{value}%</span>
-  </span>
-);
-
 const BrandInclusionTab = () => (
   <div>
     <SectionHeader
-      title="Brand Inclusion & Narrative Attribute Metrics"
+      title="Brand Inclusion (Domain-Derived)"
       right={
         <span className="text-xs text-muted-foreground">
           Target brand: Dell · Competitor set: HP, Lenovo, Apple
@@ -81,13 +67,16 @@ const BrandInclusionTab = () => (
 
     <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-4 mt-3 grid grid-cols-3 gap-6">
       <span>
-        <strong>Inclusion Rate:</strong> % of AI responses where the brand appears by name.
+        <strong>Inclusion Rate:</strong> % of executions where domains mapped to the brand were
+        surfaced in SOURCES.
       </span>
       <span className="border-l border-border pl-6">
-        <strong>Inclusion Stability:</strong> Consistency of brand inclusion across individual runs.
+        <strong>Runs Surfaced:</strong> Number of individual runs in which at least one mapped
+        brand domain appeared.
       </span>
       <span className="border-l border-border pl-6">
-        <strong>Attribute Coverage:</strong> % of runs where any BNE-dictionary attribute term co-occurs with the brand.
+        <strong>Inclusion Stability:</strong> Consistency of brand-domain surfacing across runs
+        within the execution.
       </span>
     </div>
 
@@ -95,14 +84,13 @@ const BrandInclusionTab = () => (
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border">
-            <th className="table-header text-left py-2 w-[150px]">Brand</th>
-            <th className="table-header text-center py-2 w-[80px]">Role</th>
-            <th className="table-header text-center py-2 w-[100px]">Inclusion Rate</th>
-            <th className="table-header text-center py-2 w-[110px]">Runs Mentioned</th>
-            <th className="table-header text-center py-2 w-[110px]">Inclusion Stability</th>
-            <th className="table-header text-center py-2 w-[110px]">Attribute Coverage</th>
-            <th className="table-header text-left py-2">Attribute Association Rates (BNE)</th>
-            <th className="table-header text-center py-2 w-[100px]">vs. Prev Run</th>
+            <th className="table-header text-left py-2 w-[180px]">Brand</th>
+            <th className="table-header text-left py-2 w-[180px]">Mapped Domains</th>
+            <th className="table-header text-center py-2 w-[90px]">Role</th>
+            <th className="table-header text-center py-2 w-[110px]">Inclusion Rate</th>
+            <th className="table-header text-center py-2 w-[120px]">Runs Surfaced</th>
+            <th className="table-header text-center py-2 w-[130px]">Inclusion Stability</th>
+            <th className="table-header text-center py-2 w-[110px]">vs. Prev Run</th>
           </tr>
         </thead>
         <tbody>
@@ -112,6 +100,18 @@ const BrandInclusionTab = () => (
               className={`border-b border-border ${i % 2 === 1 ? "bg-muted/50" : ""}`}
             >
               <td className="py-2 font-medium text-foreground">{b.name}</td>
+              <td className="py-2">
+                <div className="flex flex-wrap gap-1">
+                  {b.domains.map((d) => (
+                    <span
+                      key={d}
+                      className="inline-flex items-center rounded-sm border border-border/60 bg-muted/40 px-1.5 py-0.5 text-[11px] font-mono text-foreground/80"
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+              </td>
               <td className="py-2 text-center">
                 <span
                   className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${roleBadge(b.role)}`}
@@ -123,14 +123,6 @@ const BrandInclusionTab = () => (
               <td className="py-2 tabular text-center text-muted-foreground">{b.runs}</td>
               <td className={`py-2 tabular text-center ${stabilityColor(b.stability)}`}>
                 {b.stability.toFixed(2)}
-              </td>
-              <td className="py-2 tabular text-center">{b.coverage}%</td>
-              <td className="py-2">
-                <div className="flex flex-wrap gap-1">
-                  {attrChip("Performance", b.attrs.performance)}
-                  {attrChip("Affordability", b.attrs.affordability)}
-                  {attrChip("Use-Case", b.attrs.useCase)}
-                </div>
               </td>
               <td className="py-2 tabular text-center">
                 <span
@@ -155,18 +147,19 @@ const BrandInclusionTab = () => (
     <div className="mt-4 bg-primary/5 border border-primary/20 rounded-md p-3 text-xs text-primary flex items-start gap-2">
       <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
       <span>
-        Dell is associated with <strong>PERFORMANCE</strong> attribute terms in 82.9% of runs and
-        with <strong>USE-CASE</strong> terms in 48.6% of runs, while its association with{" "}
-        <strong>AFFORDABILITY</strong> terms remains low (14.3%). HP shows the most balanced
-        attribute profile across performance and affordability dictionaries.
+        Dell domains were surfaced in 82.9% of runs in this execution, the highest inclusion rate
+        in the competitive set. Stability (0.81) indicates consistent surfacing across individual
+        runs rather than concentration in a few outliers.
       </span>
     </div>
 
     <div className="mt-3 bg-muted/50 border border-border/60 rounded-md p-3 text-xs text-muted-foreground italic">
-      Attribute association rates are deterministic BNE classifications computed from explicit
-      attribute dictionaries (co-occurrence of brand mention with dictionary terms within the same
-      response). They are not sentiment scores and do not infer recommendation. Narrative
-      interpretation belongs to the Insights layer; this surface reports measurable rates only.
+      Brand inclusion at the Scoring layer is strictly domain-derived: a brand is counted as
+      included in a run only when one or more of its mapped domains appears in SOURCES. Textual
+      mention frequency, recommendation language, and attribute / positioning analysis (BNE) are
+      not computed on this surface — they live in the Narrative / Insights layer, where the
+      distinction between <em>where AI systems send users</em> and <em>how AI systems describe
+      brands</em> is preserved.
     </div>
   </div>
 );
