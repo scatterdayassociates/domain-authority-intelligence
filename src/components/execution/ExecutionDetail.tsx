@@ -48,7 +48,51 @@ const responseRows = [
 ];
 
 const ExecutionDetail = ({ executionId, onBack }: ExecutionDetailProps) => {
+  const fields: FieldDef[] = [
+    { label: "Pack", value: summaryData.pack },
+    { label: "Version", value: summaryData.version },
+    {
+      label: "Pack Hash",
+      value: summaryData.packHash,
+      mono: true,
+      tooltip:
+        "Immutable hash of the frozen analytical configuration (prompts, dictionaries, parsing rules, scoring weights) used for this execution. This is the true reproducibility anchor — pack label and version may change if a pack is cloned, renamed, restored, or migrated, but the hash uniquely identifies the exact instrument state.",
+    },
+    {
+      label: "Model",
+      value: summaryData.model,
+      tooltip: `Operator-facing label. Provider model identifier: ${summaryData.modelProviderId}. The friendly label may remain stable while underlying provider revisions change over time; the raw provider identifier is preserved internally and in exports to disambiguate historical reproducibility.`,
+    },
+    {
+      label: "Provider Model ID",
+      value: summaryData.modelProviderId,
+      mono: true,
+      tooltip:
+        "Raw provider model identifier and revision pinned at execution time. Used as the authoritative model reference in exports and provenance records.",
+    },
+    { label: "Status", value: summaryData.status },
+    { label: "Started", value: summaryData.started },
+    { label: "Finished", value: summaryData.finished },
+    {
+      label: "Duration",
+      value: summaryData.duration,
+      tooltip:
+        "Wall-clock elapsed time from execution start to completion (Finished − Started), inclusive of provider latency, retries, and queueing. Not a sum of per-run model latencies.",
+    },
+    { label: "Total Runs", value: String(summaryData.totalRuns) },
+    {
+      label: "Temperature",
+      value: String(summaryData.temperature),
+      tooltip:
+        "Analytical configuration state, not a simple operational parameter — temperature materially affects response variability and the stability of authority/inclusion distributions across runs. Lower temperatures generally improve reproducibility and execution-to-execution comparison stability.",
+    },
+    { label: "Max Tokens", value: String(summaryData.maxTokens) },
+    { label: "Prompts", value: String(summaryData.prompts) },
+    { label: "Runs/Prompt", value: String(summaryData.runsPerPrompt) },
+  ];
+
   return (
+    <TooltipProvider delayDuration={150}>
     <div className="flex flex-col gap-6">
       <button
         onClick={onBack}
@@ -62,31 +106,39 @@ const ExecutionDetail = ({ executionId, onBack }: ExecutionDetailProps) => {
       <SectionHeader
         title={`Execution ${executionId}`}
         right={
-          <button className="h-7 px-3 text-xs rounded-md border border-border text-muted-foreground hover:bg-muted transition-colors flex items-center gap-1.5">
-            <Download className="w-3 h-3" />
-            Export CSV
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="h-7 px-3 text-xs rounded-md border border-border text-muted-foreground hover:bg-muted transition-colors flex items-center gap-1.5">
+                <Download className="w-3 h-3" />
+                Export CSV
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="left" className="max-w-xs text-xs leading-relaxed">
+              Export payloads must include immutable execution identifiers (execution ID, pack hash, provider model ID, timestamps) and the frozen execution configuration metadata (prompt set, temperature, max tokens, parsing/scoring config) sufficient to reconstruct analytical provenance independently of the UI.
+            </TooltipContent>
+          </Tooltip>
         }
       />
 
-      <div className="grid grid-cols-4 gap-4 max-w-2xl">
-        {[
-          ["Pack", summaryData.pack],
-          ["Version", summaryData.version],
-          ["Model", summaryData.model],
-          ["Status", summaryData.status],
-          ["Started", summaryData.started],
-          ["Finished", summaryData.finished],
-          ["Duration", summaryData.duration],
-          ["Total Runs", String(summaryData.totalRuns)],
-          ["Temperature", String(summaryData.temperature)],
-          ["Max Tokens", String(summaryData.maxTokens)],
-          ["Prompts", String(summaryData.prompts)],
-          ["Runs/Prompt", String(summaryData.runsPerPrompt)],
-        ].map(([label, value]) => (
+      <div className="grid grid-cols-4 gap-4 max-w-3xl">
+        {fields.map(({ label, value, mono, tooltip }) => (
           <div key={label}>
-            <span className="text-label block mb-0.5">{label}</span>
-            <span className="text-sm text-foreground">{value}</span>
+            <span className="text-label block mb-0.5 flex items-center gap-1">
+              {label}
+              {tooltip && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="w-3 h-3 text-muted-foreground/70 hover:text-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs text-xs leading-relaxed">
+                    {tooltip}
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </span>
+            <span className={`text-sm text-foreground ${mono ? "font-mono text-xs break-all" : ""}`}>
+              {value}
+            </span>
           </div>
         ))}
       </div>
