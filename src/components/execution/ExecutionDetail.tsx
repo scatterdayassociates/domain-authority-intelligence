@@ -189,6 +189,7 @@ const ExecutionDetail = ({ executionId, onBack }: ExecutionDetailProps) => {
         </table>
       </div>
     </div>
+    </TooltipProvider>
   );
 };
 
