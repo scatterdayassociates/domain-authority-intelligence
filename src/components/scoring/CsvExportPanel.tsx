@@ -93,7 +93,7 @@ const CsvExportPanel = ({ open, onClose, executionId }: Props) => {
 
           <label className="flex items-center gap-2 mt-4 cursor-pointer">
             <input type="checkbox" checked={zip} onChange={() => setZip(!zip)} className="w-3.5 h-3.5 rounded border-border accent-[hsl(var(--primary))]" />
-            <span className="text-sm text-foreground">Include all 3 datasets in a single ZIP</span>
+            <span className="text-sm text-foreground">Include all 3 layers in a single ZIP (preserves dependency chain)</span>
           </label>
 
           <div className="border-t border-border pt-4 mt-4">
