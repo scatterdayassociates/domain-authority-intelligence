@@ -1,5 +1,11 @@
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Info } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ExecutionDetailProps {
   executionId: string;
@@ -9,7 +15,9 @@ interface ExecutionDetailProps {
 const summaryData = {
   pack: "Dell — Laptops — US",
   version: "v3",
+  packHash: "sha256:9f4c…a71b",
   model: "GPT-4o",
+  modelProviderId: "openai/gpt-4o-2024-08-06",
   prompts: 7,
   runsPerPrompt: 5,
   totalRuns: 35,
@@ -19,6 +27,13 @@ const summaryData = {
   duration: "3m 47s",
   temperature: 0.7,
   maxTokens: 2048,
+};
+
+type FieldDef = {
+  label: string;
+  value: string;
+  mono?: boolean;
+  tooltip?: string;
 };
 
 const responseRows = [
