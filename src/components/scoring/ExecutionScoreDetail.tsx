@@ -61,6 +61,7 @@ const ExecutionScoreDetail = ({ executionId, onBack, onExport }: Props) => {
               <div className={`text-2xl font-semibold tabular ${s.valueColor || "text-foreground"}`}>{s.value}</div>
               <div className="text-label mt-0.5">{s.label}</div>
               <div className={`text-xs mt-0.5 ${s.deltaColor}`}>{s.delta}</div>
+              {s.hint && <div className="text-[10px] text-muted-foreground/70 mt-0.5 max-w-[180px] leading-tight">{s.hint}</div>}
             </div>
           ))}
         </div>
