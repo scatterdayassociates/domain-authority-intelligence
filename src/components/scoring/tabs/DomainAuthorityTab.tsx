@@ -88,13 +88,22 @@ const DomainAuthorityTab = () => {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
+            {/* Two-row header to make the measurement → interpretation hierarchy explicit */}
+            <tr className="text-[10px] uppercase tracking-wide text-muted-foreground/70">
+              <th colSpan={3}></th>
+              <th colSpan={4} className="text-center pb-1 border-b border-border/40">Foundational measurements (PDPE)</th>
+              <th colSpan={2} className="text-center pb-1 border-b border-border/40">Supporting signals</th>
+              <th colSpan={2} className="text-center pb-1 border-b border-border/40">Downstream classification</th>
+            </tr>
             <tr className="border-b border-border">
               <th className="table-header text-left py-2 w-10">#</th>
               <th className="table-header text-left py-2 w-[180px]">Domain</th>
               <th className="table-header text-left py-2 w-[140px]">Authority Type</th>
+              <th className="table-header text-center py-2 w-[80px]">WAS</th>
+              <th className="table-header text-center py-2 w-[80px]">NAS</th>
+              <th className="table-header text-center py-2 w-[80px]">RLP</th>
+              <th className="table-header text-center py-2 w-[80px]">AP</th>
               <th className="table-header text-center py-2 w-[80px]">Mentions</th>
-              <th className="table-header text-center py-2 w-[90px]">Persistence</th>
-              <th className="table-header text-center py-2 w-[100px]">Avg Position</th>
               <th className="table-header text-center py-2 w-[100px]">Pos. Variance</th>
               <th className="table-header text-center py-2 w-[110px]">
                 <span className="flex items-center gap-1 justify-center">
@@ -102,7 +111,7 @@ const DomainAuthorityTab = () => {
                   <Tooltip>
                     <TooltipTrigger><Info className="w-3 h-3 text-muted-foreground" /></TooltipTrigger>
                     <TooltipContent className="max-w-xs text-xs">
-                      Core = Persistence ≥ 85% AND Avg Position ≤ 3.5 · Strong = Persistence 50–84% OR Avg Position 3.5–5.5 · Peripheral = below these thresholds
+                      Rule-based classification derived from RLP and AP. Core = RLP ≥ 85% AND AP ≤ 3.5 · Strong = RLP 50–84% OR AP 3.5–5.5 · Peripheral = below these thresholds. Not a measurement.
                     </TooltipContent>
                   </Tooltip>
                 </span>
@@ -124,9 +133,11 @@ const DomainAuthorityTab = () => {
                     {d.tag === "COMPETITOR" && <span className="ml-2 text-xs font-mono bg-muted text-muted-foreground rounded px-1">COMPETITOR</span>}
                   </td>
                   <td className="py-2"><span className={`text-xs rounded-full px-2.5 py-0.5 ${typeColors[d.type] || ""}`}>{d.type}</span></td>
-                  <td className="py-2 tabular text-center font-semibold">{d.mentions}</td>
-                  <td className="py-2 tabular text-center">{d.persistence.toFixed(1)}%</td>
-                  <td className="py-2 tabular text-center">{d.avgPos.toFixed(1)}</td>
+                  <td className="py-2 tabular text-center font-semibold">{d.was.toFixed(1)}</td>
+                  <td className="py-2 tabular text-center">{d.nas.toFixed(3)}</td>
+                  <td className="py-2 tabular text-center">{(d.rlp * 100).toFixed(1)}%</td>
+                  <td className="py-2 tabular text-center">{d.ap.toFixed(1)}</td>
+                  <td className="py-2 tabular text-center text-muted-foreground">{d.mentions}</td>
                   <td className="py-2 tabular text-center text-muted-foreground">{d.variance}</td>
                   <td className="py-2 text-center"><span className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${tierColors[d.tier]}`}>{d.tier}</span></td>
                   <td className="py-2 text-right">
@@ -135,7 +146,7 @@ const DomainAuthorityTab = () => {
                 </tr>
                 {expanded === d.rank && (
                   <tr key={`exp-${d.rank}`}>
-                    <td colSpan={9} className="bg-muted/50 border-t border-border p-4">
+                    <td colSpan={11} className="bg-muted/50 border-t border-border p-4">
                       <div className="text-xs font-medium text-foreground mb-2">Prompt-level breakdown for {d.domain}</div>
                       <div className="space-y-1">
                         {promptBreakdown.map((p) => (
@@ -157,11 +168,35 @@ const DomainAuthorityTab = () => {
 
       <p className="text-sm text-primary text-center mt-3 cursor-pointer hover:underline">↓ Show all 24 domains</p>
 
-      {/* Core callout */}
-      <div className="mt-6 bg-primary/5 border border-primary/20 rounded-md px-4 py-3 text-xs text-primary flex items-start gap-2">
-        <Star className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+      {/* Concentration interpretation — clearly labelled as derived, not a measurement */}
+      <div className="mt-6">
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+          Concentration interpretation <span className="font-normal normal-case text-muted-foreground/70">· derived from NAS distribution</span>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="border border-border rounded-md px-3 py-2.5 bg-background">
+            <div className="text-label">Top 5 Share</div>
+            <div className="text-lg font-semibold tabular">68.4%</div>
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Share of total WAS held by top 5 domains</div>
+          </div>
+          <div className="border border-border rounded-md px-3 py-2.5 bg-background">
+            <div className="text-label">HHI</div>
+            <div className="text-lg font-semibold tabular">0.142</div>
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Herfindahl–Hirschman index over NAS shares</div>
+          </div>
+          <div className="border border-border rounded-md px-3 py-2.5 bg-background">
+            <div className="text-label">Tier Distribution</div>
+            <div className="text-sm font-medium tabular pt-1">4 Core · 4 Strong · 7 Peripheral</div>
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Rule-based classification over RLP × AP</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Interpretive summary — explicitly framed, not canonical output */}
+      <div className="mt-4 bg-muted/40 border border-border rounded-md px-4 py-3 text-xs text-muted-foreground flex items-start gap-2">
+        <Star className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground/60" />
         <span>
-          <strong>Authority Core:</strong> 4 domains (rtings.com, notebookcheck.net, pcmag.com, tomshardware.com) account for 52.6% of all citations. This is a publisher-dominated, shortlist-driven ecosystem.
+          <strong className="text-foreground">Interpretation:</strong> authority signals are concentrated among a small group of repeatedly surfaced domains — top NAS values cluster within the publisher segment with rapid decay below rank 5. This is a narrative summary of the measurements above, not a canonical output.
         </span>
       </div>
     </div>
