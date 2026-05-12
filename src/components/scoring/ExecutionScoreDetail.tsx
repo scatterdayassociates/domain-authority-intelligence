@@ -11,11 +11,14 @@ interface Props {
   onExport: () => void;
 }
 
+// KPI strip: foundational measurement signals only (PDPE-derived).
+// Concentration metrics (Top 5 Share, HHI) and tier classification (Authority Core)
+// are downstream interpretations and live inside the Domain Authority tab.
 const stats = [
-  { label: "Unique Domains", value: "24", delta: "+3 vs. prev run", deltaColor: "text-primary" },
-  { label: "Top 5 Share", value: "68.4%", delta: "−2.8pp vs. prev run", deltaColor: "text-green-600" },
-  { label: "HHI", value: "0.142", delta: "−0.019 vs. prev run", deltaColor: "text-green-600" },
-  { label: "Inclusion Rate", value: "82%", delta: "+4pp vs. prev run", deltaColor: "text-green-600", valueColor: "text-green-600" },
+  { label: "Unique Domains", value: "24", delta: "+3 vs. prev run", deltaColor: "text-primary", hint: "Distinct domains surfaced across runs" },
+  { label: "Dominant Domain NAS", value: "0.971", delta: "rtings.com · +0.014", deltaColor: "text-primary", hint: "Normalised Authority Score of the highest-ranked domain" },
+  { label: "Persistence Stability", value: "σ 0.18", delta: "−0.03 vs. prev run", deltaColor: "text-green-600", hint: "Std. dev. of run-level persistence across top domains" },
+  { label: "Inclusion Rate", value: "82%", delta: "+4pp vs. prev run", deltaColor: "text-green-600", valueColor: "text-green-600", hint: "% of runs containing ≥ 1 cited domain" },
 ];
 
 const tabs = ["Domain Authority", "Category Summary", "Brand Inclusion", "Execution Comparison"] as const;
