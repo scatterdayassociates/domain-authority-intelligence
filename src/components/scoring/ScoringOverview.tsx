@@ -22,6 +22,7 @@ const hhiColor = (v: number) => v >= 0.15 ? "text-amber-600" : "text-foreground"
 const inclColor = (v: number) => v >= 75 ? "text-green-600" : v < 60 ? "text-amber-600" : "text-foreground";
 
 const ScoringOverview = ({ onView, onExport, onCompare }: Props) => (
+  <TooltipProvider delayDuration={150}>
   <section>
     <SectionHeader
       title="Scored Executions"
@@ -39,10 +40,46 @@ const ScoringOverview = ({ onView, onExport, onCompare }: Props) => (
             <th className="table-header text-left py-2 w-[150px]">Context</th>
             <th className="table-header text-left py-2 w-[130px]">Model</th>
             <th className="table-header text-left py-2 w-[140px]">Scored At</th>
-            <th className="table-header text-center py-2 w-[110px]">Unique Domains</th>
-            <th className="table-header text-center py-2 w-[100px]">Top 5 Share</th>
-            <th className="table-header text-center py-2 w-[80px]">HHI</th>
-            <th className="table-header text-center py-2 w-[110px]">Inclusion Rate</th>
+            <th className="table-header text-center py-2 w-[110px]">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex items-center gap-1 cursor-help">Unique Domains <Info className="w-3 h-3 opacity-60" /></span>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs">
+                  Execution-wide structural signal: count of distinct domains surfaced across all runs in this execution.
+                </TooltipContent>
+              </Tooltip>
+            </th>
+            <th className="table-header text-center py-2 w-[100px]">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex items-center gap-1 cursor-help">Top 5 Share <Info className="w-3 h-3 opacity-60" /></span>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs">
+                  Category-structure metric: share of all surfaced citations concentrated in the top 5 domains (publishers, retailers, aggregators, brand-owned sites combined). Describes the discovery landscape, not target-brand visibility.
+                </TooltipContent>
+              </Tooltip>
+            </th>
+            <th className="table-header text-center py-2 w-[80px]">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex items-center gap-1 cursor-help">HHI <Info className="w-3 h-3 opacity-60" /></span>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs">
+                  Herfindahl–Hirschman Index across all surfaced domains. Category-structure concentration metric, independent of the target brand.
+                </TooltipContent>
+              </Tooltip>
+            </th>
+            <th className="table-header text-center py-2 w-[140px]">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex items-center gap-1 cursor-help">Target Brand Incl. <Info className="w-3 h-3 opacity-60" /></span>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs">
+                  Target-brand-specific measurement: % of runs in which domains mapped to the configured target brand for this project were surfaced. Not an execution quality score, not authority share, not a ranking. Not directly comparable to Top 5 Share or HHI, which describe the overall discovery landscape.
+                </TooltipContent>
+              </Tooltip>
+            </th>
             <th className="table-header text-right py-2 w-[100px]">Actions</th>
           </tr>
         </thead>
@@ -68,12 +105,16 @@ const ScoringOverview = ({ onView, onExport, onCompare }: Props) => (
         </tbody>
       </table>
     </div>
+    <p className="text-[11px] text-muted-foreground/80 italic mt-3 max-w-3xl">
+      Note: Top 5 Share and HHI are execution-wide structural metrics describing the overall discovery landscape. Target Brand Incl. is a target-brand-specific derived measurement and is not directly comparable to those structural metrics.
+    </p>
     <div className="flex justify-end mt-4">
       <button onClick={onCompare} className="h-8 px-3 text-sm rounded-md border border-primary/40 text-primary hover:bg-primary/5 flex items-center gap-1.5 transition-colors">
         <GitCompare className="w-3.5 h-3.5" /> Compare Executions →
       </button>
     </div>
   </section>
+  </TooltipProvider>
 );
 
 export default ScoringOverview;
