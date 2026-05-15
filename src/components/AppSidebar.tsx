@@ -1,8 +1,10 @@
-import { Folder, Zap, Layers, PlayCircle, Filter, BarChart2, Settings, ShieldCheck } from "lucide-react";
+import { Folder, Zap, Layers, PlayCircle, Filter, BarChart2, Settings, ShieldCheck, KeyRound } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { MOCK_KEYS } from "@/lib/apiKeysMock";
 
 const modules = [
   { name: "Projects", icon: Folder, path: "/projects" },
+  { name: "API Keys", icon: KeyRound, path: "/api-keys" },
   { name: "Insights", icon: Zap, path: "/insights" },
   { name: "Validation", icon: ShieldCheck, path: "/validation" },
   { name: "Prompt Manager", icon: Layers, path: "/" },
@@ -10,6 +12,10 @@ const modules = [
   { name: "Parsing", icon: Filter, path: "/parsing" },
   { name: "Scoring Engine", icon: BarChart2, path: "/scoring" },
 ];
+
+const apiKeyAlertCount = MOCK_KEYS.filter((k) =>
+  ["EXPIRED", "REVOKED", "BLOCKED", "OVERDUE_ROTATION"].includes(k.status),
+).length;
 
 const recentProjects = [
   { name: "Dell — Laptops (UK)", context: "Best laptops for home office", active: true },
@@ -84,6 +90,11 @@ const AppSidebar = ({ activeProject, activeContext, onContextClick }: AppSidebar
               >
                 <mod.icon className="w-4 h-4 flex-shrink-0" />
                 <span className="flex-1 text-left">{mod.name}</span>
+                {mod.path === "/api-keys" && apiKeyAlertCount > 0 && (
+                  <span className="ml-auto inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-medium tabular-nums">
+                    {apiKeyAlertCount}
+                  </span>
+                )}
               </button>
             );
           })}

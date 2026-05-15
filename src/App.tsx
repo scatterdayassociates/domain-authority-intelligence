@@ -8,6 +8,7 @@ import Execution from "./pages/Execution.tsx";
 import Parsing from "./pages/Parsing.tsx";
 import Scoring from "./pages/Scoring.tsx";
 import Projects from "./pages/Projects.tsx";
+import ApiKeys from "./pages/ApiKeys.tsx";
 import Insights from "./pages/Insights.tsx";
 import Validation from "./pages/Validation.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -23,6 +24,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/api-keys" element={<ApiKeys />} />
+          <Route path="/api-keys/:provider" element={<ApiKeys />} />
           <Route path="/execution" element={<Execution />} />
           <Route path="/parsing" element={<Parsing />} />
           <Route path="/scoring" element={<Scoring />} />
