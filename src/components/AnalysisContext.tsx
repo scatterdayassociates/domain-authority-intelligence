@@ -1,6 +1,7 @@
-import { X } from "lucide-react";
+import { X, Sparkles, Lock } from "lucide-react";
 import { useState } from "react";
 import SectionHeader from "./SectionHeader";
+import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 
 const markets = ["United States", "United Kingdom", "Germany", "France", "Australia", "Canada"];
 
@@ -96,6 +97,26 @@ const AnalysisContext = () => {
               className="flex-1 min-w-[100px] text-sm bg-transparent outline-none"
               placeholder="Add competitor..."
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Read-only MCP advisory — never mutates prompt packs, competitor sets, or mappings */}
+      <div className="mt-4 border border-slate-200 bg-slate-50/60 rounded-md px-3 py-2.5 flex items-start gap-2.5">
+        <Sparkles className="w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-medium text-slate-700">MCP suggestions available</span>
+            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-500">
+              <Lock className="w-2.5 h-2.5" /> Read-only
+            </span>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-0.5">
+            2 candidate competitor domains and 1 possible brand-domain mapping gap flagged for analyst review. Suggestions are advisory only — no changes are applied automatically.
+          </p>
+          <div className="mt-1.5 flex items-center gap-2 flex-wrap">
+            <McpContextTrigger scope="brand" subject="Lenovo" variant="chip" label="Lenovo · competitor candidate" />
+            <McpContextTrigger scope="brand" subject="Dell Technologies" variant="chip" label="Dell · mapping gap" />
           </div>
         </div>
       </div>
