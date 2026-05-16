@@ -8,6 +8,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import ExportButton from "@/components/export/ExportButton";
+import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
 import { brandTables } from "@/lib/export/builders";
 
@@ -320,7 +321,14 @@ const BrandSummaryCard = ({
             <div className="text-sm font-medium text-slate-700 font-mono">{brand.domains.join(", ")}</div>
           </div>
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <McpContextTrigger
+            scope="brand"
+            subject={brand.brand}
+            executionLabel="Snapshot: May 2026"
+            variant="chip"
+            label="MCP context"
+          />
           <button
             onClick={onDrillDown}
             className="text-xs px-3 py-1.5 rounded-md bg-teal-600 text-white hover:bg-teal-700 inline-flex items-center gap-1"
@@ -484,15 +492,23 @@ const BrandComparisonTable = ({
                   </td>
                   <td className="px-3 py-2 text-xs font-mono text-slate-500">{r.domains.join(", ")}</td>
                   <td className="px-3 py-2 text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDrillDown(r.brand);
-                      }}
-                      className="text-[11px] text-teal-600 hover:underline inline-flex items-center gap-0.5"
-                    >
-                      Evidence <ChevronRight className="w-3 h-3" />
-                    </button>
+                    <div className="inline-flex items-center gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDrillDown(r.brand);
+                        }}
+                        className="text-[11px] text-teal-600 hover:underline inline-flex items-center gap-0.5"
+                      >
+                        Evidence <ChevronRight className="w-3 h-3" />
+                      </button>
+                      <McpContextTrigger
+                        scope="brand"
+                        subject={r.brand}
+                        executionLabel="Snapshot: May 2026"
+                        label="MCP"
+                      />
+                    </div>
                   </td>
                 </tr>
               );
