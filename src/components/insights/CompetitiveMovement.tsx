@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GitCompare, ArrowUpCircle, ArrowDownCircle, ArrowUpDown, Download } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
+import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 
 interface Props {
   mode: InsightMode;
@@ -237,6 +238,7 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
                     {e.kind}
                   </span>
                   <span className="bg-green-50 text-green-600 text-[11px] rounded-full px-2 py-0.5">NEW</span>
+                  <McpContextTrigger scope="domain" subject={e.domain} executionLabel="Compare: Apr → May 2026" variant="icon" />
                 </div>
               ))}
           <p className="text-[11px] text-slate-400 italic mt-3">
@@ -265,6 +267,7 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
                     {e.kind}
                   </span>
                   <span className="bg-red-50 text-red-500 text-[11px] rounded-full px-2 py-0.5">EXITED</span>
+                  <McpContextTrigger scope="domain" subject={e.domain} executionLabel="Compare: Apr → May 2026" variant="icon" />
                 </div>
               ))}
           <p className="text-[11px] text-slate-400 italic mt-3">
@@ -302,6 +305,7 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
                       {positive ? "↑" : "↓"} {positive ? "+" : ""}
                       {r.delta}
                     </span>
+                    <McpContextTrigger scope="domain" subject={r.domain} executionLabel="Compare: Apr → May 2026" variant="icon" />
                   </div>
                 );
               })}

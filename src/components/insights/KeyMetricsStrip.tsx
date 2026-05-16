@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Globe, BarChart2, Target, MessageSquareQuote, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
+import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 
 interface Props {
   mode: InsightMode;
@@ -63,13 +64,16 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             <span>Stable over 5 executions <span className="text-slate-400 tabular-nums">(58%–62% persistence range)</span></span>
           </div>
         )}
-        <div className="border-t border-slate-100 mt-3 pt-2 mt-auto">
+        <div className="border-t border-slate-100 mt-3 pt-2 mt-auto flex items-center justify-between gap-2">
           <button
             className="text-[11px] text-teal-600 hover:underline"
             onClick={(e) => { e.stopPropagation(); onNavigate("domain"); }}
           >
             Domain Analysis →
           </button>
+          <span onClick={(e) => e.stopPropagation()}>
+            <McpContextTrigger scope="domain" subject="techradar.com" executionLabel="Snapshot: May 2026" label="MCP" />
+          </span>
         </div>
         {hovered === "authority" && (
           <Tooltip text="Top domain by total mentions across all runs in this execution. Persistence = runs_appeared ÷ total_runs." />
@@ -162,13 +166,16 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             vs Apr 2026: Dell +15pp / Apple −8pp
           </div>
         )}
-        <div className="border-t border-slate-100 mt-3 pt-2 mt-auto">
+        <div className="border-t border-slate-100 mt-3 pt-2 mt-auto flex items-center justify-between gap-2">
           <button
             className="text-[11px] text-teal-600 hover:underline"
             onClick={(e) => { e.stopPropagation(); onNavigate("brand"); }}
           >
             Brand Analysis →
           </button>
+          <span onClick={(e) => e.stopPropagation()}>
+            <McpContextTrigger scope="brand" subject="Dell Technologies" executionLabel="Snapshot: May 2026" label="MCP" />
+          </span>
         </div>
         {hovered === "brand" && (
           <Tooltip text="Inclusion rate = runs containing brand domain ÷ total runs. Consistency tracks how evenly distributed those appearances are." />

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Terminal, Search, ChevronRight } from "lucide-react";
 import ExportButton from "@/components/export/ExportButton";
+import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
 import { rawOutputTables } from "@/lib/export/builders";
 
@@ -108,7 +109,16 @@ const RawOutputView = ({ context }: Props) => {
                     <td className="px-4 py-2 font-mono text-xs text-slate-700">{r.run_id}</td>
                     <td className="px-4 py-2 text-slate-700">{r.prompt_text}</td>
                     <td className="px-4 py-2 text-slate-600">{r.model}</td>
-                    <td className="px-4 py-2 text-xs text-slate-500">{r.domains.join(", ")}</td>
+                    <td className="px-4 py-2 text-xs text-slate-500">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {r.domains.map((d) => (
+                          <span key={d} className="inline-flex items-center gap-1 bg-slate-50 border border-slate-100 rounded px-1.5 py-0.5 font-mono">
+                            {d}
+                            <McpContextTrigger scope="domain" subject={d} executionLabel="Snapshot: May 2026" variant="icon" />
+                          </span>
+                        ))}
+                      </div>
+                    </td>
                     <td className="px-4 py-2 text-right text-slate-400">
                       <ChevronRight
                         className={`w-3.5 h-3.5 inline transition-transform ${isOpen ? "rotate-90" : ""}`}
@@ -123,6 +133,22 @@ const RawOutputView = ({ context }: Props) => {
                           response_id: <span className="font-mono">resp_{r.run_id.split("_").pop()}</span>
                         </div>
                         <p className="text-sm text-slate-700 leading-relaxed">{r.response_text}</p>
+                        <div className="mt-3 pt-3 border-t border-slate-200 flex items-center gap-2 flex-wrap">
+                          <span className="text-[10px] uppercase tracking-wide text-slate-500">Expand with MCP context:</span>
+                          {r.domains.map((d) => (
+                            <McpContextTrigger
+                              key={d}
+                              scope="domain"
+                              subject={d}
+                              executionLabel="Snapshot: May 2026"
+                              variant="chip"
+                              label={d}
+                            />
+                          ))}
+                          <span className="ml-auto text-[10px] text-slate-400 italic">
+                            Validation evidence above is canonical. MCP context is read-only enrichment.
+                          </span>
+                        </div>
                       </td>
                     </tr>
                   )}
