@@ -6,21 +6,21 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 // Foundational PDPE-derived measurements (WAS, NAS, RLP, AP) shown first.
 // Concentration metrics (Top 5 Share, HHI) and tier classification are downstream.
 const domains = [
-  { rank: 1, domain: "rtings.com", type: "Publisher / Media", was: 142.6, nas: 0.971, rlp: 0.971, ap: 1.8, mentions: 48, persistence: 97.1, avgPos: 1.8, variance: "±0.4", tier: "Core" },
-  { rank: 2, domain: "notebookcheck.net", type: "Publisher / Media", was: 118.3, nas: 0.806, rlp: 0.914, ap: 2.3, mentions: 41, persistence: 91.4, avgPos: 2.3, variance: "±0.6", tier: "Core" },
-  { rank: 3, domain: "pcmag.com", type: "Publisher / Media", was: 102.4, nas: 0.697, rlp: 0.886, ap: 2.7, mentions: 38, persistence: 88.6, avgPos: 2.7, variance: "±0.7", tier: "Core" },
-  { rank: 4, domain: "tomshardware.com", type: "Publisher / Media", was: 88.9, nas: 0.605, rlp: 0.857, ap: 3.1, mentions: 35, persistence: 85.7, avgPos: 3.1, variance: "±0.8", tier: "Core" },
-  { rank: 5, domain: "bestbuy.com", type: "Retail / Marketplace", was: 64.1, nas: 0.436, rlp: 0.800, ap: 3.8, mentions: 29, persistence: 80.0, avgPos: 3.8, variance: "±1.1", tier: "Strong" },
-  { rank: 6, domain: "amazon.com", type: "Retail / Marketplace", was: 53.8, nas: 0.366, rlp: 0.771, ap: 4.1, mentions: 26, persistence: 77.1, avgPos: 4.1, variance: "±1.2", tier: "Strong" },
-  { rank: 7, domain: "theverge.com", type: "Publisher / Media", was: 42.7, nas: 0.291, rlp: 0.686, ap: 4.4, mentions: 22, persistence: 68.6, avgPos: 4.4, variance: "±1.3", tier: "Strong" },
-  { rank: 8, domain: "techradar.com", type: "Publisher / Media", was: 34.5, nas: 0.235, rlp: 0.600, ap: 4.9, mentions: 19, persistence: 60.0, avgPos: 4.9, variance: "±1.5", tier: "Strong" },
-  { rank: 9, domain: "dell.com", type: "Brand / Retail", was: 28.9, nas: 0.197, rlp: 0.543, ap: 5.2, mentions: 17, persistence: 54.3, avgPos: 5.2, variance: "±1.6", tier: "Strong", tag: "TARGET" },
-  { rank: 10, domain: "hp.com", type: "Brand / Retail", was: 21.4, nas: 0.146, rlp: 0.457, ap: 5.8, mentions: 14, persistence: 45.7, avgPos: 5.8, variance: "±1.8", tier: "Peripheral", tag: "COMPETITOR" },
-  { rank: 11, domain: "lenovo.com", type: "Brand / Retail", was: 17.9, nas: 0.122, rlp: 0.429, ap: 6.1, mentions: 12, persistence: 42.9, avgPos: 6.1, variance: "±1.9", tier: "Peripheral", tag: "COMPETITOR" },
-  { rank: 12, domain: "reddit.com", type: "Forum / Community", was: 15.6, nas: 0.106, rlp: 0.400, ap: 6.4, mentions: 11, persistence: 40.0, avgPos: 6.4, variance: "±2.1", tier: "Peripheral" },
-  { rank: 13, domain: "apple.com", type: "Brand / Retail", was: 9.8, nas: 0.067, rlp: 0.286, ap: 7.2, mentions: 8, persistence: 28.6, avgPos: 7.2, variance: "±2.3", tier: "Peripheral" },
-  { rank: 14, domain: "nytimes.com", type: "Publisher / Media", was: 5.7, nas: 0.039, rlp: 0.171, ap: 7.8, mentions: 5, persistence: 17.1, avgPos: 7.8, variance: "±2.4", tier: "Peripheral" },
-  { rank: 15, domain: "wirecutter.com", type: "Review / Affiliate", was: 4.3, nas: 0.029, rlp: 0.143, ap: 8.1, mentions: 4, persistence: 14.3, avgPos: 8.1, variance: "±2.5", tier: "Peripheral" },
+  { rank: 1, domain: "rtings.com", type: "Publisher / Media", was: 142.6, nas: 0.971, rlp: 0.971, bp: 1, ap: 1.8, mentions: 48, persistence: 97.1, avgPos: 1.8, variance: "±0.4", tier: "Core" },
+  { rank: 2, domain: "notebookcheck.net", type: "Publisher / Media", was: 118.3, nas: 0.806, rlp: 0.914, bp: 1, ap: 2.3, mentions: 41, persistence: 91.4, avgPos: 2.3, variance: "±0.6", tier: "Core" },
+  { rank: 3, domain: "pcmag.com", type: "Publisher / Media", was: 102.4, nas: 0.697, rlp: 0.886, bp: 1, ap: 2.7, mentions: 38, persistence: 88.6, avgPos: 2.7, variance: "±0.7", tier: "Core" },
+  { rank: 4, domain: "tomshardware.com", type: "Publisher / Media", was: 88.9, nas: 0.605, rlp: 0.857, bp: 2, ap: 3.1, mentions: 35, persistence: 85.7, avgPos: 3.1, variance: "±0.8", tier: "Core" },
+  { rank: 5, domain: "bestbuy.com", type: "Retail / Marketplace", was: 64.1, nas: 0.436, rlp: 0.800, bp: 2, ap: 3.8, mentions: 29, persistence: 80.0, avgPos: 3.8, variance: "±1.1", tier: "Strong" },
+  { rank: 6, domain: "amazon.com", type: "Retail / Marketplace", was: 53.8, nas: 0.366, rlp: 0.771, bp: 2, ap: 4.1, mentions: 26, persistence: 77.1, avgPos: 4.1, variance: "±1.2", tier: "Strong" },
+  { rank: 7, domain: "theverge.com", type: "Publisher / Media", was: 42.7, nas: 0.291, rlp: 0.686, bp: 2, ap: 4.4, mentions: 22, persistence: 68.6, avgPos: 4.4, variance: "±1.3", tier: "Strong" },
+  { rank: 8, domain: "techradar.com", type: "Publisher / Media", was: 34.5, nas: 0.235, rlp: 0.600, bp: 3, ap: 4.9, mentions: 19, persistence: 60.0, avgPos: 4.9, variance: "±1.5", tier: "Strong" },
+  { rank: 9, domain: "dell.com", type: "Brand / Retail", was: 28.9, nas: 0.197, rlp: 0.543, bp: 2, ap: 5.2, mentions: 17, persistence: 54.3, avgPos: 5.2, variance: "±1.6", tier: "Strong", tag: "TARGET" },
+  { rank: 10, domain: "hp.com", type: "Brand / Retail", was: 21.4, nas: 0.146, rlp: 0.457, bp: 3, ap: 5.8, mentions: 14, persistence: 45.7, avgPos: 5.8, variance: "±1.8", tier: "Peripheral", tag: "COMPETITOR" },
+  { rank: 11, domain: "lenovo.com", type: "Brand / Retail", was: 17.9, nas: 0.122, rlp: 0.429, bp: 3, ap: 6.1, mentions: 12, persistence: 42.9, avgPos: 6.1, variance: "±1.9", tier: "Peripheral", tag: "COMPETITOR" },
+  { rank: 12, domain: "reddit.com", type: "Forum / Community", was: 15.6, nas: 0.106, rlp: 0.400, bp: 3, ap: 6.4, mentions: 11, persistence: 40.0, avgPos: 6.4, variance: "±2.1", tier: "Peripheral" },
+  { rank: 13, domain: "apple.com", type: "Brand / Retail", was: 9.8, nas: 0.067, rlp: 0.286, bp: 4, ap: 7.2, mentions: 8, persistence: 28.6, avgPos: 7.2, variance: "±2.3", tier: "Peripheral" },
+  { rank: 14, domain: "nytimes.com", type: "Publisher / Media", was: 5.7, nas: 0.039, rlp: 0.171, bp: 5, ap: 7.8, mentions: 5, persistence: 17.1, avgPos: 7.8, variance: "±2.4", tier: "Peripheral" },
+  { rank: 15, domain: "wirecutter.com", type: "Review / Affiliate", was: 4.3, nas: 0.029, rlp: 0.143, bp: 5, ap: 8.1, mentions: 4, persistence: 14.3, avgPos: 8.1, variance: "±2.5", tier: "Peripheral" },
 ];
 
 const typeColors: Record<string, string> = {
