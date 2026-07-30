@@ -136,8 +136,8 @@ const ExportDropdown = ({ context }: { context: string }) => {
       label: "Domain Trends CSV",
       type: "domain-trends",
       rows: [
-        ["Month", "techradar.com", "pcmag.com", "notebookcheck.net", "bestbuy.com", "dell.com"],
-        ...domainData.map((d) => [d.month, d.techradar, d.pcmag, d.notebookcheck, d.bestbuy, d.dell]),
+        ["Month", "techradar.com", "pcmag.com", "notebookcheck.net", "bestbuy.com", "dell.com", "WAS (dell.com)", "NAS (dell.com) %"],
+        ...domainData.map((d) => [d.month, d.techradar, d.pcmag, d.notebookcheck, d.bestbuy, d.dell, d.was, d.nas]),
       ],
     },
     brand: {
@@ -146,6 +146,23 @@ const ExportDropdown = ({ context }: { context: string }) => {
       rows: [
         ["Month", "Dell", "Apple", "HP", "Lenovo"],
         ...brandData.map((d) => [d.month, d.Dell, d.Apple, d.HP, d.Lenovo]),
+      ],
+    },
+    recommendation: {
+      label: "Brand Recommendation Trends CSV",
+      type: "brand-recommendation-trends",
+      rows: [
+        [
+          "Month",
+          ...REC_SERIES.flatMap((s) => [`${s.label} Inclusion Rate (%)`, `${s.label} Weighted Inclusion`]),
+        ],
+        ...recData.map((d) => [
+          d.month,
+          ...REC_SERIES.flatMap((s) => [
+            d[s.rate as keyof typeof d] as number,
+            d[s.weighted as keyof typeof d] as number,
+          ]),
+        ]),
       ],
     },
     concentration: {
