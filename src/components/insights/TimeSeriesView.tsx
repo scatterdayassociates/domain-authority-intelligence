@@ -690,7 +690,7 @@ const TimeSeriesView = ({ context }: Props) => {
     });
     const targets = { domain: "dell.com", brand: "Dell", narrative: "Affordability" } as const;
     const labels = {
-      domain: "Persistence (%)",
+      domain: "RLP (%)",
       brand: "Inclusion Rate (%)",
       narrative: "Coverage Rate (%)",
     } as const;
