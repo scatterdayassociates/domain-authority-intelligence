@@ -1,11 +1,18 @@
 import { ArrowLeft, Download, Info } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import {
+  getFamilyBreakdown,
+  getFamilyLabel,
+  familyStyles,
+  familyStatusStyles,
+} from "@/lib/executionFamilies";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 
 interface ExecutionDetailProps {
   executionId: string;
