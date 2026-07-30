@@ -11,6 +11,8 @@ import ExportButton from "@/components/export/ExportButton";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
 import { brandTables } from "@/lib/export/builders";
+import BrandRankingTable from "./BrandRankingTable";
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock dataset — execution-scoped, deterministic, aligned with Domain Analysis
@@ -968,8 +970,27 @@ const BrandAnalysisView = ({ context }: BrandAnalysisViewProps) => {
         </div>
       </div>
 
+      {/* Section 1b — Ranked Brand Table (recommendation layer) */}
+      <div>
+        <div className="flex items-baseline justify-between mb-2">
+          <h3 className="text-sm font-semibold text-slate-800">Brand Ranking</h3>
+          <span className="text-[11px] text-slate-400">
+            Ranked by recommendation inclusion · Execution: May 2026
+          </span>
+        </div>
+        <BrandRankingTable
+          selected={selectedBrand}
+          onSelect={handleSelectBrand}
+          onEvidence={(b) => {
+            handleSelectBrand(b);
+            scrollToDrill();
+          }}
+        />
+      </div>
+
       {/* Section 2 — Brand Summary */}
       <BrandSummaryCard brand={current} rank={currentRank} onDrillDown={scrollToDrill} />
+
 
       {/* Section 3 — Brand Comparison Table */}
       <BrandComparisonTable
