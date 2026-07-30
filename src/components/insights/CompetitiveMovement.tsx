@@ -274,7 +274,7 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
           ))}
         </div>
         <button
-          onClick={() => exportData(context, fEntries, fExits, fRankChanges)}
+          onClick={() => exportData(context, fEntries, fExits, fRankChanges, fDomainMetrics)}
           className="border border-slate-200 text-slate-600 text-xs h-7 px-3 rounded-md inline-flex items-center gap-1.5 hover:bg-slate-50"
         >
           <Download className="w-3 h-3" /> Export Movement Data
