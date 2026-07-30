@@ -102,6 +102,8 @@ const confidencePill = (type: InsightType, conf: Confidence) => {
       return high ? "bg-green-600 text-white" : "bg-green-100 text-green-700";
     case "brand":
       return high ? "bg-amber-600 text-white" : "bg-amber-100 text-amber-700";
+    case "recommendation":
+      return high ? "bg-teal-600 text-white" : "bg-teal-100 text-teal-700";
     case "concentration":
       return high ? "bg-blue-600 text-white" : "bg-blue-100 text-blue-700";
     case "movement":
