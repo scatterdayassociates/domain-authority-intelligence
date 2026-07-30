@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import ExportButton from "@/components/export/ExportButton";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
