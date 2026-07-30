@@ -55,7 +55,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         </div>
         {showCompare && (
           <div className="mt-3 text-[11px] text-slate-400">
-            vs Apr 2026: Δ mentions −2 runs / persistence −8pp
+            vs Apr 2026: Δ WAS −2 runs / RLP −8pp
           </div>
         )}
         {showTrends && (
