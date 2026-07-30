@@ -180,6 +180,33 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       },
     },
     {
+      type: "recommendation",
+      confidence: "medium",
+      statement: "Dell appears in the model's recommended-brand list in most runs",
+      metrics: [
+        { label: "Inclusion Rate:", value: "66.7%" },
+        { label: "Weighted Inclusion:", value: "0.58" },
+        { label: "Top 3 Presence:", value: "41.7%" },
+        { label: "Top 5 Presence:", value: "58.3%" },
+      ],
+      change: { direction: "up", text: "+8pp vs previous execution" },
+      trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
+      evidenceTab: "brand",
+      tooltip: {
+        source: "Generated from: recommended_brands list (8/12 runs), position-weighted inclusion (0.58)",
+        bullets: [
+          "Rule: Brand named in the model's explicit recommendation list",
+          "Weighted inclusion applies rank decay to list position",
+          "Confidence basis: 12 runs parsed, 2 runs with ambiguous list structure",
+        ],
+      },
+      trendDetail: {
+        magnitude: "Increasing trend (+8pp across 5 executions)",
+        range: "58%–67% recommendation inclusion",
+        driver: "More frequent placement inside top-3 recommendation slots",
+      },
+    },
+    {
       type: "concentration",
       confidence: "high",
       statement: "The category is moderately concentrated and stable",
