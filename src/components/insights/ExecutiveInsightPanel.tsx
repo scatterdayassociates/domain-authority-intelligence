@@ -167,7 +167,12 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       ],
       change: { direction: "up", text: "+15% vs previous execution" },
       trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
+      metricDeltas: [
+        { label: "Δ Inclusion Rate", value: 15, unit: "pp" },
+        { label: "Δ Runs surfaced", value: 2, unit: " runs", decimals: 0 },
+      ],
       evidenceTab: "brand",
+
       tooltip: {
         source: "Generated from: inclusion_rate (75%), delta vs prior (+15pp)",
         bullets: [
