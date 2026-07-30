@@ -125,7 +125,7 @@ const McpContextDrawer = ({ open, onOpenChange, scope, subject, executionLabel }
                     <Stat label="Mentions" value={String(ctx.platform.mentions)} />
                   )}
                   {ctx.platform.avgPosition !== undefined && (
-                    <Stat label="Avg position" value={`#${ctx.platform.avgPosition.toFixed(1)}`} />
+                    <Stat label="AP" value={`#${ctx.platform.avgPosition.toFixed(1)}`} />
                   )}
                   {ctx.platform.mentionShare !== undefined && (
                     <Stat label="Mention share" value={fmtPct(ctx.platform.mentionShare)} />
