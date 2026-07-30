@@ -3,6 +3,8 @@ import { GitCompare, ArrowUpCircle, ArrowDownCircle, ArrowUpDown, Download } fro
 import type { InsightMode } from "@/pages/Insights";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
+import DeltaIndicator from "./DeltaIndicator";
+
 
 interface Props {
   mode: InsightMode;
