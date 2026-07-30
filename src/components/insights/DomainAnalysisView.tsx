@@ -259,16 +259,21 @@ const RankedDomainTable = ({
     URL.revokeObjectURL(url);
   };
 
-  const SortHeader = ({ k, label, align = "right" }: { k: SortKey; label: string; align?: "left" | "right" }) => (
-    <button
-      onClick={() => setSortKey(k)}
-      className={`inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide ${
-        sortKey === k ? "text-slate-800" : "text-slate-500 hover:text-slate-700"
-      } ${align === "right" ? "justify-end w-full" : ""}`}
-    >
-      {label}
-      <ArrowUpDown className="w-3 h-3" />
-    </button>
+  const SortHeader = ({ k, align = "right" }: { k: SortKey; align?: "left" | "right" }) => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          onClick={() => setSortKey(k)}
+          className={`inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide ${
+            sortKey === k ? "text-slate-800" : "text-slate-500 hover:text-slate-700"
+          } ${align === "right" ? "justify-end w-full" : ""}`}
+        >
+          {METRIC_LABELS[k].label}
+          <ArrowUpDown className="w-3 h-3" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-xs text-xs">{METRIC_LABELS[k].tip}</TooltipContent>
+    </Tooltip>
   );
 
   return (
