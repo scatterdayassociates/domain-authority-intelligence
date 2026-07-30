@@ -20,7 +20,7 @@ interface Props {
   context: string;
 }
 
-type SubTab = "domain" | "brand" | "concentration" | "narrative";
+type SubTab = "domain" | "brand" | "recommendation" | "concentration" | "narrative";
 
 const months = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026"];
 
@@ -31,6 +31,10 @@ const domainData = months.map((m, i) => ({
   notebookcheck: [38, 40, 36, 41, 39, 42][i],
   bestbuy: [25, 28, 24, 27, 29, 26][i],
   dell: [17, 19, 15, 20, 22, 25][i],
+  // WAS = position-weighted authority aggregation (right axis, absolute)
+  was: [12.4, 13.1, 11.8, 14.2, 15.0, 16.3][i],
+  // NAS = normalised authority share for dell.com (%, left axis)
+  nas: [9.2, 9.8, 8.6, 10.4, 11.1, 12.0][i],
 }));
 
 const brandData = months.map((m, i) => ({
@@ -39,6 +43,19 @@ const brandData = months.map((m, i) => ({
   Apple: [55, 52, 58, 54, 50, 50][i],
   HP: [40, 38, 42, 39, 37, 35][i],
   Lenovo: [30, 33, 28, 31, 30, 32][i],
+}));
+
+// Brand Recommendation Trends — BNE recommendation-layer signals over time
+const recData = months.map((m, i) => ({
+  month: m,
+  DellRate: [50.0, 54.2, 51.7, 58.3, 62.5, 66.7][i],
+  AppleRate: [58.3, 56.7, 60.0, 55.8, 54.2, 53.3][i],
+  HPRate: [41.7, 40.0, 43.3, 38.3, 36.7, 35.0][i],
+  LenovoRate: [30.0, 32.5, 29.2, 31.7, 30.8, 32.5][i],
+  DellWeighted: [0.42, 0.46, 0.44, 0.5, 0.54, 0.58][i],
+  AppleWeighted: [0.51, 0.49, 0.53, 0.48, 0.46, 0.45][i],
+  HPWeighted: [0.34, 0.32, 0.36, 0.31, 0.29, 0.28][i],
+  LenovoWeighted: [0.24, 0.26, 0.23, 0.25, 0.24, 0.26][i],
 }));
 
 const concData = months.map((m, i) => ({
@@ -53,6 +70,23 @@ const narrativeData = months.map((m, i) => ({
   generalUse: [56, 54, 54, 50, 58, 54][i],
   gaming: [30, 33, 32, 35, 30, 32][i],
 }));
+
+const DOMAIN_SERIES = [
+  { key: "dell", label: "dell.com (TARGET)", color: "#dc2626", axis: "left" as const, width: 3.5, highlight: true },
+  { key: "techradar", label: "techradar.com", color: "#94a3b8", axis: "left" as const, width: 1.5 },
+  { key: "pcmag", label: "pcmag.com", color: "#cbd5e1", axis: "left" as const, width: 1.5 },
+  { key: "notebookcheck", label: "notebookcheck.net", color: "#a3a3a3", axis: "left" as const, width: 1.5 },
+  { key: "bestbuy", label: "bestbuy.com", color: "#fbbf24", axis: "left" as const, width: 1.5 },
+  { key: "nas", label: "NAS (dell.com)", color: "#0ea5e9", axis: "left" as const, width: 2, dashed: true },
+  { key: "was", label: "WAS (dell.com)", color: "#7c3aed", axis: "right" as const, width: 2, dashed: true },
+];
+
+const REC_SERIES = [
+  { rate: "DellRate", weighted: "DellWeighted", label: "Dell (TARGET)", color: "#0d9488", width: 3.5, highlight: true },
+  { rate: "AppleRate", weighted: "AppleWeighted", label: "Apple", color: "#cbd5e1", width: 1.5 },
+  { rate: "HPRate", weighted: "HPWeighted", label: "HP", color: "#fbbf24", width: 1.5 },
+  { rate: "LenovoRate", weighted: "LenovoWeighted", label: "Lenovo", color: "#94a3b8", width: 1.5 },
+];
 
 const ChartTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
@@ -102,8 +136,8 @@ const ExportDropdown = ({ context }: { context: string }) => {
       label: "Domain Trends CSV",
       type: "domain-trends",
       rows: [
-        ["Month", "techradar.com", "pcmag.com", "notebookcheck.net", "bestbuy.com", "dell.com"],
-        ...domainData.map((d) => [d.month, d.techradar, d.pcmag, d.notebookcheck, d.bestbuy, d.dell]),
+        ["Month", "techradar.com", "pcmag.com", "notebookcheck.net", "bestbuy.com", "dell.com", "WAS (dell.com)", "NAS (dell.com) %"],
+        ...domainData.map((d) => [d.month, d.techradar, d.pcmag, d.notebookcheck, d.bestbuy, d.dell, d.was, d.nas]),
       ],
     },
     brand: {
@@ -112,6 +146,23 @@ const ExportDropdown = ({ context }: { context: string }) => {
       rows: [
         ["Month", "Dell", "Apple", "HP", "Lenovo"],
         ...brandData.map((d) => [d.month, d.Dell, d.Apple, d.HP, d.Lenovo]),
+      ],
+    },
+    recommendation: {
+      label: "Brand Recommendation Trends CSV",
+      type: "brand-recommendation-trends",
+      rows: [
+        [
+          "Month",
+          ...REC_SERIES.flatMap((s) => [`${s.label} Inclusion Rate (%)`, `${s.label} Weighted Inclusion`]),
+        ],
+        ...recData.map((d) => [
+          d.month,
+          ...REC_SERIES.flatMap((s) => [
+            d[s.rate as keyof typeof d] as number,
+            d[s.weighted as keyof typeof d] as number,
+          ]),
+        ]),
       ],
     },
     concentration: {
@@ -172,11 +223,25 @@ const SnapshotEmpty = () => (
 
 const TimeSeriesPanel = ({ mode, context }: Props) => {
   const [subTab, setSubTab] = useState<SubTab>("domain");
+  const [domainSeries, setDomainSeries] = useState<string[]>([
+    "dell",
+    "techradar",
+    "pcmag",
+    "notebookcheck",
+    "bestbuy",
+  ]);
+  const [recMetric, setRecMetric] = useState<"rate" | "weighted">("rate");
   const isSnapshot = mode === "snapshot";
 
   const dData = domainData;
   const bData = brandData;
   const cData = concData;
+
+  const toggleDomainSeries = (key: string) =>
+    setDomainSeries((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+
+  const activeDomainSeries = DOMAIN_SERIES.filter((s) => domainSeries.includes(s.key));
+  const showRightAxis = activeDomainSeries.some((s) => s.axis === "right");
 
   return (
     <div>
@@ -185,6 +250,7 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
           {[
             { id: "domain", label: "Domain Trends" },
             { id: "brand", label: "Brand Trends" },
+            { id: "recommendation", label: "Brand Recommendation Trends" },
             { id: "concentration", label: "Concentration Trends" },
             { id: "narrative", label: "Narrative Trends" },
           ].map((t) => (
@@ -209,37 +275,149 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-500 uppercase tracking-wide">Domain Visibility Over Time</span>
-              <button className="border border-slate-200 text-xs h-7 px-2 rounded-md text-slate-600">
-                Showing: 5 domains
-              </button>
+              <span className="border border-slate-200 text-xs h-7 px-2 rounded-md text-slate-600 inline-flex items-center">
+                Showing: {activeDomainSeries.length} series
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5 mb-3">
+              {DOMAIN_SERIES.map((s) => {
+                const on = domainSeries.includes(s.key);
+                return (
+                  <button
+                    key={s.key}
+                    onClick={() => toggleDomainSeries(s.key)}
+                    aria-pressed={on}
+                    className={`inline-flex items-center gap-1.5 text-[11px] font-mono rounded-full px-2.5 py-1 border transition-colors ${
+                      on
+                        ? "border-slate-300 bg-slate-50 text-slate-700"
+                        : "border-slate-200 bg-white text-slate-400 hover:text-slate-600"
+                    }`}
+                  >
+                    <span
+                      className="inline-block w-3 h-[2px]"
+                      style={{ background: on ? s.color : "#cbd5e1" }}
+                    />
+                    {s.label}
+                  </button>
+                );
+              })}
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={dData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
                 <YAxis
-                  label={{ value: "Persistence (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
+                  yAxisId="left"
+                  label={{ value: "RLP / NAS (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
+                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                {showRightAxis && (
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    label={{ value: "WAS", angle: 90, position: "insideRight", style: { fontSize: 11, fill: "#94a3b8" } }}
+                    tick={{ fontSize: 11, fill: "#94a3b8" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                )}
+                <Tooltip content={<ChartTooltip />} />
+                {activeDomainSeries.map((s) => (
+                  <Line
+                    key={s.key}
+                    yAxisId={s.axis === "right" && showRightAxis ? "right" : "left"}
+                    type="monotone"
+                    dataKey={s.key}
+                    name={s.label}
+                    stroke={s.color}
+                    strokeWidth={s.width}
+                    strokeDasharray={s.dashed ? "4 2" : undefined}
+                    dot={{ r: s.highlight ? 5 : 3, fill: s.color, stroke: "#fff", strokeWidth: s.highlight ? 2 : 1.5 }}
+                    activeDot={{ r: s.highlight ? 7 : 5, fill: s.color, stroke: "#fff", strokeWidth: 2 }}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+            <Legend
+              items={activeDomainSeries.map((s) => ({
+                color: s.color,
+                label: s.label,
+                dashed: s.dashed,
+                highlight: s.highlight,
+              }))}
+            />
+          </div>
+          )
+        )}
+
+        {/* BRAND RECOMMENDATION TRENDS */}
+        {subTab === "recommendation" && (
+          isSnapshot ? <SnapshotEmpty /> : (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-slate-500 uppercase tracking-wide">
+                Brand Recommendation Signals Over Time
+              </span>
+              <div className="flex items-center gap-1.5">
+                {[
+                  { id: "rate", label: "Recommendation Inclusion Rate" },
+                  { id: "weighted", label: "Weighted Inclusion" },
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    onClick={() => setRecMetric(m.id as "rate" | "weighted")}
+                    className={`text-[11px] font-medium rounded-md px-2 py-1 border transition-colors ${
+                      recMetric === m.id
+                        ? "border-teal-200 bg-teal-50 text-teal-700"
+                        : "border-slate-200 bg-white text-slate-500 hover:text-slate-700"
+                    }`}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={recData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
+                <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis
+                  domain={recMetric === "rate" ? [0, 100] : [0, 1]}
+                  label={{
+                    value: recMetric === "rate" ? "Inclusion Rate (%)" : "Weighted Inclusion",
+                    angle: -90,
+                    position: "insideLeft",
+                    style: { fontSize: 11, fill: "#94a3b8" },
+                  }}
                   tick={{ fontSize: 11, fill: "#94a3b8" }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="techradar" name="techradar.com" stroke="#94a3b8" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#94a3b8", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="pcmag" name="pcmag.com" stroke="#cbd5e1" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#cbd5e1", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="notebookcheck" name="notebookcheck.net" stroke="#a3a3a3" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#a3a3a3", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="bestbuy" name="bestbuy.com" stroke="#fbbf24" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#fbbf24", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="dell" name="dell.com" stroke="#dc2626" strokeWidth={3.5} dot={{ r: 5, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} activeDot={{ r: 7, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} />
+                {REC_SERIES.map((s) => (
+                  <Line
+                    key={s.label}
+                    type="monotone"
+                    dataKey={recMetric === "rate" ? s.rate : s.weighted}
+                    name={s.label}
+                    stroke={s.color}
+                    strokeWidth={s.width}
+                    dot={{ r: s.highlight ? 5 : 3, fill: s.color, stroke: "#fff", strokeWidth: s.highlight ? 2 : 1.5 }}
+                    activeDot={{ r: s.highlight ? 7 : 5, fill: s.color, stroke: "#fff", strokeWidth: 2 }}
+                  />
+                ))}
               </LineChart>
             </ResponsiveContainer>
             <Legend
-              items={[
-                { color: "#dc2626", label: "dell.com (TARGET)", highlight: true },
-                { color: "#94a3b8", label: "techradar.com" },
-                { color: "#cbd5e1", label: "pcmag.com" },
-                { color: "#a3a3a3", label: "notebookcheck.net" },
-                { color: "#fbbf24", label: "bestbuy.com" },
-              ]}
+              items={REC_SERIES.map((s) => ({ color: s.color, label: s.label, highlight: s.highlight }))}
             />
+            <div className="bg-teal-50 border border-teal-100 rounded-lg px-4 py-2 text-xs text-teal-700 flex items-center gap-2 mt-3">
+              <TrendingUp className="w-3 h-3" />
+              Dell's recommendation inclusion rate rose from 50.0% to 66.7% across 6 executions (+16.7pp), with weighted
+              inclusion up 0.42 → 0.58. Apple and HP declined over the same window.
+            </div>
           </div>
           )
         )}
