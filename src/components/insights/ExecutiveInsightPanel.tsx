@@ -13,6 +13,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
+import DeltaIndicator from "./DeltaIndicator";
 
 export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
