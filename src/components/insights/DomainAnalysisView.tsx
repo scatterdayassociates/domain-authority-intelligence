@@ -228,6 +228,9 @@ const RankedDomainTable = ({
       if (sortKey === "avg_position") {
         return (a.avg_position ?? 99) - (b.avg_position ?? 99);
       }
+      if (sortKey === "best_position") {
+        return (a.best_position ?? 99) - (b.best_position ?? 99);
+      }
       const av = a[sortKey] as number;
       const bv = b[sortKey] as number;
       if (bv !== av) return bv - av;
