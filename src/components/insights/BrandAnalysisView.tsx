@@ -11,6 +11,8 @@ import ExportButton from "@/components/export/ExportButton";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
 import { brandTables } from "@/lib/export/builders";
+import BrandRankingTable from "./BrandRankingTable";
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock dataset — execution-scoped, deterministic, aligned with Domain Analysis
