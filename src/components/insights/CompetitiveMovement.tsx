@@ -247,6 +247,8 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
   const fEntries = entries.filter((e) => matches(e.kind));
   const fExits = exits.filter((e) => matches(e.kind));
   const fRankChanges = rankChanges.filter((r) => matches(r.kind));
+  const fDomainMetrics = domainMetricChanges.filter((d) => matches(d.kind));
+
 
   const emptyHint = (label: string) => (
     <p className="text-[11px] text-slate-400 italic py-3">No {label} for current filter.</p>
