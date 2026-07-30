@@ -343,6 +343,9 @@ const RankedDomainTable = ({
                   <td className="px-3 py-2 text-right tabular-nums text-slate-500">
                     {r.avg_position !== undefined ? `#${r.avg_position.toFixed(1)}` : "—"}
                   </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-slate-500">
+                    {r.best_position !== undefined ? `#${r.best_position}` : "—"}
+                  </td>
                   <td className="px-3 py-2 text-right">
                     <div className="inline-flex items-center gap-3">
                       <button
