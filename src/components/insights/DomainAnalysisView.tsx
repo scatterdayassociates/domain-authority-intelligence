@@ -197,7 +197,15 @@ const DomainSummaryCard = ({ leader, onDrillDown }: { leader: EnrichedDomain; on
   );
 };
 
-type SortKey = "mentions" | "persistence" | "share" | "avg_position";
+type SortKey = "mentions" | "persistence" | "share" | "avg_position" | "best_position";
+
+const METRIC_LABELS: Record<SortKey, { label: string; tip: string }> = {
+  mentions: { label: "WAS", tip: "Weighted Authority Score — position-weighted aggregation of domain appearances across runs." },
+  persistence: { label: "RLP", tip: "Run-Level Persistence — share of runs in which this domain appeared at least once." },
+  share: { label: "NAS", tip: "Normalized Authority Share — this domain's share of total weighted authority across all domains." },
+  avg_position: { label: "AP", tip: "Average Position — average rank position across appearances." },
+  best_position: { label: "BP", tip: "Best Position — best (lowest-numbered) rank position achieved." },
+};
 
 const RankedDomainTable = ({
   rows,
