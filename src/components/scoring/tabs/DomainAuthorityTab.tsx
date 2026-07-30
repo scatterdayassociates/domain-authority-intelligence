@@ -6,21 +6,21 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 // Foundational PDPE-derived measurements (WAS, NAS, RLP, AP) shown first.
 // Concentration metrics (Top 5 Share, HHI) and tier classification are downstream.
 const domains = [
-  { rank: 1, domain: "rtings.com", type: "Publisher / Media", was: 142.6, nas: 0.971, rlp: 0.971, ap: 1.8, mentions: 48, persistence: 97.1, avgPos: 1.8, variance: "±0.4", tier: "Core" },
-  { rank: 2, domain: "notebookcheck.net", type: "Publisher / Media", was: 118.3, nas: 0.806, rlp: 0.914, ap: 2.3, mentions: 41, persistence: 91.4, avgPos: 2.3, variance: "±0.6", tier: "Core" },
-  { rank: 3, domain: "pcmag.com", type: "Publisher / Media", was: 102.4, nas: 0.697, rlp: 0.886, ap: 2.7, mentions: 38, persistence: 88.6, avgPos: 2.7, variance: "±0.7", tier: "Core" },
-  { rank: 4, domain: "tomshardware.com", type: "Publisher / Media", was: 88.9, nas: 0.605, rlp: 0.857, ap: 3.1, mentions: 35, persistence: 85.7, avgPos: 3.1, variance: "±0.8", tier: "Core" },
-  { rank: 5, domain: "bestbuy.com", type: "Retail / Marketplace", was: 64.1, nas: 0.436, rlp: 0.800, ap: 3.8, mentions: 29, persistence: 80.0, avgPos: 3.8, variance: "±1.1", tier: "Strong" },
-  { rank: 6, domain: "amazon.com", type: "Retail / Marketplace", was: 53.8, nas: 0.366, rlp: 0.771, ap: 4.1, mentions: 26, persistence: 77.1, avgPos: 4.1, variance: "±1.2", tier: "Strong" },
-  { rank: 7, domain: "theverge.com", type: "Publisher / Media", was: 42.7, nas: 0.291, rlp: 0.686, ap: 4.4, mentions: 22, persistence: 68.6, avgPos: 4.4, variance: "±1.3", tier: "Strong" },
-  { rank: 8, domain: "techradar.com", type: "Publisher / Media", was: 34.5, nas: 0.235, rlp: 0.600, ap: 4.9, mentions: 19, persistence: 60.0, avgPos: 4.9, variance: "±1.5", tier: "Strong" },
-  { rank: 9, domain: "dell.com", type: "Brand / Retail", was: 28.9, nas: 0.197, rlp: 0.543, ap: 5.2, mentions: 17, persistence: 54.3, avgPos: 5.2, variance: "±1.6", tier: "Strong", tag: "TARGET" },
-  { rank: 10, domain: "hp.com", type: "Brand / Retail", was: 21.4, nas: 0.146, rlp: 0.457, ap: 5.8, mentions: 14, persistence: 45.7, avgPos: 5.8, variance: "±1.8", tier: "Peripheral", tag: "COMPETITOR" },
-  { rank: 11, domain: "lenovo.com", type: "Brand / Retail", was: 17.9, nas: 0.122, rlp: 0.429, ap: 6.1, mentions: 12, persistence: 42.9, avgPos: 6.1, variance: "±1.9", tier: "Peripheral", tag: "COMPETITOR" },
-  { rank: 12, domain: "reddit.com", type: "Forum / Community", was: 15.6, nas: 0.106, rlp: 0.400, ap: 6.4, mentions: 11, persistence: 40.0, avgPos: 6.4, variance: "±2.1", tier: "Peripheral" },
-  { rank: 13, domain: "apple.com", type: "Brand / Retail", was: 9.8, nas: 0.067, rlp: 0.286, ap: 7.2, mentions: 8, persistence: 28.6, avgPos: 7.2, variance: "±2.3", tier: "Peripheral" },
-  { rank: 14, domain: "nytimes.com", type: "Publisher / Media", was: 5.7, nas: 0.039, rlp: 0.171, ap: 7.8, mentions: 5, persistence: 17.1, avgPos: 7.8, variance: "±2.4", tier: "Peripheral" },
-  { rank: 15, domain: "wirecutter.com", type: "Review / Affiliate", was: 4.3, nas: 0.029, rlp: 0.143, ap: 8.1, mentions: 4, persistence: 14.3, avgPos: 8.1, variance: "±2.5", tier: "Peripheral" },
+  { rank: 1, domain: "rtings.com", type: "Publisher / Media", was: 142.6, nas: 0.971, rlp: 0.971, bp: 1, ap: 1.8, mentions: 48, persistence: 97.1, avgPos: 1.8, variance: "±0.4", tier: "Core" },
+  { rank: 2, domain: "notebookcheck.net", type: "Publisher / Media", was: 118.3, nas: 0.806, rlp: 0.914, bp: 1, ap: 2.3, mentions: 41, persistence: 91.4, avgPos: 2.3, variance: "±0.6", tier: "Core" },
+  { rank: 3, domain: "pcmag.com", type: "Publisher / Media", was: 102.4, nas: 0.697, rlp: 0.886, bp: 1, ap: 2.7, mentions: 38, persistence: 88.6, avgPos: 2.7, variance: "±0.7", tier: "Core" },
+  { rank: 4, domain: "tomshardware.com", type: "Publisher / Media", was: 88.9, nas: 0.605, rlp: 0.857, bp: 2, ap: 3.1, mentions: 35, persistence: 85.7, avgPos: 3.1, variance: "±0.8", tier: "Core" },
+  { rank: 5, domain: "bestbuy.com", type: "Retail / Marketplace", was: 64.1, nas: 0.436, rlp: 0.800, bp: 2, ap: 3.8, mentions: 29, persistence: 80.0, avgPos: 3.8, variance: "±1.1", tier: "Strong" },
+  { rank: 6, domain: "amazon.com", type: "Retail / Marketplace", was: 53.8, nas: 0.366, rlp: 0.771, bp: 2, ap: 4.1, mentions: 26, persistence: 77.1, avgPos: 4.1, variance: "±1.2", tier: "Strong" },
+  { rank: 7, domain: "theverge.com", type: "Publisher / Media", was: 42.7, nas: 0.291, rlp: 0.686, bp: 2, ap: 4.4, mentions: 22, persistence: 68.6, avgPos: 4.4, variance: "±1.3", tier: "Strong" },
+  { rank: 8, domain: "techradar.com", type: "Publisher / Media", was: 34.5, nas: 0.235, rlp: 0.600, bp: 3, ap: 4.9, mentions: 19, persistence: 60.0, avgPos: 4.9, variance: "±1.5", tier: "Strong" },
+  { rank: 9, domain: "dell.com", type: "Brand / Retail", was: 28.9, nas: 0.197, rlp: 0.543, bp: 2, ap: 5.2, mentions: 17, persistence: 54.3, avgPos: 5.2, variance: "±1.6", tier: "Strong", tag: "TARGET" },
+  { rank: 10, domain: "hp.com", type: "Brand / Retail", was: 21.4, nas: 0.146, rlp: 0.457, bp: 3, ap: 5.8, mentions: 14, persistence: 45.7, avgPos: 5.8, variance: "±1.8", tier: "Peripheral", tag: "COMPETITOR" },
+  { rank: 11, domain: "lenovo.com", type: "Brand / Retail", was: 17.9, nas: 0.122, rlp: 0.429, bp: 3, ap: 6.1, mentions: 12, persistence: 42.9, avgPos: 6.1, variance: "±1.9", tier: "Peripheral", tag: "COMPETITOR" },
+  { rank: 12, domain: "reddit.com", type: "Forum / Community", was: 15.6, nas: 0.106, rlp: 0.400, bp: 3, ap: 6.4, mentions: 11, persistence: 40.0, avgPos: 6.4, variance: "±2.1", tier: "Peripheral" },
+  { rank: 13, domain: "apple.com", type: "Brand / Retail", was: 9.8, nas: 0.067, rlp: 0.286, bp: 4, ap: 7.2, mentions: 8, persistence: 28.6, avgPos: 7.2, variance: "±2.3", tier: "Peripheral" },
+  { rank: 14, domain: "nytimes.com", type: "Publisher / Media", was: 5.7, nas: 0.039, rlp: 0.171, bp: 5, ap: 7.8, mentions: 5, persistence: 17.1, avgPos: 7.8, variance: "±2.4", tier: "Peripheral" },
+  { rank: 15, domain: "wirecutter.com", type: "Review / Affiliate", was: 4.3, nas: 0.029, rlp: 0.143, bp: 5, ap: 8.1, mentions: 4, persistence: 14.3, avgPos: 8.1, variance: "±2.5", tier: "Peripheral" },
 ];
 
 const typeColors: Record<string, string> = {
@@ -47,6 +47,15 @@ const promptBreakdown = [
   { label: "Premium laptop", mentions: 7, avgPos: 1.8 },
 ];
 
+const MetricHead = ({ label, tip }: { label: string; tip: string }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <span className="cursor-help border-b border-dotted border-muted-foreground/40">{label}</span>
+    </TooltipTrigger>
+    <TooltipContent className="max-w-xs text-xs">{tip}</TooltipContent>
+  </Tooltip>
+);
+
 const DomainAuthorityTab = () => {
   const [expanded, setExpanded] = useState<number | null>(null);
   const [coreOnly, setCoreOnly] = useState(false);
@@ -68,6 +77,7 @@ const DomainAuthorityTab = () => {
           <span><strong className="text-foreground">NAS:</strong> Normalised Authority Score — WAS scaled to top domain (0–1)</span>
           <span><strong className="text-foreground">RLP:</strong> Run-Level Persistence — share of runs containing the domain</span>
           <span><strong className="text-foreground">AP:</strong> Average Position — mean citation rank (lower = more prominent)</span>
+          <span><strong className="text-foreground">BP:</strong> Best Position — best (lowest-numbered) rank achieved across runs</span>
         </div>
       </div>
 
@@ -91,7 +101,7 @@ const DomainAuthorityTab = () => {
             {/* Two-row header to make the measurement → interpretation hierarchy explicit */}
             <tr className="text-[10px] uppercase tracking-wide text-muted-foreground/70">
               <th colSpan={3}></th>
-              <th colSpan={4} className="text-center pb-1 border-b border-border/40">Foundational measurements (PDPE)</th>
+              <th colSpan={5} className="text-center pb-1 border-b border-border/40">Foundational measurements (PDPE)</th>
               <th colSpan={2} className="text-center pb-1 border-b border-border/40">Supporting signals</th>
               <th colSpan={2} className="text-center pb-1 border-b border-border/40">Downstream classification</th>
             </tr>
@@ -99,10 +109,11 @@ const DomainAuthorityTab = () => {
               <th className="table-header text-left py-2 w-10">#</th>
               <th className="table-header text-left py-2 w-[180px]">Domain</th>
               <th className="table-header text-left py-2 w-[140px]">Authority Type</th>
-              <th className="table-header text-center py-2 w-[80px]">WAS</th>
-              <th className="table-header text-center py-2 w-[80px]">NAS</th>
-              <th className="table-header text-center py-2 w-[80px]">RLP</th>
-              <th className="table-header text-center py-2 w-[80px]">AP</th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="WAS" tip="Weighted Authority Score — position-weighted aggregation of domain appearances across runs." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="NAS" tip="Normalized Authority Share — this domain's share of total weighted authority across all domains." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="RLP" tip="Run-Level Persistence — share of runs in which this domain appeared at least once." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="AP" tip="Average Position — average rank position across appearances." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="BP" tip="Best Position — best (lowest-numbered) rank position achieved." /></th>
               <th className="table-header text-center py-2 w-[80px]">Mentions</th>
               <th className="table-header text-center py-2 w-[100px]">Pos. Variance</th>
               <th className="table-header text-center py-2 w-[110px]">
@@ -137,6 +148,7 @@ const DomainAuthorityTab = () => {
                   <td className="py-2 tabular text-center">{d.nas.toFixed(3)}</td>
                   <td className="py-2 tabular text-center">{(d.rlp * 100).toFixed(1)}%</td>
                   <td className="py-2 tabular text-center">{d.ap.toFixed(1)}</td>
+                  <td className="py-2 tabular text-center">{d.bp}</td>
                   <td className="py-2 tabular text-center text-muted-foreground">{d.mentions}</td>
                   <td className="py-2 tabular text-center text-muted-foreground">{d.variance}</td>
                   <td className="py-2 text-center"><span className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${tierColors[d.tier]}`}>{d.tier}</span></td>
@@ -146,7 +158,7 @@ const DomainAuthorityTab = () => {
                 </tr>
                 {expanded === d.rank && (
                   <tr key={`exp-${d.rank}`}>
-                    <td colSpan={11} className="bg-muted/50 border-t border-border p-4">
+                    <td colSpan={12} className="bg-muted/50 border-t border-border p-4">
                       <div className="text-xs font-medium text-foreground mb-2">Prompt-level breakdown for {d.domain}</div>
                       <div className="space-y-1">
                         {promptBreakdown.map((p) => (

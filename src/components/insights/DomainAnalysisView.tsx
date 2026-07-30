@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import ExportButton from "@/components/export/ExportButton";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
@@ -31,24 +32,26 @@ interface DomainRow {
   runs_appeared: number;
   total_runs: number;
   avg_position?: number;
+  best_position?: number;
 }
 
 const TOTAL_RUNS = 12;
 
 const DOMAINS: DomainRow[] = [
-  { domain: "techradar.com", type: "publisher", mentions: 9, runs_appeared: 7, total_runs: TOTAL_RUNS, avg_position: 1.6 },
-  { domain: "pcmag.com", type: "publisher", mentions: 8, runs_appeared: 6, total_runs: TOTAL_RUNS, avg_position: 2.1 },
-  { domain: "rtings.com", type: "publisher", mentions: 6, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 2.8 },
-  { domain: "tomshardware.com", type: "publisher", mentions: 5, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 3.0 },
-  { domain: "dell.com", type: "brand", mentions: 5, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 2.4 },
-  { domain: "bestbuy.com", type: "retail", mentions: 4, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 3.6 },
-  { domain: "wired.com", type: "publisher", mentions: 4, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 3.2 },
-  { domain: "apple.com", type: "brand", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 2.0 },
-  { domain: "engadget.com", type: "publisher", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 4.0 },
-  { domain: "amazon.com", type: "retail", mentions: 3, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.5 },
-  { domain: "hp.com", type: "brand", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 3.5 },
-  { domain: "theverge.com", type: "publisher", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.0 },
+  { domain: "techradar.com", type: "publisher", mentions: 9, runs_appeared: 7, total_runs: TOTAL_RUNS, avg_position: 1.6, best_position: 1 },
+  { domain: "pcmag.com", type: "publisher", mentions: 8, runs_appeared: 6, total_runs: TOTAL_RUNS, avg_position: 2.1, best_position: 1 },
+  { domain: "rtings.com", type: "publisher", mentions: 6, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 2.8, best_position: 2 },
+  { domain: "tomshardware.com", type: "publisher", mentions: 5, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 3.0, best_position: 2 },
+  { domain: "dell.com", type: "brand", mentions: 5, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 2.4, best_position: 1 },
+  { domain: "bestbuy.com", type: "retail", mentions: 4, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 3.6, best_position: 2 },
+  { domain: "wired.com", type: "publisher", mentions: 4, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 3.2, best_position: 2 },
+  { domain: "apple.com", type: "brand", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 2.0, best_position: 1 },
+  { domain: "engadget.com", type: "publisher", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 4.0, best_position: 3 },
+  { domain: "amazon.com", type: "retail", mentions: 3, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.5, best_position: 3 },
+  { domain: "hp.com", type: "brand", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 3.5, best_position: 3 },
+  { domain: "theverge.com", type: "publisher", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.0, best_position: 3 },
 ];
+
 
 const TOTAL_MENTIONS = DOMAINS.reduce((s, d) => s + d.mentions, 0);
 
@@ -160,17 +163,23 @@ const DomainSummaryCard = ({ leader, onDrillDown }: { leader: EnrichedDomain; on
             </div>
           </div>
           <div>
-            <div className="text-[11px] text-slate-500 uppercase tracking-wide">Persistence</div>
+            <div className="text-[11px] text-slate-500 uppercase tracking-wide">RLP</div>
             <div className="text-lg font-semibold text-slate-800 tabular-nums">{fmtPct(leader.persistence)}</div>
           </div>
           <div>
-            <div className="text-[11px] text-slate-500 uppercase tracking-wide">Domain share</div>
+            <div className="text-[11px] text-slate-500 uppercase tracking-wide">NAS</div>
             <div className="text-lg font-semibold text-slate-800 tabular-nums">{fmtPct(leader.share)}</div>
           </div>
           {leader.avg_position !== undefined && (
             <div>
-              <div className="text-[11px] text-slate-500 uppercase tracking-wide">Avg position</div>
+              <div className="text-[11px] text-slate-500 uppercase tracking-wide">AP</div>
               <div className="text-lg font-semibold text-slate-500 tabular-nums">#{leader.avg_position.toFixed(1)}</div>
+            </div>
+          )}
+          {leader.best_position !== undefined && (
+            <div>
+              <div className="text-[11px] text-slate-500 uppercase tracking-wide">BP</div>
+              <div className="text-lg font-semibold text-slate-500 tabular-nums">#{leader.best_position}</div>
             </div>
           )}
         </div>
@@ -195,7 +204,15 @@ const DomainSummaryCard = ({ leader, onDrillDown }: { leader: EnrichedDomain; on
   );
 };
 
-type SortKey = "mentions" | "persistence" | "share" | "avg_position";
+type SortKey = "mentions" | "persistence" | "share" | "avg_position" | "best_position";
+
+const METRIC_LABELS: Record<SortKey, { label: string; tip: string }> = {
+  mentions: { label: "WAS", tip: "Weighted Authority Score — position-weighted aggregation of domain appearances across runs." },
+  persistence: { label: "RLP", tip: "Run-Level Persistence — share of runs in which this domain appeared at least once." },
+  share: { label: "NAS", tip: "Normalized Authority Share — this domain's share of total weighted authority across all domains." },
+  avg_position: { label: "AP", tip: "Average Position — average rank position across appearances." },
+  best_position: { label: "BP", tip: "Best Position — best (lowest-numbered) rank position achieved." },
+};
 
 const RankedDomainTable = ({
   rows,
@@ -217,6 +234,9 @@ const RankedDomainTable = ({
     const sortedRows = [...filtered].sort((a, b) => {
       if (sortKey === "avg_position") {
         return (a.avg_position ?? 99) - (b.avg_position ?? 99);
+      }
+      if (sortKey === "best_position") {
+        return (a.best_position ?? 99) - (b.best_position ?? 99);
       }
       const av = a[sortKey] as number;
       const bv = b[sortKey] as number;
@@ -246,16 +266,21 @@ const RankedDomainTable = ({
     URL.revokeObjectURL(url);
   };
 
-  const SortHeader = ({ k, label, align = "right" }: { k: SortKey; label: string; align?: "left" | "right" }) => (
-    <button
-      onClick={() => setSortKey(k)}
-      className={`inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide ${
-        sortKey === k ? "text-slate-800" : "text-slate-500 hover:text-slate-700"
-      } ${align === "right" ? "justify-end w-full" : ""}`}
-    >
-      {label}
-      <ArrowUpDown className="w-3 h-3" />
-    </button>
+  const SortHeader = ({ k, align = "right" }: { k: SortKey; align?: "left" | "right" }) => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          onClick={() => setSortKey(k)}
+          className={`inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide ${
+            sortKey === k ? "text-slate-800" : "text-slate-500 hover:text-slate-700"
+          } ${align === "right" ? "justify-end w-full" : ""}`}
+        >
+          {METRIC_LABELS[k].label}
+          <ArrowUpDown className="w-3 h-3" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-xs text-xs">{METRIC_LABELS[k].tip}</TooltipContent>
+    </Tooltip>
   );
 
   return (
@@ -293,10 +318,11 @@ const RankedDomainTable = ({
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide w-10">#</th>
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide">Domain</th>
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide">Type</th>
-              <th className="px-3 py-2 text-right"><SortHeader k="mentions" label="Mentions" /></th>
-              <th className="px-3 py-2 text-right"><SortHeader k="persistence" label="Persistence" /></th>
-              <th className="px-3 py-2 text-right"><SortHeader k="share" label="Share" /></th>
-              <th className="px-3 py-2 text-right"><SortHeader k="avg_position" label="Avg Pos" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="mentions" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="persistence" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="share" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="avg_position" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="best_position" /></th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
@@ -322,6 +348,9 @@ const RankedDomainTable = ({
                   <td className="px-3 py-2 text-right tabular-nums text-slate-700">{fmtPct(r.share)}</td>
                   <td className="px-3 py-2 text-right tabular-nums text-slate-500">
                     {r.avg_position !== undefined ? `#${r.avg_position.toFixed(1)}` : "—"}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-slate-500">
+                    {r.best_position !== undefined ? `#${r.best_position}` : "—"}
                   </td>
                   <td className="px-3 py-2 text-right">
                     <div className="inline-flex items-center gap-3">

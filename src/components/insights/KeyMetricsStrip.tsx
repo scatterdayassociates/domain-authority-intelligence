@@ -49,19 +49,19 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             <span className="text-xs font-medium text-slate-700 tabular-nums">7 / 12 runs</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[11px] text-slate-400">Persistence</span>
+            <span className="text-[11px] text-slate-400">RLP</span>
             <span className="text-xs font-medium text-slate-700 tabular-nums">58.3%</span>
           </div>
         </div>
         {showCompare && (
           <div className="mt-3 text-[11px] text-slate-400">
-            vs Apr 2026: Δ mentions −2 runs / persistence −8pp
+            vs Apr 2026: Δ WAS −2 runs / RLP −8pp
           </div>
         )}
         {showTrends && (
           <div className="mt-3 flex items-start gap-1.5 text-[11px] text-slate-500 leading-snug">
             <span className="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
-            <span>Stable over 5 executions <span className="text-slate-400 tabular-nums">(58%–62% persistence range)</span></span>
+            <span>Stable over 5 executions <span className="text-slate-400 tabular-nums">(58%–62% RLP range)</span></span>
           </div>
         )}
         <div className="border-t border-slate-100 mt-3 pt-2 mt-auto flex items-center justify-between gap-2">
@@ -76,7 +76,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           </span>
         </div>
         {hovered === "authority" && (
-          <Tooltip text="Top domain by total mentions across all runs in this execution. Persistence = runs_appeared ÷ total_runs." />
+          <Tooltip text="Top domain by WAS (Weighted Authority Score) across all runs in this execution. RLP (Run-Level Persistence) = runs_appeared ÷ total_runs." />
         )}
       </div>
 
