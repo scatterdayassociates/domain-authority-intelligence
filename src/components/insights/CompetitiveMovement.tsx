@@ -445,7 +445,144 @@ const CompetitiveMovement = ({ mode, onSwitchToCompare, context }: Props) => {
         </div>
       </div>
 
+      {/* Domain Analysis comparison — Δ WAS / Δ NAS */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between mb-2">
+          <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+            Domain analysis comparison
+          </h4>
+          <span className="text-[11px] text-slate-400">
+            WAS (Weighted Authority Score) · NAS (Normalized Authority Share) · Apr → May
+          </span>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 text-[10px] uppercase tracking-wide text-slate-500">
+                <th className="text-left font-medium px-4 py-2">Domain</th>
+                <th className="text-left font-medium px-2 py-2">Kind</th>
+                <th className="text-right font-medium px-2 py-2">WAS Apr</th>
+                <th className="text-right font-medium px-2 py-2">WAS May</th>
+                <th className="text-right font-medium px-2 py-2">Δ WAS</th>
+                <th className="text-right font-medium px-2 py-2">NAS Apr</th>
+                <th className="text-right font-medium px-2 py-2">NAS May</th>
+                <th className="text-right font-medium px-4 py-2">Δ NAS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fDomainMetrics.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="px-4 py-3 text-[11px] text-slate-400 italic">
+                    No domains for current filter.
+                  </td>
+                </tr>
+              ) : (
+                fDomainMetrics.map((d) => (
+                  <tr key={d.domain} className="border-b border-slate-100 last:border-0">
+                    <td className="px-4 py-2 font-mono text-slate-700">{d.domain}</td>
+                    <td className="px-2 py-2">
+                      <span className="bg-slate-100 text-slate-500 text-[10px] rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                        {d.kind}
+                      </span>
+                    </td>
+                    <td className="px-2 py-2 text-right text-slate-400 tabular-nums">{d.wasFrom.toFixed(1)}</td>
+                    <td className="px-2 py-2 text-right text-slate-700 tabular-nums">{d.wasTo.toFixed(1)}</td>
+                    <td className="px-2 py-2 text-right">
+                      <DeltaIndicator value={d.wasTo - d.wasFrom} decimals={1} />
+                    </td>
+                    <td className="px-2 py-2 text-right text-slate-400 tabular-nums">{d.nasFrom.toFixed(1)}%</td>
+                    <td className="px-2 py-2 text-right text-slate-700 tabular-nums">{d.nasTo.toFixed(1)}%</td>
+                    <td className="px-4 py-2 text-right">
+                      <DeltaIndicator value={d.nasTo - d.nasFrom} unit="pp" decimals={1} />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[11px] text-slate-400 italic mt-2">
+          Deltas are computed between the selected From / To executions. Δ NAS is expressed in
+          percentage points of total weighted authority.
+        </p>
+      </div>
+
+      {/* Brand Recommendation comparison */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between mb-2">
+          <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+            Brand recommendation comparison
+          </h4>
+          <span className="text-[11px] text-slate-400">
+            Recommended-brands list metrics · Apr → May
+          </span>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 text-[10px] uppercase tracking-wide text-slate-500">
+                <th className="text-left font-medium px-4 py-2">Brand</th>
+                <th className="text-right font-medium px-2 py-2">Rec. Inclusion Rate</th>
+                <th className="text-right font-medium px-2 py-2">Δ Inclusion Rate</th>
+                <th className="text-right font-medium px-2 py-2">Weighted Inclusion</th>
+                <th className="text-right font-medium px-2 py-2">Δ Weighted</th>
+                <th className="text-right font-medium px-2 py-2">Top 3 Presence</th>
+                <th className="text-right font-medium px-2 py-2">Δ Top 3</th>
+                <th className="text-right font-medium px-2 py-2">Top 5 Presence</th>
+                <th className="text-right font-medium px-4 py-2">Δ Top 5</th>
+              </tr>
+            </thead>
+            <tbody>
+              {brandRecommendationChanges.map((b) => (
+                <tr
+                  key={b.brand}
+                  className={`border-b border-slate-100 last:border-0 ${b.isTarget ? "bg-teal-50/60" : ""}`}
+                >
+                  <td className={`px-4 py-2 ${b.isTarget ? "font-semibold text-teal-700" : "text-slate-700"}`}>
+                    {b.brand}
+                    {b.isTarget && (
+                      <span className="ml-1 text-[9px] uppercase tracking-wide text-teal-500">target</span>
+                    )}
+                  </td>
+                  <td className="px-2 py-2 text-right tabular-nums text-slate-700">
+                    <span className="text-slate-400">{b.inclusionFrom.toFixed(1)}%</span> →{" "}
+                    {b.inclusionTo.toFixed(1)}%
+                  </td>
+                  <td className="px-2 py-2 text-right">
+                    <DeltaIndicator value={b.inclusionTo - b.inclusionFrom} unit="pp" decimals={1} />
+                  </td>
+                  <td className="px-2 py-2 text-right tabular-nums text-slate-700">
+                    <span className="text-slate-400">{b.weightedFrom.toFixed(2)}</span> →{" "}
+                    {b.weightedTo.toFixed(2)}
+                  </td>
+                  <td className="px-2 py-2 text-right">
+                    <DeltaIndicator value={b.weightedTo - b.weightedFrom} decimals={2} />
+                  </td>
+                  <td className="px-2 py-2 text-right tabular-nums text-slate-700">
+                    <span className="text-slate-400">{b.top3From.toFixed(1)}%</span> → {b.top3To.toFixed(1)}%
+                  </td>
+                  <td className="px-2 py-2 text-right">
+                    <DeltaIndicator value={b.top3To - b.top3From} unit="pp" decimals={1} />
+                  </td>
+                  <td className="px-2 py-2 text-right tabular-nums text-slate-700">
+                    <span className="text-slate-400">{b.top5From.toFixed(1)}%</span> → {b.top5To.toFixed(1)}%
+                  </td>
+                  <td className="px-4 py-2 text-right">
+                    <DeltaIndicator value={b.top5To - b.top5From} unit="pp" decimals={1} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[11px] text-slate-400 italic mt-2">
+          Derived from the model's explicit recommended-brands list. Weighted inclusion applies rank
+          decay to list position.
+        </p>
+      </div>
+
       {/* Attribute-centric Narrative Comparison */}
+
       <div className="mt-5">
         <div className="flex items-baseline justify-between mb-2">
           <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
