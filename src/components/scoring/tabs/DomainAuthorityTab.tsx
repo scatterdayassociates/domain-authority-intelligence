@@ -91,7 +91,7 @@ const DomainAuthorityTab = () => {
             {/* Two-row header to make the measurement → interpretation hierarchy explicit */}
             <tr className="text-[10px] uppercase tracking-wide text-muted-foreground/70">
               <th colSpan={3}></th>
-              <th colSpan={4} className="text-center pb-1 border-b border-border/40">Foundational measurements (PDPE)</th>
+              <th colSpan={5} className="text-center pb-1 border-b border-border/40">Foundational measurements (PDPE)</th>
               <th colSpan={2} className="text-center pb-1 border-b border-border/40">Supporting signals</th>
               <th colSpan={2} className="text-center pb-1 border-b border-border/40">Downstream classification</th>
             </tr>
@@ -99,10 +99,11 @@ const DomainAuthorityTab = () => {
               <th className="table-header text-left py-2 w-10">#</th>
               <th className="table-header text-left py-2 w-[180px]">Domain</th>
               <th className="table-header text-left py-2 w-[140px]">Authority Type</th>
-              <th className="table-header text-center py-2 w-[80px]">WAS</th>
-              <th className="table-header text-center py-2 w-[80px]">NAS</th>
-              <th className="table-header text-center py-2 w-[80px]">RLP</th>
-              <th className="table-header text-center py-2 w-[80px]">AP</th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="WAS" tip="Weighted Authority Score — position-weighted aggregation of domain appearances across runs." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="NAS" tip="Normalized Authority Share — this domain's share of total weighted authority across all domains." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="RLP" tip="Run-Level Persistence — share of runs in which this domain appeared at least once." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="AP" tip="Average Position — average rank position across appearances." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="BP" tip="Best Position — best (lowest-numbered) rank position achieved." /></th>
               <th className="table-header text-center py-2 w-[80px]">Mentions</th>
               <th className="table-header text-center py-2 w-[100px]">Pos. Variance</th>
               <th className="table-header text-center py-2 w-[110px]">
