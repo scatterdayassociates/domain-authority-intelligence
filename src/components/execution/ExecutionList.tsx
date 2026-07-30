@@ -1,5 +1,13 @@
-import { Eye, Download, RotateCcw, XCircle } from "lucide-react";
+import { useState } from "react";
+import { Eye, Download, RotateCcw, XCircle, ChevronRight, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import {
+  getFamilyBreakdown,
+  getFamilyLabel,
+  familyStyles,
+  familyStatusStyles,
+} from "@/lib/executionFamilies";
+
 
 type ExecutionStatus = "Completed" | "Failed" | "Running" | "Queued";
 
