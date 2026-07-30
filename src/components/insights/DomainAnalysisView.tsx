@@ -31,24 +31,26 @@ interface DomainRow {
   runs_appeared: number;
   total_runs: number;
   avg_position?: number;
+  best_position?: number;
 }
 
 const TOTAL_RUNS = 12;
 
 const DOMAINS: DomainRow[] = [
-  { domain: "techradar.com", type: "publisher", mentions: 9, runs_appeared: 7, total_runs: TOTAL_RUNS, avg_position: 1.6 },
-  { domain: "pcmag.com", type: "publisher", mentions: 8, runs_appeared: 6, total_runs: TOTAL_RUNS, avg_position: 2.1 },
-  { domain: "rtings.com", type: "publisher", mentions: 6, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 2.8 },
-  { domain: "tomshardware.com", type: "publisher", mentions: 5, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 3.0 },
-  { domain: "dell.com", type: "brand", mentions: 5, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 2.4 },
-  { domain: "bestbuy.com", type: "retail", mentions: 4, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 3.6 },
-  { domain: "wired.com", type: "publisher", mentions: 4, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 3.2 },
-  { domain: "apple.com", type: "brand", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 2.0 },
-  { domain: "engadget.com", type: "publisher", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 4.0 },
-  { domain: "amazon.com", type: "retail", mentions: 3, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.5 },
-  { domain: "hp.com", type: "brand", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 3.5 },
-  { domain: "theverge.com", type: "publisher", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.0 },
+  { domain: "techradar.com", type: "publisher", mentions: 9, runs_appeared: 7, total_runs: TOTAL_RUNS, avg_position: 1.6, best_position: 1 },
+  { domain: "pcmag.com", type: "publisher", mentions: 8, runs_appeared: 6, total_runs: TOTAL_RUNS, avg_position: 2.1, best_position: 1 },
+  { domain: "rtings.com", type: "publisher", mentions: 6, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 2.8, best_position: 2 },
+  { domain: "tomshardware.com", type: "publisher", mentions: 5, runs_appeared: 5, total_runs: TOTAL_RUNS, avg_position: 3.0, best_position: 2 },
+  { domain: "dell.com", type: "brand", mentions: 5, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 2.4, best_position: 1 },
+  { domain: "bestbuy.com", type: "retail", mentions: 4, runs_appeared: 4, total_runs: TOTAL_RUNS, avg_position: 3.6, best_position: 2 },
+  { domain: "wired.com", type: "publisher", mentions: 4, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 3.2, best_position: 2 },
+  { domain: "apple.com", type: "brand", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 2.0, best_position: 1 },
+  { domain: "engadget.com", type: "publisher", mentions: 3, runs_appeared: 3, total_runs: TOTAL_RUNS, avg_position: 4.0, best_position: 3 },
+  { domain: "amazon.com", type: "retail", mentions: 3, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.5, best_position: 3 },
+  { domain: "hp.com", type: "brand", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 3.5, best_position: 3 },
+  { domain: "theverge.com", type: "publisher", mentions: 2, runs_appeared: 2, total_runs: TOTAL_RUNS, avg_position: 4.0, best_position: 3 },
 ];
+
 
 const TOTAL_MENTIONS = DOMAINS.reduce((s, d) => s + d.mentions, 0);
 
