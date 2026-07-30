@@ -55,10 +55,18 @@ const TYPE_STYLES: Record<
   brand: {
     card: "bg-amber-50 border-amber-200",
     badge: "bg-amber-100 text-amber-700",
-    badgeLabel: "Brand Inclusion",
+    badgeLabel: "Brand Inclusion (Sources)",
     icon: Target,
     link: "text-amber-600",
     border: "border-amber-200",
+  },
+  recommendation: {
+    card: "bg-teal-50 border-teal-200",
+    badge: "bg-teal-100 text-teal-700",
+    badgeLabel: "Brand Recommendation",
+    icon: Award,
+    link: "text-teal-600",
+    border: "border-teal-200",
   },
   concentration: {
     card: "bg-blue-50 border-blue-200",
