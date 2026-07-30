@@ -354,6 +354,20 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
               );
             })()}
 
+            {/* Compare-mode per-metric deltas */}
+            {mode === "compare" && card.metricDeltas && (
+              <div className={`mt-3 pt-3 border-t ${style.border} space-y-1`}>
+                {card.metricDeltas.map((d) => (
+                  <div key={d.label} className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] text-slate-500">{d.label}</span>
+                    <DeltaIndicator value={d.value} unit={d.unit} decimals={d.decimals ?? 1} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+
+
             {/* Trends-mode enrichment: magnitude / range / driver */}
             {mode === "trends" && card.trendDetail && (
               <div className={`mt-3 pt-3 border-t ${style.border} space-y-1.5`}>
