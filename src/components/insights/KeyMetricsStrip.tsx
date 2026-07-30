@@ -76,7 +76,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           </span>
         </div>
         {hovered === "authority" && (
-          <Tooltip text="Top domain by total mentions across all runs in this execution. Persistence = runs_appeared ÷ total_runs." />
+          <Tooltip text="Top domain by WAS (Weighted Authority Score) across all runs in this execution. RLP (Run-Level Persistence) = runs_appeared ÷ total_runs." />
         )}
       </div>
 
