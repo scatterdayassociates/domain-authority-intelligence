@@ -20,7 +20,7 @@ interface Props {
   context: string;
 }
 
-type SubTab = "domain" | "brand" | "concentration" | "narrative";
+type SubTab = "domain" | "brand" | "recommendation" | "concentration" | "narrative";
 
 const months = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026"];
 
@@ -31,6 +31,10 @@ const domainData = months.map((m, i) => ({
   notebookcheck: [38, 40, 36, 41, 39, 42][i],
   bestbuy: [25, 28, 24, 27, 29, 26][i],
   dell: [17, 19, 15, 20, 22, 25][i],
+  // WAS = position-weighted authority aggregation (right axis, absolute)
+  was: [12.4, 13.1, 11.8, 14.2, 15.0, 16.3][i],
+  // NAS = normalised authority share for dell.com (%, left axis)
+  nas: [9.2, 9.8, 8.6, 10.4, 11.1, 12.0][i],
 }));
 
 const brandData = months.map((m, i) => ({
@@ -39,6 +43,19 @@ const brandData = months.map((m, i) => ({
   Apple: [55, 52, 58, 54, 50, 50][i],
   HP: [40, 38, 42, 39, 37, 35][i],
   Lenovo: [30, 33, 28, 31, 30, 32][i],
+}));
+
+// Brand Recommendation Trends — BNE recommendation-layer signals over time
+const recData = months.map((m, i) => ({
+  month: m,
+  DellRate: [50.0, 54.2, 51.7, 58.3, 62.5, 66.7][i],
+  AppleRate: [58.3, 56.7, 60.0, 55.8, 54.2, 53.3][i],
+  HPRate: [41.7, 40.0, 43.3, 38.3, 36.7, 35.0][i],
+  LenovoRate: [30.0, 32.5, 29.2, 31.7, 30.8, 32.5][i],
+  DellWeighted: [0.42, 0.46, 0.44, 0.5, 0.54, 0.58][i],
+  AppleWeighted: [0.51, 0.49, 0.53, 0.48, 0.46, 0.45][i],
+  HPWeighted: [0.34, 0.32, 0.36, 0.31, 0.29, 0.28][i],
+  LenovoWeighted: [0.24, 0.26, 0.23, 0.25, 0.24, 0.26][i],
 }));
 
 const concData = months.map((m, i) => ({
@@ -53,6 +70,23 @@ const narrativeData = months.map((m, i) => ({
   generalUse: [56, 54, 54, 50, 58, 54][i],
   gaming: [30, 33, 32, 35, 30, 32][i],
 }));
+
+const DOMAIN_SERIES = [
+  { key: "dell", label: "dell.com (TARGET)", color: "#dc2626", axis: "left" as const, width: 3.5, highlight: true },
+  { key: "techradar", label: "techradar.com", color: "#94a3b8", axis: "left" as const, width: 1.5 },
+  { key: "pcmag", label: "pcmag.com", color: "#cbd5e1", axis: "left" as const, width: 1.5 },
+  { key: "notebookcheck", label: "notebookcheck.net", color: "#a3a3a3", axis: "left" as const, width: 1.5 },
+  { key: "bestbuy", label: "bestbuy.com", color: "#fbbf24", axis: "left" as const, width: 1.5 },
+  { key: "nas", label: "NAS (dell.com)", color: "#0ea5e9", axis: "left" as const, width: 2, dashed: true },
+  { key: "was", label: "WAS (dell.com)", color: "#7c3aed", axis: "right" as const, width: 2, dashed: true },
+];
+
+const REC_SERIES = [
+  { rate: "DellRate", weighted: "DellWeighted", label: "Dell (TARGET)", color: "#0d9488", width: 3.5, highlight: true },
+  { rate: "AppleRate", weighted: "AppleWeighted", label: "Apple", color: "#cbd5e1", width: 1.5 },
+  { rate: "HPRate", weighted: "HPWeighted", label: "HP", color: "#fbbf24", width: 1.5 },
+  { rate: "LenovoRate", weighted: "LenovoWeighted", label: "Lenovo", color: "#94a3b8", width: 1.5 },
+];
 
 const ChartTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
