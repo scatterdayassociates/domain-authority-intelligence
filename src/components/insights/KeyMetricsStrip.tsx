@@ -61,7 +61,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         {showTrends && (
           <div className="mt-3 flex items-start gap-1.5 text-[11px] text-slate-500 leading-snug">
             <span className="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
-            <span>Stable over 5 executions <span className="text-slate-400 tabular-nums">(58%–62% persistence range)</span></span>
+            <span>Stable over 5 executions <span className="text-slate-400 tabular-nums">(58%–62% RLP range)</span></span>
           </div>
         )}
         <div className="border-t border-slate-100 mt-3 pt-2 mt-auto flex items-center justify-between gap-2">
