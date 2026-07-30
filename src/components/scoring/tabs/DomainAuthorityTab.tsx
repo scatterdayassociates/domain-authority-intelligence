@@ -77,6 +77,7 @@ const DomainAuthorityTab = () => {
           <span><strong className="text-foreground">NAS:</strong> Normalised Authority Score — WAS scaled to top domain (0–1)</span>
           <span><strong className="text-foreground">RLP:</strong> Run-Level Persistence — share of runs containing the domain</span>
           <span><strong className="text-foreground">AP:</strong> Average Position — mean citation rank (lower = more prominent)</span>
+          <span><strong className="text-foreground">BP:</strong> Best Position — best (lowest-numbered) rank achieved across runs</span>
         </div>
       </div>
 
