@@ -151,6 +151,7 @@ const exportData = (
   fEntries: typeof entries,
   fExits: typeof exits,
   fRankChanges: typeof rankChanges,
+  fDomainMetrics: typeof domainMetricChanges,
 ) => {
   const rows: (string | number)[][] = [
     ["Type", "Kind", "Domain", "Apr Rank", "May Rank", "Delta"],
@@ -164,9 +165,56 @@ const exportData = (
       r.to,
       r.delta > 0 ? `+${r.delta}` : r.delta,
     ]),
+    [],
+    ["Type", "Kind", "Domain", "WAS Apr", "WAS May", "Δ WAS", "NAS Apr", "NAS May", "Δ NAS"],
+    ...fDomainMetrics.map((d) => [
+      "Domain Metric",
+      d.kind,
+      d.domain,
+      d.wasFrom,
+      d.wasTo,
+      (d.wasTo - d.wasFrom).toFixed(1),
+      `${d.nasFrom}%`,
+      `${d.nasTo}%`,
+      `${(d.nasTo - d.nasFrom).toFixed(1)}pp`,
+    ]),
+    [],
+    [
+      "Type",
+      "Brand",
+      "Rec. Inclusion Apr",
+      "Rec. Inclusion May",
+      "Δ Rec. Inclusion",
+      "Weighted Apr",
+      "Weighted May",
+      "Δ Weighted",
+      "Top 3 Apr",
+      "Top 3 May",
+      "Δ Top 3",
+      "Top 5 Apr",
+      "Top 5 May",
+      "Δ Top 5",
+    ],
+    ...brandRecommendationChanges.map((b) => [
+      "Brand Recommendation",
+      b.brand,
+      `${b.inclusionFrom}%`,
+      `${b.inclusionTo}%`,
+      `${(b.inclusionTo - b.inclusionFrom).toFixed(1)}pp`,
+      b.weightedFrom.toFixed(2),
+      b.weightedTo.toFixed(2),
+      (b.weightedTo - b.weightedFrom).toFixed(2),
+      `${b.top3From}%`,
+      `${b.top3To}%`,
+      `${(b.top3To - b.top3From).toFixed(1)}pp`,
+      `${b.top5From}%`,
+      `${b.top5To}%`,
+      `${(b.top5To - b.top5From).toFixed(1)}pp`,
+    ]),
   ];
   downloadCsv(buildFilename(context, "competitive-movement"), rows);
 };
+
 
 const FILTERS: { id: Filter; label: string }[] = [
   { id: "all", label: "All" },
