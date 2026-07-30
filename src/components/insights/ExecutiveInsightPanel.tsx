@@ -5,6 +5,7 @@ import {
   BarChart2,
   GitCompare,
   MessageSquareQuote,
+  Award,
   ArrowUp,
   ArrowDown,
   Minus,
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
-export type InsightType = "authority" | "brand" | "concentration" | "movement" | "narrative";
+export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
 
 interface InsightCard {
