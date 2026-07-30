@@ -142,7 +142,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         onClick={() => trigger("Brand Inclusion: Dell at 75%", "brand")}
       >
         <div className="flex justify-between items-start">
-          <span className="text-xs text-slate-500 uppercase tracking-wide">Brand Inclusion</span>
+          <span className="text-xs text-slate-500 uppercase tracking-wide">Brand Inclusion (Sources)</span>
           <Target className="w-3.5 h-3.5 text-slate-300" />
         </div>
         <div className="mt-2 text-sm font-semibold text-slate-800">Dell Technologies</div>

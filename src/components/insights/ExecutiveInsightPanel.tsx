@@ -5,6 +5,7 @@ import {
   BarChart2,
   GitCompare,
   MessageSquareQuote,
+  Award,
   ArrowUp,
   ArrowDown,
   Minus,
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 
-export type InsightType = "authority" | "brand" | "concentration" | "movement" | "narrative";
+export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
 
 interface InsightCard {
@@ -54,10 +55,18 @@ const TYPE_STYLES: Record<
   brand: {
     card: "bg-amber-50 border-amber-200",
     badge: "bg-amber-100 text-amber-700",
-    badgeLabel: "Brand Inclusion",
+    badgeLabel: "Brand Inclusion (Sources)",
     icon: Target,
     link: "text-amber-600",
     border: "border-amber-200",
+  },
+  recommendation: {
+    card: "bg-teal-50 border-teal-200",
+    badge: "bg-teal-100 text-teal-700",
+    badgeLabel: "Brand Recommendation",
+    icon: Award,
+    link: "text-teal-600",
+    border: "border-teal-200",
   },
   concentration: {
     card: "bg-blue-50 border-blue-200",
@@ -93,6 +102,8 @@ const confidencePill = (type: InsightType, conf: Confidence) => {
       return high ? "bg-green-600 text-white" : "bg-green-100 text-green-700";
     case "brand":
       return high ? "bg-amber-600 text-white" : "bg-amber-100 text-amber-700";
+    case "recommendation":
+      return high ? "bg-teal-600 text-white" : "bg-teal-100 text-teal-700";
     case "concentration":
       return high ? "bg-blue-600 text-white" : "bg-blue-100 text-blue-700";
     case "movement":
@@ -166,6 +177,33 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         magnitude: "Increasing trend (+15pp across 5 executions)",
         range: "60%–75% inclusion range",
         driver: "Driven by increased visibility in publisher domains",
+      },
+    },
+    {
+      type: "recommendation",
+      confidence: "medium",
+      statement: "Dell appears in the model's recommended-brand list in most runs",
+      metrics: [
+        { label: "Inclusion Rate:", value: "66.7%" },
+        { label: "Weighted Inclusion:", value: "0.58" },
+        { label: "Top 3 Presence:", value: "41.7%" },
+        { label: "Top 5 Presence:", value: "58.3%" },
+      ],
+      change: { direction: "up", text: "+8pp vs previous execution" },
+      trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
+      evidenceTab: "brand",
+      tooltip: {
+        source: "Generated from: recommended_brands list (8/12 runs), position-weighted inclusion (0.58)",
+        bullets: [
+          "Rule: Brand named in the model's explicit recommendation list",
+          "Weighted inclusion applies rank decay to list position",
+          "Confidence basis: 12 runs parsed, 2 runs with ambiguous list structure",
+        ],
+      },
+      trendDetail: {
+        magnitude: "Increasing trend (+8pp across 5 executions)",
+        range: "58%–67% recommendation inclusion",
+        driver: "More frequent placement inside top-3 recommendation slots",
       },
     },
     {
