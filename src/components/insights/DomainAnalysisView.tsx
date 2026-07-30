@@ -163,17 +163,23 @@ const DomainSummaryCard = ({ leader, onDrillDown }: { leader: EnrichedDomain; on
             </div>
           </div>
           <div>
-            <div className="text-[11px] text-slate-500 uppercase tracking-wide">Persistence</div>
+            <div className="text-[11px] text-slate-500 uppercase tracking-wide">RLP</div>
             <div className="text-lg font-semibold text-slate-800 tabular-nums">{fmtPct(leader.persistence)}</div>
           </div>
           <div>
-            <div className="text-[11px] text-slate-500 uppercase tracking-wide">Domain share</div>
+            <div className="text-[11px] text-slate-500 uppercase tracking-wide">NAS</div>
             <div className="text-lg font-semibold text-slate-800 tabular-nums">{fmtPct(leader.share)}</div>
           </div>
           {leader.avg_position !== undefined && (
             <div>
-              <div className="text-[11px] text-slate-500 uppercase tracking-wide">Avg position</div>
+              <div className="text-[11px] text-slate-500 uppercase tracking-wide">AP</div>
               <div className="text-lg font-semibold text-slate-500 tabular-nums">#{leader.avg_position.toFixed(1)}</div>
+            </div>
+          )}
+          {leader.best_position !== undefined && (
+            <div>
+              <div className="text-[11px] text-slate-500 uppercase tracking-wide">BP</div>
+              <div className="text-lg font-semibold text-slate-500 tabular-nums">#{leader.best_position}</div>
             </div>
           )}
         </div>
