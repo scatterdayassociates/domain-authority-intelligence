@@ -13,6 +13,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
+import DeltaIndicator from "./DeltaIndicator";
 
 export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
@@ -24,6 +25,8 @@ interface InsightCard {
   metrics: { label: string; value: string }[];
   change?: { direction: "up" | "down" | "flat"; text: string };
   trendChange?: { direction: "up" | "down" | "flat"; text: string };
+  /** Per-metric deltas shown in Compare mode. */
+  metricDeltas?: { label: string; value: number; unit?: string; decimals?: number }[];
   evidenceTab: string;
   tooltip: { source: string; bullets: string[] };
   trendDetail?: {
@@ -32,6 +35,7 @@ interface InsightCard {
     driver?: string;
   };
 }
+
 
 const TYPE_STYLES: Record<
   InsightType,
@@ -164,7 +168,12 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       ],
       change: { direction: "up", text: "+15% vs previous execution" },
       trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
+      metricDeltas: [
+        { label: "Δ Inclusion Rate", value: 15, unit: "pp" },
+        { label: "Δ Runs surfaced", value: 2, unit: " runs", decimals: 0 },
+      ],
       evidenceTab: "brand",
+
       tooltip: {
         source: "Generated from: inclusion_rate (75%), delta vs prior (+15pp)",
         bullets: [
@@ -191,6 +200,12 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       ],
       change: { direction: "up", text: "+8pp vs previous execution" },
       trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
+      metricDeltas: [
+        { label: "Δ Inclusion Rate", value: 8.4, unit: "pp" },
+        { label: "Δ Weighted Inclusion", value: 0.08, decimals: 2 },
+        { label: "Δ Top 3 Presence", value: 8.4, unit: "pp" },
+        { label: "Δ Top 5 Presence", value: 8.3, unit: "pp" },
+      ],
       evidenceTab: "brand",
       tooltip: {
         source: "Generated from: recommended_brands list (8/12 runs), position-weighted inclusion (0.58)",
@@ -339,6 +354,20 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
                 </div>
               );
             })()}
+
+            {/* Compare-mode per-metric deltas */}
+            {mode === "compare" && card.metricDeltas && (
+              <div className={`mt-3 pt-3 border-t ${style.border} space-y-1`}>
+                {card.metricDeltas.map((d) => (
+                  <div key={d.label} className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] text-slate-500">{d.label}</span>
+                    <DeltaIndicator value={d.value} unit={d.unit} decimals={d.decimals ?? 1} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+
 
             {/* Trends-mode enrichment: magnitude / range / driver */}
             {mode === "trends" && card.trendDetail && (

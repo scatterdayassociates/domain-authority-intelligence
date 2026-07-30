@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Globe, BarChart2, Target, MessageSquareQuote, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
+import DeltaIndicator from "./DeltaIndicator";
 
 interface Props {
   mode: InsightMode;
@@ -162,10 +163,29 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           ))}
         </div>
         {showCompare && (
-          <div className="mt-3 text-[11px] text-slate-400">
-            vs Apr 2026: Dell +15pp / Apple −8pp
+          <div className="mt-3 space-y-1.5">
+            <div className="text-[11px] text-slate-400">
+              vs Apr 2026: Dell +15pp / Apple −8pp
+            </div>
+            <div className="border-t border-slate-100 pt-2">
+              <div className="text-[10px] uppercase tracking-wide text-slate-400 mb-1">
+                Brand Recommendation Δ · Dell
+              </div>
+              {[
+                { label: "Inclusion Rate", value: 8.4, unit: "pp", decimals: 1 },
+                { label: "Weighted Inclusion", value: 0.08, unit: "", decimals: 2 },
+                { label: "Top 3 Presence", value: 8.4, unit: "pp", decimals: 1 },
+                { label: "Top 5 Presence", value: 8.3, unit: "pp", decimals: 1 },
+              ].map((d) => (
+                <div key={d.label} className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] text-slate-500">Δ {d.label}</span>
+                  <DeltaIndicator value={d.value} unit={d.unit} decimals={d.decimals} />
+                </div>
+              ))}
+            </div>
           </div>
         )}
+
         <div className="border-t border-slate-100 mt-3 pt-2 mt-auto flex items-center justify-between gap-2">
           <button
             className="text-[11px] text-teal-600 hover:underline"
