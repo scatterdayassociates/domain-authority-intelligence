@@ -311,10 +311,11 @@ const RankedDomainTable = ({
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide w-10">#</th>
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide">Domain</th>
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide">Type</th>
-              <th className="px-3 py-2 text-right"><SortHeader k="mentions" label="Mentions" /></th>
-              <th className="px-3 py-2 text-right"><SortHeader k="persistence" label="Persistence" /></th>
-              <th className="px-3 py-2 text-right"><SortHeader k="share" label="Share" /></th>
-              <th className="px-3 py-2 text-right"><SortHeader k="avg_position" label="Avg Pos" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="mentions" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="persistence" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="share" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="avg_position" /></th>
+              <th className="px-3 py-2 text-right"><SortHeader k="best_position" /></th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
