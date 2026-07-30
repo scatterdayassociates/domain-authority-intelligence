@@ -24,6 +24,8 @@ interface InsightCard {
   metrics: { label: string; value: string }[];
   change?: { direction: "up" | "down" | "flat"; text: string };
   trendChange?: { direction: "up" | "down" | "flat"; text: string };
+  /** Per-metric deltas shown in Compare mode. */
+  metricDeltas?: { label: string; value: number; unit?: string; decimals?: number }[];
   evidenceTab: string;
   tooltip: { source: string; bullets: string[] };
   trendDetail?: {
@@ -32,6 +34,7 @@ interface InsightCard {
     driver?: string;
   };
 }
+
 
 const TYPE_STYLES: Record<
   InsightType,
