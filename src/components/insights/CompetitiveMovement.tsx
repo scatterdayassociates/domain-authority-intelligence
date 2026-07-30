@@ -68,6 +68,84 @@ const rankChanges: { domain: string; from: number; to: number; delta: number; ki
   { domain: "hp.com", from: 5, to: 7, delta: -2, kind: "brand" },
 ];
 
+// Domain Analysis comparison — foundational measurements, Apr → May
+const domainMetricChanges: {
+  domain: string;
+  kind: Kind;
+  wasFrom: number;
+  wasTo: number;
+  nasFrom: number;
+  nasTo: number;
+}[] = [
+  { domain: "techradar.com", kind: "publisher", wasFrom: 18.4, wasTo: 24.1, nasFrom: 14.2, nasTo: 17.8 },
+  { domain: "pcmag.com", kind: "publisher", wasFrom: 21.0, wasTo: 19.6, nasFrom: 16.1, nasTo: 14.5 },
+  { domain: "notebookcheck.net", kind: "publisher", wasFrom: 12.8, wasTo: 15.3, nasFrom: 9.8, nasTo: 11.3 },
+  { domain: "bestbuy.com", kind: "retail", wasFrom: 16.2, wasTo: 11.9, nasFrom: 12.4, nasTo: 8.8 },
+  { domain: "dell.com", kind: "brand", wasFrom: 8.1, wasTo: 12.6, nasFrom: 6.2, nasTo: 9.3 },
+  { domain: "hp.com", kind: "brand", wasFrom: 10.4, wasTo: 10.4, nasFrom: 8.0, nasTo: 7.7 },
+];
+
+// Brand Recommendation comparison — recommended-brands list metrics, Apr → May
+const brandRecommendationChanges: {
+  brand: string;
+  isTarget?: boolean;
+  inclusionFrom: number;
+  inclusionTo: number;
+  weightedFrom: number;
+  weightedTo: number;
+  top3From: number;
+  top3To: number;
+  top5From: number;
+  top5To: number;
+}[] = [
+  {
+    brand: "Dell",
+    isTarget: true,
+    inclusionFrom: 58.3,
+    inclusionTo: 66.7,
+    weightedFrom: 0.5,
+    weightedTo: 0.58,
+    top3From: 33.3,
+    top3To: 41.7,
+    top5From: 50.0,
+    top5To: 58.3,
+  },
+  {
+    brand: "HP",
+    inclusionFrom: 54.2,
+    inclusionTo: 50.0,
+    weightedFrom: 0.46,
+    weightedTo: 0.41,
+    top3From: 29.2,
+    top3To: 25.0,
+    top5From: 45.8,
+    top5To: 41.7,
+  },
+  {
+    brand: "Lenovo",
+    inclusionFrom: 45.8,
+    inclusionTo: 45.8,
+    weightedFrom: 0.38,
+    weightedTo: 0.4,
+    top3From: 20.8,
+    top3To: 25.0,
+    top5From: 37.5,
+    top5To: 37.5,
+  },
+  {
+    brand: "Apple",
+    inclusionFrom: 62.5,
+    inclusionTo: 58.3,
+    weightedFrom: 0.55,
+    weightedTo: 0.52,
+    top3From: 41.7,
+    top3To: 37.5,
+    top5From: 54.2,
+    top5To: 50.0,
+  },
+];
+
+
 const exportData = (
   context: string,
   fEntries: typeof entries,
