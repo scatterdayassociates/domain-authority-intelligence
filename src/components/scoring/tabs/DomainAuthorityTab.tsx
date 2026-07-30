@@ -147,6 +147,7 @@ const DomainAuthorityTab = () => {
                   <td className="py-2 tabular text-center">{d.nas.toFixed(3)}</td>
                   <td className="py-2 tabular text-center">{(d.rlp * 100).toFixed(1)}%</td>
                   <td className="py-2 tabular text-center">{d.ap.toFixed(1)}</td>
+                  <td className="py-2 tabular text-center">{d.bp}</td>
                   <td className="py-2 tabular text-center text-muted-foreground">{d.mentions}</td>
                   <td className="py-2 tabular text-center text-muted-foreground">{d.variance}</td>
                   <td className="py-2 text-center"><span className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${tierColors[d.tier]}`}>{d.tier}</span></td>
