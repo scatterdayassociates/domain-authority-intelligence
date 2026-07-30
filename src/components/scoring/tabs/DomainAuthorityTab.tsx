@@ -47,6 +47,15 @@ const promptBreakdown = [
   { label: "Premium laptop", mentions: 7, avgPos: 1.8 },
 ];
 
+const MetricHead = ({ label, tip }: { label: string; tip: string }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <span className="cursor-help border-b border-dotted border-muted-foreground/40">{label}</span>
+    </TooltipTrigger>
+    <TooltipContent className="max-w-xs text-xs">{tip}</TooltipContent>
+  </Tooltip>
+);
+
 const DomainAuthorityTab = () => {
   const [expanded, setExpanded] = useState<number | null>(null);
   const [coreOnly, setCoreOnly] = useState(false);
