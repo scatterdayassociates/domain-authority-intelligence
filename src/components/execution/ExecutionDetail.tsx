@@ -1,11 +1,18 @@
 import { ArrowLeft, Download, Info } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import {
+  getFamilyBreakdown,
+  getFamilyLabel,
+  familyStyles,
+  familyStatusStyles,
+} from "@/lib/executionFamilies";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 
 interface ExecutionDetailProps {
   executionId: string;
@@ -48,8 +55,17 @@ const responseRows = [
 ];
 
 const ExecutionDetail = ({ executionId, onBack }: ExecutionDetailProps) => {
+  const family = getFamilyLabel(executionId);
+  const familyBreakdown = getFamilyBreakdown(executionId);
+
   const fields: FieldDef[] = [
     { label: "Pack", value: summaryData.pack },
+    {
+      label: "Family",
+      value: family,
+      tooltip:
+        "Prompt pack families covered by this execution. \"Both\" means the Authority Measurement (SOURCES) and Brand Recommendation (RECOMMENDED BRANDS) families were executed together against the same context as a single execution.",
+    },
     { label: "Version", value: summaryData.version },
     {
       label: "Pack Hash",
@@ -138,6 +154,34 @@ const ExecutionDetail = ({ executionId, onBack }: ExecutionDetailProps) => {
             </span>
             <span className={`text-sm text-foreground ${mono ? "font-mono text-xs break-all" : ""}`}>
               {value}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Per-family sub-status */}
+      <SectionHeader
+        title="Family sub-status"
+        right={
+          <span className={`text-xs font-medium rounded-full px-2.5 py-0.5 ${familyStyles[family]}`}>
+            {family}
+          </span>
+        }
+      />
+
+      <div className="grid gap-2 max-w-3xl">
+        {familyBreakdown.map((b) => (
+          <div
+            key={b.family}
+            className="flex items-center gap-3 rounded-md border border-border px-3 py-2"
+          >
+            <span className="text-sm text-foreground w-[140px]">{b.family}</span>
+            <span className={`text-xs font-medium rounded-full px-2 py-0.5 ${familyStatusStyles[b.status]}`}>
+              {b.status}
+            </span>
+            <span className="text-xs text-muted-foreground">{b.contract}</span>
+            <span className="text-xs text-muted-foreground tabular ml-auto">
+              {b.prompts} prompts · {b.runs} runs
             </span>
           </div>
         ))}

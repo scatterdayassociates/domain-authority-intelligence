@@ -1,5 +1,13 @@
-import { Eye, Download, RotateCcw, XCircle } from "lucide-react";
+import { Fragment, useState } from "react";
+import { Eye, Download, RotateCcw, XCircle, ChevronRight, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import {
+  getFamilyBreakdown,
+  getFamilyLabel,
+  familyStyles,
+  familyStatusStyles,
+} from "@/lib/executionFamilies";
+
 
 type ExecutionStatus = "Completed" | "Failed" | "Running" | "Queued";
 
@@ -39,6 +47,11 @@ interface ExecutionListProps {
 }
 
 const ExecutionList = ({ onViewExecution }: ExecutionListProps) => {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  const toggle = (id: string) =>
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+
   return (
     <div>
       <SectionHeader
@@ -52,6 +65,7 @@ const ExecutionList = ({ onViewExecution }: ExecutionListProps) => {
             <tr className="border-b border-border">
               <th className="table-header text-left py-2.5 px-3 w-[120px]">Execution ID</th>
               <th className="table-header text-left py-2.5 px-3">Prompt Pack</th>
+              <th className="table-header text-left py-2.5 px-3 w-[130px]">Family</th>
               <th className="table-header text-left py-2.5 px-3 w-[140px]">Context</th>
               <th className="table-header text-left py-2.5 px-3 w-[60px]">Ver</th>
               <th className="table-header text-left py-2.5 px-3 w-[120px]">Model</th>
@@ -64,61 +78,110 @@ const ExecutionList = ({ onViewExecution }: ExecutionListProps) => {
             </tr>
           </thead>
           <tbody>
-            {executions.map((exec, i) => (
-              <tr
-                key={exec.id}
-                className={`border-b border-border hover:bg-primary/5 transition-colors ${
-                  i % 2 === 1 ? "bg-muted/30" : ""
-                }`}
-              >
-                <td className="py-2.5 px-3 text-sm font-mono text-muted-foreground">{exec.id}</td>
-                <td className="py-2.5 px-3 text-sm text-foreground">{exec.pack}</td>
-                <td className="py-2.5 px-3 text-sm text-slate-600 truncate max-w-[140px]">{exec.context}</td>
-                <td className="py-2.5 px-3 text-sm text-muted-foreground">{exec.version}</td>
-                <td className="py-2.5 px-3 text-sm text-foreground">{exec.model}</td>
-                <td className="py-2.5 px-3 text-sm tabular text-foreground">{exec.prompts}</td>
-                <td className="py-2.5 px-3 text-sm tabular text-foreground">{exec.totalRuns}</td>
-                <td className="py-2.5 px-3">
-                  <span className={`inline-flex items-center gap-1.5 text-xs font-medium rounded-full px-2.5 py-0.5 ${statusStyles[exec.status]}`}>
-                    {exec.status === "Running" && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--status-running-fg))] animate-pulse" />
-                    )}
-                    {exec.status}
-                  </span>
-                </td>
-                <td className="py-2.5 px-3 text-sm text-muted-foreground">{exec.started}</td>
-                <td className="py-2.5 px-3 text-sm text-muted-foreground tabular">{exec.duration}</td>
-                <td className="py-2.5 px-3 text-right">
-                  <div className="flex items-center justify-end gap-1.5">
-                    {exec.status === "Completed" && (
-                      <>
-                        <button onClick={() => onViewExecution(exec.id)} className="text-muted-foreground hover:text-primary transition-colors" title="View">
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-                        <button className="text-muted-foreground hover:text-primary transition-colors" title="Export">
-                          <Download className="w-3.5 h-3.5" />
-                        </button>
-                      </>
-                    )}
-                    {exec.status === "Failed" && (
-                      <>
-                        <button className="text-muted-foreground hover:text-primary transition-colors" title="Retry">
-                          <RotateCcw className="w-3.5 h-3.5" />
-                        </button>
-                        <button onClick={() => onViewExecution(exec.id)} className="text-muted-foreground hover:text-primary transition-colors" title="View">
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-                      </>
-                    )}
-                    {(exec.status === "Running" || exec.status === "Queued") && (
-                      <button className="text-muted-foreground hover:text-destructive transition-colors" title="Cancel">
-                        <XCircle className="w-3.5 h-3.5" />
+            {executions.map((exec, i) => {
+              const family = getFamilyLabel(exec.id);
+              const breakdown = getFamilyBreakdown(exec.id);
+              const isBoth = family === "Both";
+              const isOpen = !!expanded[exec.id];
+              const zebra = i % 2 === 1 ? "bg-muted/30" : "";
+
+              return (
+                <Fragment key={exec.id}>
+                  <tr
+                    className={`border-b border-border hover:bg-primary/5 transition-colors ${zebra}`}
+                  >
+                    <td className="py-2.5 px-3 text-sm font-mono text-muted-foreground">{exec.id}</td>
+                    <td className="py-2.5 px-3 text-sm text-foreground">{exec.pack}</td>
+                    <td className="py-2.5 px-3">
+                      <button
+                        type="button"
+                        onClick={() => isBoth && toggle(exec.id)}
+                        aria-expanded={isBoth ? isOpen : undefined}
+                        className={`inline-flex items-center gap-1 text-xs font-medium rounded-full px-2.5 py-0.5 ${familyStyles[family]} ${
+                          isBoth ? "cursor-pointer hover:opacity-80 transition-opacity" : "cursor-default"
+                        }`}
+                        title={isBoth ? "Show per-family sub-status" : undefined}
+                      >
+                        {isBoth &&
+                          (isOpen ? (
+                            <ChevronDown className="w-3 h-3" />
+                          ) : (
+                            <ChevronRight className="w-3 h-3" />
+                          ))}
+                        {family}
                       </button>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
+                    </td>
+                    <td className="py-2.5 px-3 text-sm text-slate-600 truncate max-w-[140px]">{exec.context}</td>
+                    <td className="py-2.5 px-3 text-sm text-muted-foreground">{exec.version}</td>
+                    <td className="py-2.5 px-3 text-sm text-foreground">{exec.model}</td>
+                    <td className="py-2.5 px-3 text-sm tabular text-foreground">{exec.prompts}</td>
+                    <td className="py-2.5 px-3 text-sm tabular text-foreground">{exec.totalRuns}</td>
+                    <td className="py-2.5 px-3">
+                      <span className={`inline-flex items-center gap-1.5 text-xs font-medium rounded-full px-2.5 py-0.5 ${statusStyles[exec.status]}`}>
+                        {exec.status === "Running" && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--status-running-fg))] animate-pulse" />
+                        )}
+                        {exec.status}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-sm text-muted-foreground">{exec.started}</td>
+                    <td className="py-2.5 px-3 text-sm text-muted-foreground tabular">{exec.duration}</td>
+                    <td className="py-2.5 px-3 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        {exec.status === "Completed" && (
+                          <>
+                            <button onClick={() => onViewExecution(exec.id)} className="text-muted-foreground hover:text-primary transition-colors" title="View">
+                              <Eye className="w-3.5 h-3.5" />
+                            </button>
+                            <button className="text-muted-foreground hover:text-primary transition-colors" title="Export">
+                              <Download className="w-3.5 h-3.5" />
+                            </button>
+                          </>
+                        )}
+                        {exec.status === "Failed" && (
+                          <>
+                            <button className="text-muted-foreground hover:text-primary transition-colors" title="Retry">
+                              <RotateCcw className="w-3.5 h-3.5" />
+                            </button>
+                            <button onClick={() => onViewExecution(exec.id)} className="text-muted-foreground hover:text-primary transition-colors" title="View">
+                              <Eye className="w-3.5 h-3.5" />
+                            </button>
+                          </>
+                        )}
+                        {(exec.status === "Running" || exec.status === "Queued") && (
+                          <button className="text-muted-foreground hover:text-destructive transition-colors" title="Cancel">
+                            <XCircle className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+
+                  {isBoth && isOpen && (
+                    <tr className={`border-b border-border ${zebra}`}>
+                      <td colSpan={12} className="py-3 px-3">
+                        <div className="flex flex-col gap-2 pl-4 border-l-2 border-border">
+                          <span className="text-label">Per-family sub-status</span>
+                          {breakdown.map((b) => (
+                            <div key={b.family} className="flex items-center gap-3 text-sm">
+                              <span className="w-[120px] text-foreground">{b.family}</span>
+                              <span className={`text-xs font-medium rounded-full px-2 py-0.5 ${familyStatusStyles[b.status]}`}>
+                                {b.status}
+                              </span>
+                              <span className="text-xs text-muted-foreground">{b.contract}</span>
+                              <span className="text-xs text-muted-foreground tabular">
+                                {b.prompts} prompts · {b.runs} runs
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
+
           </tbody>
         </table>
       </div>
