@@ -199,6 +199,12 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       ],
       change: { direction: "up", text: "+8pp vs previous execution" },
       trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
+      metricDeltas: [
+        { label: "Δ Inclusion Rate", value: 8.4, unit: "pp" },
+        { label: "Δ Weighted Inclusion", value: 0.08, decimals: 2 },
+        { label: "Δ Top 3 Presence", value: 8.4, unit: "pp" },
+        { label: "Δ Top 5 Presence", value: 8.3, unit: "pp" },
+      ],
       evidenceTab: "brand",
       tooltip: {
         source: "Generated from: recommended_brands list (8/12 runs), position-weighted inclusion (0.58)",
