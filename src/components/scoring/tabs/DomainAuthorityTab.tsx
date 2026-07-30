@@ -157,7 +157,7 @@ const DomainAuthorityTab = () => {
                 </tr>
                 {expanded === d.rank && (
                   <tr key={`exp-${d.rank}`}>
-                    <td colSpan={11} className="bg-muted/50 border-t border-border p-4">
+                    <td colSpan={12} className="bg-muted/50 border-t border-border p-4">
                       <div className="text-xs font-medium text-foreground mb-2">Prompt-level breakdown for {d.domain}</div>
                       <div className="space-y-1">
                         {promptBreakdown.map((p) => (
