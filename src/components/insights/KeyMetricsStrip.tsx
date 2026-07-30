@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Globe, BarChart2, Target, MessageSquareQuote, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
+import DeltaIndicator from "./DeltaIndicator";
 
 interface Props {
   mode: InsightMode;
