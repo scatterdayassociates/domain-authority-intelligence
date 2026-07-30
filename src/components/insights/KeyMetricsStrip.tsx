@@ -49,7 +49,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             <span className="text-xs font-medium text-slate-700 tabular-nums">7 / 12 runs</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[11px] text-slate-400">Persistence</span>
+            <span className="text-[11px] text-slate-400">RLP</span>
             <span className="text-xs font-medium text-slate-700 tabular-nums">58.3%</span>
           </div>
         </div>
