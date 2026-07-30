@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Eye, Download, RotateCcw, XCircle, ChevronRight, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import {
@@ -86,9 +86,8 @@ const ExecutionList = ({ onViewExecution }: ExecutionListProps) => {
               const zebra = i % 2 === 1 ? "bg-muted/30" : "";
 
               return (
-                <>
+                <Fragment key={exec.id}>
                   <tr
-                    key={exec.id}
                     className={`border-b border-border hover:bg-primary/5 transition-colors ${zebra}`}
                   >
                     <td className="py-2.5 px-3 text-sm font-mono text-muted-foreground">{exec.id}</td>
@@ -159,7 +158,7 @@ const ExecutionList = ({ onViewExecution }: ExecutionListProps) => {
                   </tr>
 
                   {isBoth && isOpen && (
-                    <tr key={`${exec.id}-sub`} className={`border-b border-border ${zebra}`}>
+                    <tr className={`border-b border-border ${zebra}`}>
                       <td colSpan={12} className="py-3 px-3">
                         <div className="flex flex-col gap-2 pl-4 border-l-2 border-border">
                           <span className="text-label">Per-family sub-status</span>
@@ -179,7 +178,7 @@ const ExecutionList = ({ onViewExecution }: ExecutionListProps) => {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               );
             })}
 
