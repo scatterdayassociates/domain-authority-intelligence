@@ -124,22 +124,22 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       statement: "TechRadar remains a consistently selected source",
       metrics: [
         { label: "Appears in:", value: "7 / 12 runs" },
-        { label: "Persistence:", value: "58.3%" },
+        { label: "RLP:", value: "58.3%" },
       ],
       change: { direction: "flat", text: "No change" },
       trendChange: { direction: "flat", text: "Stable over 5 executions" },
       evidenceTab: "domain",
       tooltip: {
-        source: "Generated from: persistence (58.3%), runs_appeared (7/12)",
+        source: "Generated from: RLP (58.3%), runs_appeared (7/12)",
         bullets: [
-          "Rule: Persistence ≥ 50% across 2+ executions",
-          "Threshold met: 58.3% persistence",
+          "Rule: RLP ≥ 50% across 2+ executions",
+          "Threshold met: 58.3% RLP",
           "Confidence basis: Consistent across all 3 executions in range",
         ],
       },
       trendDetail: {
         magnitude: "Stable trend (±1pp across 5 executions)",
-        range: "58%–62% persistence range",
+        range: "58%–62% RLP range",
         driver: "Consistent inclusion across review-led publisher queries",
       },
     },
