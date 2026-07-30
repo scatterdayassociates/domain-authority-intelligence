@@ -223,11 +223,25 @@ const SnapshotEmpty = () => (
 
 const TimeSeriesPanel = ({ mode, context }: Props) => {
   const [subTab, setSubTab] = useState<SubTab>("domain");
+  const [domainSeries, setDomainSeries] = useState<string[]>([
+    "dell",
+    "techradar",
+    "pcmag",
+    "notebookcheck",
+    "bestbuy",
+  ]);
+  const [recMetric, setRecMetric] = useState<"rate" | "weighted">("rate");
   const isSnapshot = mode === "snapshot";
 
   const dData = domainData;
   const bData = brandData;
   const cData = concData;
+
+  const toggleDomainSeries = (key: string) =>
+    setDomainSeries((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+
+  const activeDomainSeries = DOMAIN_SERIES.filter((s) => domainSeries.includes(s.key));
+  const showRightAxis = activeDomainSeries.some((s) => s.axis === "right");
 
   return (
     <div>
@@ -236,6 +250,7 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
           {[
             { id: "domain", label: "Domain Trends" },
             { id: "brand", label: "Brand Trends" },
+            { id: "recommendation", label: "Brand Recommendation Trends" },
             { id: "concentration", label: "Concentration Trends" },
             { id: "narrative", label: "Narrative Trends" },
           ].map((t) => (
@@ -260,37 +275,149 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-500 uppercase tracking-wide">Domain Visibility Over Time</span>
-              <button className="border border-slate-200 text-xs h-7 px-2 rounded-md text-slate-600">
-                Showing: 5 domains
-              </button>
+              <span className="border border-slate-200 text-xs h-7 px-2 rounded-md text-slate-600 inline-flex items-center">
+                Showing: {activeDomainSeries.length} series
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5 mb-3">
+              {DOMAIN_SERIES.map((s) => {
+                const on = domainSeries.includes(s.key);
+                return (
+                  <button
+                    key={s.key}
+                    onClick={() => toggleDomainSeries(s.key)}
+                    aria-pressed={on}
+                    className={`inline-flex items-center gap-1.5 text-[11px] font-mono rounded-full px-2.5 py-1 border transition-colors ${
+                      on
+                        ? "border-slate-300 bg-slate-50 text-slate-700"
+                        : "border-slate-200 bg-white text-slate-400 hover:text-slate-600"
+                    }`}
+                  >
+                    <span
+                      className="inline-block w-3 h-[2px]"
+                      style={{ background: on ? s.color : "#cbd5e1" }}
+                    />
+                    {s.label}
+                  </button>
+                );
+              })}
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={dData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
                 <YAxis
-                  label={{ value: "Persistence (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
+                  yAxisId="left"
+                  label={{ value: "RLP / NAS (%)", angle: -90, position: "insideLeft", style: { fontSize: 11, fill: "#94a3b8" } }}
+                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                {showRightAxis && (
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    label={{ value: "WAS", angle: 90, position: "insideRight", style: { fontSize: 11, fill: "#94a3b8" } }}
+                    tick={{ fontSize: 11, fill: "#94a3b8" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                )}
+                <Tooltip content={<ChartTooltip />} />
+                {activeDomainSeries.map((s) => (
+                  <Line
+                    key={s.key}
+                    yAxisId={s.axis === "right" && showRightAxis ? "right" : "left"}
+                    type="monotone"
+                    dataKey={s.key}
+                    name={s.label}
+                    stroke={s.color}
+                    strokeWidth={s.width}
+                    strokeDasharray={s.dashed ? "4 2" : undefined}
+                    dot={{ r: s.highlight ? 5 : 3, fill: s.color, stroke: "#fff", strokeWidth: s.highlight ? 2 : 1.5 }}
+                    activeDot={{ r: s.highlight ? 7 : 5, fill: s.color, stroke: "#fff", strokeWidth: 2 }}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+            <Legend
+              items={activeDomainSeries.map((s) => ({
+                color: s.color,
+                label: s.label,
+                dashed: s.dashed,
+                highlight: s.highlight,
+              }))}
+            />
+          </div>
+          )
+        )}
+
+        {/* BRAND RECOMMENDATION TRENDS */}
+        {subTab === "recommendation" && (
+          isSnapshot ? <SnapshotEmpty /> : (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-slate-500 uppercase tracking-wide">
+                Brand Recommendation Signals Over Time
+              </span>
+              <div className="flex items-center gap-1.5">
+                {[
+                  { id: "rate", label: "Recommendation Inclusion Rate" },
+                  { id: "weighted", label: "Weighted Inclusion" },
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    onClick={() => setRecMetric(m.id as "rate" | "weighted")}
+                    className={`text-[11px] font-medium rounded-md px-2 py-1 border transition-colors ${
+                      recMetric === m.id
+                        ? "border-teal-200 bg-teal-50 text-teal-700"
+                        : "border-slate-200 bg-white text-slate-500 hover:text-slate-700"
+                    }`}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={recData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
+                <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis
+                  domain={recMetric === "rate" ? [0, 100] : [0, 1]}
+                  label={{
+                    value: recMetric === "rate" ? "Inclusion Rate (%)" : "Weighted Inclusion",
+                    angle: -90,
+                    position: "insideLeft",
+                    style: { fontSize: 11, fill: "#94a3b8" },
+                  }}
                   tick={{ fontSize: 11, fill: "#94a3b8" }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="techradar" name="techradar.com" stroke="#94a3b8" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#94a3b8", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="pcmag" name="pcmag.com" stroke="#cbd5e1" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#cbd5e1", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="notebookcheck" name="notebookcheck.net" stroke="#a3a3a3" strokeOpacity={0.7} strokeWidth={1.5} dot={{ r: 3, fill: "#a3a3a3", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="bestbuy" name="bestbuy.com" stroke="#fbbf24" strokeOpacity={0.8} strokeWidth={1.5} dot={{ r: 3, fill: "#fbbf24", stroke: "#fff", strokeWidth: 1.5 }} />
-                <Line type="monotone" dataKey="dell" name="dell.com" stroke="#dc2626" strokeWidth={3.5} dot={{ r: 5, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} activeDot={{ r: 7, fill: "#dc2626", stroke: "#fff", strokeWidth: 2 }} />
+                {REC_SERIES.map((s) => (
+                  <Line
+                    key={s.label}
+                    type="monotone"
+                    dataKey={recMetric === "rate" ? s.rate : s.weighted}
+                    name={s.label}
+                    stroke={s.color}
+                    strokeWidth={s.width}
+                    dot={{ r: s.highlight ? 5 : 3, fill: s.color, stroke: "#fff", strokeWidth: s.highlight ? 2 : 1.5 }}
+                    activeDot={{ r: s.highlight ? 7 : 5, fill: s.color, stroke: "#fff", strokeWidth: 2 }}
+                  />
+                ))}
               </LineChart>
             </ResponsiveContainer>
             <Legend
-              items={[
-                { color: "#dc2626", label: "dell.com (TARGET)", highlight: true },
-                { color: "#94a3b8", label: "techradar.com" },
-                { color: "#cbd5e1", label: "pcmag.com" },
-                { color: "#a3a3a3", label: "notebookcheck.net" },
-                { color: "#fbbf24", label: "bestbuy.com" },
-              ]}
+              items={REC_SERIES.map((s) => ({ color: s.color, label: s.label, highlight: s.highlight }))}
             />
+            <div className="bg-teal-50 border border-teal-100 rounded-lg px-4 py-2 text-xs text-teal-700 flex items-center gap-2 mt-3">
+              <TrendingUp className="w-3 h-3" />
+              Dell's recommendation inclusion rate rose from 50.0% to 66.7% across 6 executions (+16.7pp), with weighted
+              inclusion up 0.42 → 0.58. Apple and HP declined over the same window.
+            </div>
           </div>
           )
         )}
