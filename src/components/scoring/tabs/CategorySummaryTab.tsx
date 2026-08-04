@@ -35,10 +35,12 @@ const CategorySummaryTab = () => (
       right={<span className="text-xs text-muted-foreground">Execution EX-0329-001 · Dell — Laptops — US</span>}
     />
 
-    <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-4 mt-3 flex gap-6">
+    <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-2 mt-3 flex gap-6">
       <span><strong>Top 5 Share:</strong> Share concentration. What it measures: the proportion of total appearance share held by the five highest-share domains.</span>
       <span className="border-l border-border pl-6"><strong>HHI (Herfindahl–Hirschman Index):</strong> Distribution measure. What it measures: the sum of squared domain share values across all observed domains; higher values indicate share sits in fewer domains.</span>
     </div>
+    <p className="text-[11px] text-muted-foreground/80 mb-4">{CONCENTRATION_SCOPE_NOTE}</p>
+
 
     {/* Concentration table */}
     <div className="max-w-2xl overflow-x-auto">
