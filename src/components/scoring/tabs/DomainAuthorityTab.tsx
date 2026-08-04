@@ -203,7 +203,9 @@ const DomainAuthorityTab = () => {
             <div className="text-[10px] text-muted-foreground/70 mt-0.5">Rule-based grouping. What it measures: how many domains fall in each fixed RLP × AP threshold band.</div>
           </div>
         </div>
+        <p className="text-[10px] text-muted-foreground/80 mt-2">{CONCENTRATION_SCOPE_NOTE}</p>
       </div>
+
 
       {/* Interpretive summary — explicitly framed, not canonical output */}
       <div className="mt-4 bg-muted/40 border border-border rounded-md px-4 py-3 text-xs text-muted-foreground flex items-start gap-2">
