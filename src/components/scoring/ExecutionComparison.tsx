@@ -13,7 +13,7 @@ const allExecutions = [
 
 const sectionRows = [
   { section: "CONCENTRATION" },
-  { metric: "Total Mentions", a: "312", b: "210", change: "+102", color: "text-green-600" },
+  { metric: "Total Appearances", a: "312", b: "210", change: "+102", color: "text-green-600" },
   { metric: "Unique Domains", a: "24", b: "18", change: "+6", color: "text-green-600" },
   { metric: "Top 5 Share", a: "68.4%", b: "74.8%", change: "−6.4pp", color: "text-green-600" },
   { metric: "HHI", a: "0.142", b: "0.183", change: "−0.041", color: "text-green-600" },

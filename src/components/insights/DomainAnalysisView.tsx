@@ -63,7 +63,7 @@ const enrich = (d: DomainRow) => ({
 
 type EnrichedDomain = ReturnType<typeof enrich>;
 
-// Deterministic ranking: mentions DESC → persistence DESC → share DESC → domain ASC
+// Deterministic ranking: WAS DESC → persistence DESC → share DESC → domain ASC
 const rankDomains = (rows: DomainRow[]): EnrichedDomain[] =>
   rows
     .map(enrich)
