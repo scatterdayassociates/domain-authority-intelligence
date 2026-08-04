@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AppSidebar from "@/components/AppSidebar";
 import InsightTopBar from "@/components/insights/InsightTopBar";
 import InsightTabs from "@/components/insights/InsightTabs";
@@ -7,6 +7,12 @@ import DomainAnalysisView from "@/components/insights/DomainAnalysisView";
 import BrandAnalysisView from "@/components/insights/BrandAnalysisView";
 import TimeSeriesView from "@/components/insights/TimeSeriesView";
 import BrandNarrativeView from "@/components/insights/BrandNarrativeView";
+import ComparabilityBanner from "@/components/insights/ComparabilityBanner";
+import {
+  COMPARE_SCENARIOS,
+  TRENDS_SCENARIOS,
+  checkComparability,
+} from "@/lib/comparability";
 
 import InsightEmptyState from "@/components/insights/InsightEmptyState";
 import { ChevronRight } from "lucide-react";
@@ -16,10 +22,21 @@ export type InsightMode = "snapshot" | "compare" | "trends";
 const Insights = () => {
   const [mode, setMode] = useState<InsightMode>("snapshot");
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [scenarioIdx, setScenarioIdx] = useState(0);
   const hasExecutions = true; // mock: Dell context has executions
 
   const activeProject = "Dell — Laptops — US";
   const activeContext = "Best laptops for home office";
+
+  const scenarios = mode === "trends" ? TRENDS_SCENARIOS : COMPARE_SCENARIOS;
+  const scenario = scenarios[Math.min(scenarioIdx, scenarios.length - 1)];
+  const comparability = useMemo(
+    () => checkComparability(scenario.executions),
+    [scenario]
+  );
+  const crossExecution = mode !== "snapshot";
+  const blocked = crossExecution && !comparability.comparable;
+
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -41,17 +58,46 @@ const Insights = () => {
         </header>
 
         {/* Top Bar */}
-        <InsightTopBar mode={mode} onModeChange={setMode} />
+        <InsightTopBar mode={mode} onModeChange={(m) => { setMode(m); setScenarioIdx(0); }} />
 
         {/* Tabs */}
         <InsightTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+        {/* Cross-execution comparability guard */}
+        {crossExecution && (
+          <div className="px-6 mt-3 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-muted-foreground">Mock scenario:</span>
+              {scenarios.map((s, i) => (
+                <button
+                  key={s.key}
+                  onClick={() => setScenarioIdx(i)}
+                  className={`text-[11px] px-2 py-1 rounded-full border transition-colors ${
+                    scenario.key === s.key
+                      ? "bg-slate-800 text-white border-slate-800"
+                      : "bg-background text-muted-foreground border-border hover:bg-muted"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <ComparabilityBanner result={comparability} mode={mode === "trends" ? "trends" : "compare"} />
+          </div>
+        )}
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
           {!hasExecutions ? (
             <InsightEmptyState />
+          ) : blocked ? (
+            <div className="px-6 py-12 text-center text-sm text-muted-foreground">
+              {mode === "compare" ? "Side-by-side diff" : "Trend chart"} not rendered — resolve the
+              mismatch above or select comparable executions.
+            </div>
           ) : activeTab === "dashboard" ? (
             <InsightDashboard mode={mode} onNavigateTab={setActiveTab} onModeChange={setMode} context={activeContext} />
+
           ) : activeTab === "domain" ? (
             <div className="px-6 py-6">
               <DomainAnalysisView context={activeContext} />
