@@ -11,7 +11,7 @@ export interface BrandRankRow {
   brand: string;
   role: "TARGET" | "COMPETITOR";
   inclusion_rate: number; // share of runs where brand appears in recommended-brands list
-  weighted_inclusion: number; // position-weighted inclusion (0–1)
+  weighted_inclusion: number; // cumulative position-weighted sum (unbounded)
   top3: number;
   top5: number;
   avg_position: number;
@@ -19,14 +19,14 @@ export interface BrandRankRow {
 }
 
 const BRAND_RANKING: BrandRankRow[] = [
-  { brand: "Dell Technologies", role: "TARGET", inclusion_rate: 0.667, weighted_inclusion: 0.58, top3: 0.417, top5: 0.583, avg_position: 2.4, best_position: 1 },
-  { brand: "Lenovo", role: "COMPETITOR", inclusion_rate: 0.625, weighted_inclusion: 0.51, top3: 0.375, top5: 0.542, avg_position: 2.8, best_position: 1 },
-  { brand: "Apple", role: "COMPETITOR", inclusion_rate: 0.583, weighted_inclusion: 0.49, top3: 0.333, top5: 0.5, avg_position: 2.6, best_position: 1 },
-  { brand: "HP", role: "COMPETITOR", inclusion_rate: 0.5, weighted_inclusion: 0.4, top3: 0.25, top5: 0.417, avg_position: 3.2, best_position: 2 },
-  { brand: "ASUS", role: "COMPETITOR", inclusion_rate: 0.417, weighted_inclusion: 0.31, top3: 0.167, top5: 0.333, avg_position: 3.8, best_position: 2 },
-  { brand: "Microsoft", role: "COMPETITOR", inclusion_rate: 0.333, weighted_inclusion: 0.24, top3: 0.125, top5: 0.25, avg_position: 4.1, best_position: 3 },
-  { brand: "Acer", role: "COMPETITOR", inclusion_rate: 0.25, weighted_inclusion: 0.16, top3: 0.083, top5: 0.167, avg_position: 4.6, best_position: 3 },
-  { brand: "Razer", role: "COMPETITOR", inclusion_rate: 0.167, weighted_inclusion: 0.09, top3: 0.0, top5: 0.083, avg_position: 5.4, best_position: 4 },
+  { brand: "Dell Technologies", role: "TARGET", inclusion_rate: 0.667, weighted_inclusion: 3.62, top3: 0.417, top5: 0.583, avg_position: 2.4, best_position: 1 },
+  { brand: "Lenovo", role: "COMPETITOR", inclusion_rate: 0.625, weighted_inclusion: 3.14, top3: 0.375, top5: 0.542, avg_position: 2.8, best_position: 1 },
+  { brand: "Apple", role: "COMPETITOR", inclusion_rate: 0.583, weighted_inclusion: 2.97, top3: 0.333, top5: 0.5, avg_position: 2.6, best_position: 1 },
+  { brand: "HP", role: "COMPETITOR", inclusion_rate: 0.5, weighted_inclusion: 2.35, top3: 0.25, top5: 0.417, avg_position: 3.2, best_position: 2 },
+  { brand: "ASUS", role: "COMPETITOR", inclusion_rate: 0.417, weighted_inclusion: 1.78, top3: 0.167, top5: 0.333, avg_position: 3.8, best_position: 2 },
+  { brand: "Microsoft", role: "COMPETITOR", inclusion_rate: 0.333, weighted_inclusion: 1.32, top3: 0.125, top5: 0.25, avg_position: 4.1, best_position: 3 },
+  { brand: "Acer", role: "COMPETITOR", inclusion_rate: 0.25, weighted_inclusion: 0.91, top3: 0.083, top5: 0.167, avg_position: 4.6, best_position: 3 },
+  { brand: "Razer", role: "COMPETITOR", inclusion_rate: 0.167, weighted_inclusion: 0.54, top3: 0.0, top5: 0.083, avg_position: 5.4, best_position: 4 },
 ];
 
 type SortKey = "inclusion_rate" | "weighted_inclusion" | "top3" | "top5" | "avg_position" | "best_position";
@@ -38,7 +38,7 @@ const METRICS: Record<SortKey, { label: string; tip: string }> = {
   },
   weighted_inclusion: {
     label: "Weighted Inclusion",
-    tip: "Position-weighted inclusion — recommendations are weighted by rank position within the list.",
+    tip: "Measures cumulative brand recommendation strength. What it measures: the position-weighted sum of every recommendation appearance for this brand across all runs — not normalized, so it grows with both frequency and rank strength.",
   },
   top3: { label: "Top 3 Presence", tip: "Share of runs in which the brand is recommended within the top 3 positions." },
   top5: { label: "Top 5 Presence", tip: "Share of runs in which the brand is recommended within the top 5 positions." },
