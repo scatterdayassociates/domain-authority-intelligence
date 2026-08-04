@@ -6,6 +6,7 @@ import InsightDashboard from "@/components/insights/InsightDashboard";
 import DomainAnalysisView from "@/components/insights/DomainAnalysisView";
 import BrandAnalysisView from "@/components/insights/BrandAnalysisView";
 import TimeSeriesView from "@/components/insights/TimeSeriesView";
+import BrandNarrativeView from "@/components/insights/BrandNarrativeView";
 
 import InsightEmptyState from "@/components/insights/InsightEmptyState";
 import { ChevronRight } from "lucide-react";
@@ -58,6 +59,10 @@ const Insights = () => {
           ) : activeTab === "brand" ? (
             <div className="px-6 py-6">
               <BrandAnalysisView context={activeContext} />
+            </div>
+          ) : activeTab === "narrative" ? (
+            <div className="px-6 py-6">
+              <BrandNarrativeView context={activeContext} />
             </div>
           ) : activeTab === "timeseries" ? (
             <div className="px-6 py-6">

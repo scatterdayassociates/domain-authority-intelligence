@@ -1,9 +1,10 @@
-import { LayoutDashboard, Globe, Target, TrendingUp } from "lucide-react";
+import { LayoutDashboard, Globe, Target, TrendingUp, MessageSquareQuote } from "lucide-react";
 
 const tabs = [
   { key: "dashboard", label: "Insight Dashboard", icon: LayoutDashboard },
   { key: "domain", label: "Domain Analysis", icon: Globe },
   { key: "brand", label: "Brand Analysis", icon: Target },
+  { key: "narrative", label: "Brand Narrative", icon: MessageSquareQuote },
   { key: "timeseries", label: "Time Series", icon: TrendingUp },
 ];
 
