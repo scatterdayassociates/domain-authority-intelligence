@@ -35,6 +35,15 @@ const datasets = [
     derivedFrom: "Domain Authority Dataset (Layer 1) + project domain→brand mapping.",
     preview: null,
   },
+  {
+    name: "Brand Recommendation Dataset",
+    tier: "Layer 3 · Recommendation-contract interpretation",
+    tierTone: "bg-teal-500/10 text-teal-700 border-teal-500/30",
+    role: "Brand-level recommendation metrics derived from the parsed RECOMMENDED BRANDS output contract. Independent of domain-derived Brand Inclusion. Positional domain metrics (AP / BP) do not apply at brand level and are excluded.",
+    fields: "execution_id, scored_at, rule_version, parse_run_id, rank, brand, role (TARGET / COMPETITOR / NEUTRAL), inclusion_rate, weighted_inclusion, top3_presence, top5_presence",
+    derivedFrom: "Parsed RECOMMENDED BRANDS lists (BNE brand registry resolution).",
+    preview: `execution_id,scored_at,rule_version,parse_run_id,rank,brand,role,inclusion_rate,weighted_inclusion,top3_presence,top5_presence\nEX-0329-001,2026-04-03T09:07:00Z,v3.2.1,PR-0329-001,1,Dell Technologies,TARGET,74.3,0.681,62.9,71.4\nEX-0329-001,2026-04-03T09:07:00Z,v3.2.1,PR-0329-001,2,HP,COMPETITOR,68.6,0.604,54.3,65.7`,
+  },
 ];
 
 const CsvExportPanel = ({ open, onClose, executionId }: Props) => {
@@ -93,7 +102,7 @@ const CsvExportPanel = ({ open, onClose, executionId }: Props) => {
 
           <label className="flex items-center gap-2 mt-4 cursor-pointer">
             <input type="checkbox" checked={zip} onChange={() => setZip(!zip)} className="w-3.5 h-3.5 rounded border-border accent-[hsl(var(--primary))]" />
-            <span className="text-sm text-foreground">Include all 3 layers in a single ZIP (preserves dependency chain)</span>
+            <span className="text-sm text-foreground">Include all datasets in a single ZIP (preserves dependency chain)</span>
           </label>
 
           <div className="border-t border-border pt-4 mt-4">
