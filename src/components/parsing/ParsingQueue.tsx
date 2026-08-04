@@ -6,15 +6,21 @@ interface ParsingQueueProps {
   onViewExecution: (id: string) => void;
 }
 
-const rows = [
-  { id: "EX-0329-001", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", totalRuns: 35, parsed: 35, failed: 0, domains: 312, status: "Parsed", parsedAt: "Apr 3, 2026 9:06 AM" },
-  { id: "EX-0322-002", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", totalRuns: 30, parsed: 30, failed: 0, domains: 268, status: "Parsed", parsedAt: "Mar 29, 2026 2:16 PM" },
-  { id: "EX-0315-003", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", totalRuns: 25, parsed: 25, failed: 0, domains: 210, status: "Parsed", parsedAt: "Mar 22, 2026 10:33 AM" },
-  { id: "EX-0401-004", pack: "Sony — Headphones — UK", context: "Best noise cancelling head...", model: "Claude 3.5 Sonnet", totalRuns: 40, parsed: 37, failed: 3, domains: 344, status: "Partial", parsedAt: "Apr 1, 2026 4:48 PM" },
-  { id: "EX-0328-005", pack: "Sony — Headphones — UK", context: "Best noise cancelling head...", model: "GPT-4o", totalRuns: 40, parsed: 0, failed: 40, domains: 0, status: "Failed", parsedAt: "" },
-  { id: "EX-0403-006", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "GPT-4o", totalRuns: 50, parsed: 50, failed: 0, domains: 441, status: "Parsed", parsedAt: "Apr 3, 2026 9:18 AM" },
-  { id: "EX-0402-008", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "GPT-4o", totalRuns: 45, parsed: 44, failed: 1, domains: 396, status: "Partial", parsedAt: "Apr 2, 2026 3:36 PM" },
-  { id: "EX-0403-NEW", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "Claude 3.5 Sonnet", totalRuns: 50, parsed: null, failed: null, domains: null, status: "Pending", parsedAt: "" },
+type FamilyStatus = { authority: string; recommendation: string } | null;
+
+const rows: {
+  id: string; pack: string; context: string; model: string; totalRuns: number;
+  parsed: number | null; failed: number | null; domains: number | null; brands: number | null;
+  status: string; families: FamilyStatus; parsedAt: string;
+}[] = [
+  { id: "EX-0329-001", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", totalRuns: 35, parsed: 35, failed: 0, domains: 312, brands: 41, status: "Parsed", families: { authority: "Parsed", recommendation: "Parsed" }, parsedAt: "Apr 3, 2026 9:06 AM" },
+  { id: "EX-0322-002", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", totalRuns: 30, parsed: 30, failed: 0, domains: 268, brands: 36, status: "Parsed", families: null, parsedAt: "Mar 29, 2026 2:16 PM" },
+  { id: "EX-0315-003", pack: "Dell — Laptops — US", context: "Best laptops for home office", model: "GPT-4o", totalRuns: 25, parsed: 25, failed: 0, domains: 210, brands: 29, status: "Parsed", families: null, parsedAt: "Mar 22, 2026 10:33 AM" },
+  { id: "EX-0401-004", pack: "Sony — Headphones — UK", context: "Best noise cancelling head...", model: "Claude 3.5 Sonnet", totalRuns: 40, parsed: 37, failed: 3, domains: 344, brands: 47, status: "Partial", families: { authority: "Parsed", recommendation: "Partial" }, parsedAt: "Apr 1, 2026 4:48 PM" },
+  { id: "EX-0328-005", pack: "Sony — Headphones — UK", context: "Best noise cancelling head...", model: "GPT-4o", totalRuns: 40, parsed: 0, failed: 40, domains: 0, brands: 0, status: "Failed", families: null, parsedAt: "" },
+  { id: "EX-0403-006", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "GPT-4o", totalRuns: 50, parsed: 50, failed: 0, domains: 441, brands: 58, status: "Parsed", families: { authority: "Parsed", recommendation: "Parsed" }, parsedAt: "Apr 3, 2026 9:18 AM" },
+  { id: "EX-0402-008", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "GPT-4o", totalRuns: 45, parsed: 44, failed: 1, domains: 396, brands: 52, status: "Partial", families: { authority: "Partial", recommendation: "Parsed" }, parsedAt: "Apr 2, 2026 3:36 PM" },
+  { id: "EX-0403-NEW", pack: "Nike — Running — US", context: "Best running shoes 2024", model: "Claude 3.5 Sonnet", totalRuns: 50, parsed: null, failed: null, domains: null, brands: null, status: "Pending", families: null, parsedAt: "" },
 ];
 
 const statusClasses: Record<string, string> = {
@@ -45,7 +51,7 @@ const ParsingQueue = ({ onViewExecution }: ParsingQueueProps) => {
         right={<span className="text-xs text-muted-foreground">{rows.length} executions · {pendingCount} pending</span>}
       />
       <p className="text-xs text-muted-foreground italic mt-2 mb-4">
-        Each row represents one execution. Parsing extracts and normalises domains from all raw model responses captured during that run.
+        Each row represents one execution. Parsing extracts and normalises domains from all raw model responses captured during that run, and resolves recommended brands against the Brand Registry.
       </p>
 
       <div className="w-full overflow-x-auto">
@@ -60,7 +66,8 @@ const ParsingQueue = ({ onViewExecution }: ParsingQueueProps) => {
               <th className="table-header py-2 px-2 w-[70px] text-center">Parsed</th>
               <th className="table-header py-2 px-2 w-[70px] text-center">Failed</th>
               <th className="table-header py-2 px-2 w-[100px] text-center">Domains Found</th>
-              <th className="table-header py-2 px-2 w-[120px]">Parse Status</th>
+              <th className="table-header py-2 px-2 w-[100px] text-center">Brands Found</th>
+              <th className="table-header py-2 px-2 w-[170px]">Parse Status</th>
               <th className="table-header py-2 px-2 w-[140px]">Parsed At</th>
               <th className="table-header py-2 px-2 w-[100px] text-right">Actions</th>
             </tr>
@@ -79,12 +86,24 @@ const ParsingQueue = ({ onViewExecution }: ParsingQueueProps) => {
                 <td className="py-2 px-2 text-sm tabular text-center text-green-600">{row.parsed ?? "—"}</td>
                 <td className="py-2 px-2 text-sm tabular text-center text-red-500">{row.failed ? row.failed : "—"}</td>
                 <td className="py-2 px-2 text-sm tabular text-center">{row.domains ?? "—"}</td>
+                <td className="py-2 px-2 text-sm tabular text-center">{row.brands ?? "—"}</td>
                 <td className="py-2 px-2">
-                  <span className={`inline-flex items-center gap-1 text-xs font-medium rounded-full px-2.5 py-0.5 ${statusClasses[row.status]}`}>
-                    {row.status === "Pending" && <Clock className="w-3 h-3" />}
-                    {row.status === "Parsing" && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />}
-                    {row.status}
-                  </span>
+                  {row.families ? (
+                    <div className="flex flex-col gap-1 items-start">
+                      <span className={`inline-flex items-center text-[11px] font-medium rounded-full px-2 py-0.5 ${statusClasses[row.families.authority]}`}>
+                        Authority: {row.families.authority}
+                      </span>
+                      <span className={`inline-flex items-center text-[11px] font-medium rounded-full px-2 py-0.5 ${statusClasses[row.families.recommendation]}`}>
+                        Recommendation: {row.families.recommendation}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className={`inline-flex items-center gap-1 text-xs font-medium rounded-full px-2.5 py-0.5 ${statusClasses[row.status]}`}>
+                      {row.status === "Pending" && <Clock className="w-3 h-3" />}
+                      {row.status === "Parsing" && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />}
+                      {row.status}
+                    </span>
+                  )}
                 </td>
                 <td className="py-2 px-2 text-sm text-muted-foreground">{row.parsedAt || "—"}</td>
                 <td className="py-2 px-2 text-right">
