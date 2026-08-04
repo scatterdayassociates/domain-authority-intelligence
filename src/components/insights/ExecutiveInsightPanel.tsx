@@ -248,7 +248,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       trendDetail: {
         magnitude: "Stable concentration (Δ HHI < 0.02 across 5 executions)",
         range: "HHI 0.24–0.26",
-        driver: "Top 5 publishers retain consistent share of voice",
+        driver: "Top 5 surfaced domains retain consistent appearance share",
       },
     },
     {
