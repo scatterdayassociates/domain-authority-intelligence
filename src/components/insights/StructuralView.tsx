@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from "recharts";
 import { PieChart, BarChart as BarChartIcon, Info, Download } from "lucide-react";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 interface Props {
   context: string;
