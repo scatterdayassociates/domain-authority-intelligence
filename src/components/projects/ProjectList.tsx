@@ -1,10 +1,13 @@
+import { Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 const projects = [
-  { name: "Dell — Laptops", category: "Consumer Electronics", market: "United States", model: "GPT-4o", contexts: 3, activeContexts: 2, executions: 3, lastRun: "Apr 3, 2026", inclusionRate: 82, pipelineStatus: "Running" as const, isBrand: true },
-  { name: "Sony — Headphones", category: "Consumer Electronics", market: "United Kingdom", model: "Claude 3.5 Sonnet", contexts: 2, activeContexts: 1, executions: 2, lastRun: "Apr 1, 2026", inclusionRate: 64, pipelineStatus: "Scored" as const, isBrand: true },
-  { name: "Nike — Running", category: "Apparel & Footwear", market: "United States", model: "GPT-4o", contexts: 2, activeContexts: 2, executions: 2, lastRun: "Apr 3, 2026", inclusionRate: 55, pipelineStatus: "Scored" as const, isBrand: true },
-  { name: "Samsung — Smartphones", category: "Consumer Electronics", market: "Germany", model: "GPT-4o", contexts: 0, activeContexts: 0, executions: 0, lastRun: null, inclusionRate: null, pipelineStatus: "Not Started" as const, isBrand: true },
-  { name: "Air Purifiers", category: "Home Appliances", market: "France", model: "GPT-4o", contexts: 0, activeContexts: 0, executions: 0, lastRun: null, inclusionRate: null, pipelineStatus: "Not Started" as const, isBrand: false },
-  { name: "HP — Printers", category: "Consumer Electronics", market: "United States", model: "GPT-4o", contexts: 1, activeContexts: 1, executions: 1, lastRun: "Mar 15, 2026", inclusionRate: 71, pipelineStatus: "Scored" as const, isBrand: true },
+  { name: "Dell — Laptops", pathway: "A+R" as "A" | "A+R" | null, category: "Consumer Electronics", market: "United States", model: "GPT-4o", contexts: 3, activeContexts: 2, executions: 3, lastRun: "Apr 3, 2026", inclusionRate: 82, pipelineStatus: "Running" as const, isBrand: true },
+  { name: "Sony — Headphones", pathway: "A" as "A" | "A+R" | null, category: "Consumer Electronics", market: "United Kingdom", model: "Claude 3.5 Sonnet", contexts: 2, activeContexts: 1, executions: 2, lastRun: "Apr 1, 2026", inclusionRate: 64, pipelineStatus: "Scored" as const, isBrand: true },
+  { name: "Nike — Running", pathway: "A+R" as "A" | "A+R" | null, category: "Apparel & Footwear", market: "United States", model: "GPT-4o", contexts: 2, activeContexts: 2, executions: 2, lastRun: "Apr 3, 2026", inclusionRate: 55, pipelineStatus: "Scored" as const, isBrand: true },
+  { name: "Samsung — Smartphones", pathway: null as "A" | "A+R" | null, category: "Consumer Electronics", market: "Germany", model: "GPT-4o", contexts: 0, activeContexts: 0, executions: 0, lastRun: null, inclusionRate: null, pipelineStatus: "Not Started" as const, isBrand: true },
+  { name: "Air Purifiers", pathway: null as "A" | "A+R" | null, category: "Home Appliances", market: "France", model: "GPT-4o", contexts: 0, activeContexts: 0, executions: 0, lastRun: null, inclusionRate: null, pipelineStatus: "Not Started" as const, isBrand: false },
+  { name: "HP — Printers", pathway: "A" as "A" | "A+R" | null, category: "Consumer Electronics", market: "United States", model: "GPT-4o", contexts: 1, activeContexts: 1, executions: 1, lastRun: "Mar 15, 2026", inclusionRate: 71, pipelineStatus: "Scored" as const, isBrand: true },
 ];
 
 interface ProjectListProps {
@@ -28,6 +31,31 @@ const statusBadge = (status: string) => {
   );
 };
 
+const pathwayBadge = (p: "A" | "A+R" | null) => {
+  if (!p) return null;
+  const isBoth = p === "A+R";
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold border ${
+            isBoth
+              ? "bg-teal-50 text-teal-700 border-teal-200"
+              : "bg-slate-100 text-slate-600 border-slate-200"
+          }`}
+        >
+          {p}
+        </span>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-[260px] text-xs">
+        {isBoth
+          ? "Authority + Recommendation: contexts run both prompt pack families (SOURCES and RECOMMENDED BRANDS)."
+          : "Authority only: contexts run the Authority Measurement family (SOURCES) only."}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
 const inclusionColor = (rate: number | null) => {
   if (rate === null) return "text-slate-400";
   if (rate >= 75) return "text-green-600";
@@ -36,6 +64,7 @@ const inclusionColor = (rate: number | null) => {
 };
 
 const ProjectList = ({ onOpenProject }: ProjectListProps) => (
+  <TooltipProvider delayDuration={150}>
   <div>
     <div className="flex items-center justify-between mb-1">
       <h2 className="text-sm font-semibold text-slate-700">Projects</h2>
@@ -56,7 +85,25 @@ const ProjectList = ({ onOpenProject }: ProjectListProps) => (
       <thead>
         <tr className="border-b border-slate-200">
           {["Project", "Market", "Model", "Contexts", "Executions", "Last Run", "Latest Inclusion Rate", "Pipeline Status", "Actions"].map(h => (
-            <th key={h} className="text-xs text-slate-500 uppercase tracking-wide font-medium text-left pb-2 px-3 first:pl-4 last:pr-4 last:text-right">{h}</th>
+            <th key={h} className="text-xs text-slate-500 uppercase tracking-wide font-medium text-left pb-2 px-3 first:pl-4 last:pr-4 last:text-right">
+              {h === "Latest Inclusion Rate" ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="inline-flex items-center gap-1 cursor-help">
+                      {h}
+                      <Info className="w-3 h-3 text-slate-400" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-[300px] text-xs">
+                    Shows <strong>Brand Inclusion</strong> (domain-derived: brand-mapped domains
+                    surfaced in SOURCES). This is not Brand Recommendation Inclusion, which is
+                    derived from the RECOMMENDED BRANDS contract and reported separately.
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                h
+              )}
+            </th>
           ))}
         </tr>
       </thead>
@@ -82,6 +129,7 @@ const ProjectList = ({ onOpenProject }: ProjectListProps) => (
             <td className="px-3 py-2.5 text-sm text-slate-800">{p.model}</td>
             <td className="px-3 py-2.5">
               <span className="text-sm text-slate-600">{p.contexts > 0 ? `${p.contexts} contexts` : <span className="text-slate-400 italic">0 contexts</span>}</span>
+              {pathwayBadge(p.pathway) && <span className="ml-1.5 align-middle">{pathwayBadge(p.pathway)}</span>}
               {p.activeContexts > 0 && <div className="text-xs text-green-600">{p.activeContexts} active</div>}
             </td>
             <td className="px-3 py-2.5 text-sm text-center tabular-nums text-slate-800">{p.executions}</td>
@@ -102,6 +150,7 @@ const ProjectList = ({ onOpenProject }: ProjectListProps) => (
       </tbody>
     </table>
   </div>
+  </TooltipProvider>
 );
 
 export default ProjectList;
