@@ -450,6 +450,9 @@ const PrimaryChart = ({
           <p className="text-[11px] text-slate-400 mt-0.5">
             One point per execution · no smoothing or interpolation
           </p>
+          {lens === "concentration" && (
+            <p className="text-[10px] leading-snug text-slate-400 mt-1 max-w-xl">{CONCENTRATION_SCOPE_NOTE}</p>
+          )}
         </div>
         <button
           onClick={onExport}
