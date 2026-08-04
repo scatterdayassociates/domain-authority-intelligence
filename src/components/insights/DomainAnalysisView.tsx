@@ -487,6 +487,8 @@ const DistributionStructure = ({ rows }: { rows: EnrichedDomain[] }) => {
             </div>
           </div>
         </div>
+        <p className="mt-2 text-[10px] leading-snug text-slate-400">{CONCENTRATION_SCOPE_NOTE}</p>
+
       </div>
 
       {/* 3.3 Structural Insight */}
