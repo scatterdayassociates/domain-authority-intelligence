@@ -71,11 +71,11 @@ const BrandInclusionTab = () => (
         surfaced in SOURCES.
       </span>
       <span className="border-l border-border pl-6">
-        <strong>Runs Surfaced:</strong> Number of individual runs in which at least one mapped
+        <strong>Frequency:</strong> Number of individual runs in which at least one mapped
         brand domain appeared.
       </span>
       <span className="border-l border-border pl-6">
-        <strong>Inclusion Stability:</strong> Consistency of brand-domain surfacing across runs
+        <strong>Consistency Rate:</strong> Consistency of brand-domain surfacing across runs
         within the execution.
       </span>
     </div>
@@ -88,8 +88,8 @@ const BrandInclusionTab = () => (
             <th className="table-header text-left py-2 w-[180px]">Mapped Domains</th>
             <th className="table-header text-center py-2 w-[90px]">Role</th>
             <th className="table-header text-center py-2 w-[110px]">Inclusion Rate</th>
-            <th className="table-header text-center py-2 w-[120px]">Runs Surfaced</th>
-            <th className="table-header text-center py-2 w-[130px]">Inclusion Stability</th>
+            <th className="table-header text-center py-2 w-[120px]">Frequency</th>
+            <th className="table-header text-center py-2 w-[130px]">Consistency Rate</th>
             <th className="table-header text-center py-2 w-[110px]">vs. Prev Run</th>
           </tr>
         </thead>
