@@ -4,6 +4,7 @@ import DomainAuthorityTab from "./tabs/DomainAuthorityTab";
 import CategorySummaryTab from "./tabs/CategorySummaryTab";
 import BrandInclusionTab from "./tabs/BrandInclusionTab";
 import ComparisonTab from "./tabs/ComparisonTab";
+import BrandRecommendationTab from "./tabs/BrandRecommendationTab";
 
 interface Props {
   executionId: string;
