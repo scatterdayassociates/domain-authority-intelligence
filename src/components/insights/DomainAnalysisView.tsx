@@ -18,6 +18,7 @@ import ExportButton from "@/components/export/ExportButton";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import { DEFAULT_CONTEXT, singleExecutionScope } from "@/lib/export/mockContext";
 import { domainTables } from "@/lib/export/builders";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock dataset (execution-scoped, deterministic)
