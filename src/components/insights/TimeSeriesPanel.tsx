@@ -1,3 +1,4 @@
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 import { useState } from "react";
 import {
   LineChart,
