@@ -30,7 +30,7 @@ const datasets = [
     name: "Brand Inclusion Dataset",
     tier: "Layer 3 · Brand-level derived interpretation",
     tierTone: "bg-violet-500/10 text-violet-700 border-violet-500/30",
-    role: "Brand-level metrics generated from deterministic domain → brand mappings applied to Domain Authority observations. Derived from surfaced brand-owned domains — not from narrative mentions or product recommendations.",
+    role: "Brand-level metrics generated from deterministic domain → brand mappings applied to Domain Authority observations. Derived from surfaced brand-owned domains — not from narrative text or product recommendations.",
     fields: "execution_id, timestamp, brand, role (TARGET / COMPETITOR / NEUTRAL), inclusion_rate, weighted_inclusion, top3_presence, top5_presence, inclusion_stability, avg_position_brand",
     derivedFrom: "Domain Authority Dataset (Layer 1) + project domain→brand mapping.",
     preview: null,
