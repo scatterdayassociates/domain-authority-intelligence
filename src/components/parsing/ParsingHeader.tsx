@@ -2,10 +2,10 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface ParsingHeaderProps {
-  view: "queue" | "detail" | "registry";
+  view: "queue" | "detail" | "registry" | "brands";
   executionId?: string;
-  activeTab: "queue" | "registry";
-  onTabChange: (tab: "queue" | "registry") => void;
+  activeTab: "queue" | "registry" | "brands";
+  onTabChange: (tab: "queue" | "registry" | "brands") => void;
   onBack: () => void;
 }
 
@@ -32,6 +32,9 @@ const ParsingHeader = ({ view, executionId, activeTab, onTabChange, onBack }: Pa
         {view === "registry" && (
           <span className="font-medium text-foreground">Domain Registry</span>
         )}
+        {view === "brands" && (
+          <span className="font-medium text-foreground">Brand Registry</span>
+        )}
         {view === "detail" && executionId && (
           <>
             <button onClick={onBack} className="text-muted-foreground hover:text-foreground transition-colors">
@@ -45,7 +48,7 @@ const ParsingHeader = ({ view, executionId, activeTab, onTabChange, onBack }: Pa
 
       {/* Actions */}
       <div className="flex items-center gap-2.5">
-        {(view === "queue" || view === "registry") && (
+        {(view === "queue" || view === "registry" || view === "brands") && (
           <>
             {/* Status Filter */}
             <div className="relative">
@@ -120,6 +123,16 @@ const ParsingHeader = ({ view, executionId, activeTab, onTabChange, onBack }: Pa
                 }`}
               >
                 Domain Registry
+              </button>
+              <button
+                onClick={() => onTabChange("brands")}
+                className={`text-sm pb-1 transition-colors ${
+                  activeTab === "brands"
+                    ? "font-medium text-foreground border-b-2 border-primary"
+                    : "text-muted-foreground font-normal"
+                }`}
+              >
+                Brand Registry
               </button>
             </div>
           </>
