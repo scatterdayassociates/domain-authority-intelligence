@@ -622,7 +622,8 @@ const TimeSeriesPanel = ({ mode, context }: Props) => {
         {subTab === "concentration" && (
           isSnapshot ? <SnapshotEmpty /> : (
           <div>
-            <span className="text-xs text-slate-500 uppercase tracking-wide block mb-2">Category Concentration Over Time</span>
+            <span className="text-xs text-slate-500 uppercase tracking-wide block mb-1">Category Concentration Over Time</span>
+            <p className="text-[10px] leading-snug text-slate-400 mb-2">{CONCENTRATION_SCOPE_NOTE}</p>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={cData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid stroke="#f1f5f9" strokeDasharray="4 2" vertical={false} />
