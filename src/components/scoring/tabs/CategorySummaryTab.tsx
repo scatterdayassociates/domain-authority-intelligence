@@ -1,9 +1,9 @@
 import SectionHeader from "@/components/SectionHeader";
 
 const concentrationRows = [
-  { metric: "Total Mentions", value: "312", interp: "Across 35 runs · 7 prompts · 24 domains", signal: null },
-  { metric: "Unique Domains", value: "24", interp: "Range of sources cited", signal: "green" },
-  { metric: "Top 5 Share", value: "68.4%", interp: "Top 5 domains hold 68.4% of all citations", signal: "amber" },
+  { metric: "Total Appearances", value: "312", interp: "Across 35 runs · 7 prompts · 24 domains", signal: null },
+  { metric: "Unique Domains", value: "24", interp: "Distinct domains observed in SOURCES", signal: "green" },
+  { metric: "Top 5 Share", value: "68.4%", interp: "Top 5 domains hold 68.4% of total appearance share", signal: "amber" },
   { metric: "HHI", value: "0.142", interp: "Low-to-moderate dominance", signal: "amber" },
   { metric: "Top Domain Share", value: "rtings.com · 15.4%", interp: "Single highest-share domain", signal: "green" },
 ];
@@ -35,8 +35,8 @@ const CategorySummaryTab = () => (
     />
 
     <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-4 mt-3 flex gap-6">
-      <span><strong>Top 5 Share:</strong> Proportion of all citations held by the top 5 domains. Higher = more concentrated shortlist.</span>
-      <span className="border-l border-border pl-6"><strong>HHI (Herfindahl Index):</strong> Sum of squared domain share values. Higher = stronger single-domain dominance.</span>
+      <span><strong>Top 5 Share:</strong> Share concentration. What it measures: the proportion of total appearance share held by the five highest-share domains.</span>
+      <span className="border-l border-border pl-6"><strong>HHI (Herfindahl–Hirschman Index):</strong> Distribution measure. What it measures: the sum of squared domain share values across all observed domains; higher values indicate share sits in fewer domains.</span>
     </div>
 
     {/* Concentration table */}
@@ -68,14 +68,14 @@ const CategorySummaryTab = () => (
       <div className="text-xs font-medium text-foreground mb-2">HHI Interpretation Scale</div>
       <div className="flex gap-2">
         <div className="flex-1 bg-green-100 text-green-700 rounded-md p-2 text-xs">
-          &lt; 0.10 · Distributed — Many sources share authority equally
+          &lt; 0.10 · Distributed — share spread across many domains
         </div>
         <div className="flex-1 bg-amber-100 text-amber-700 rounded-md p-2 text-xs relative">
-          0.10–0.25 · Moderate — Top sources have clear advantage
+          0.10–0.25 · Moderate — share partially grouped in few domains
           <span className="ml-1 text-primary font-medium">◄ Current</span>
         </div>
         <div className="flex-1 bg-red-100 text-red-700 rounded-md p-2 text-xs">
-          &gt; 0.25 · Concentrated — Winner-takes-most dynamics
+          &gt; 0.25 · Concentrated — share held mostly by few domains
         </div>
       </div>
     </div>
@@ -84,7 +84,7 @@ const CategorySummaryTab = () => (
     <div className="mt-6">
       <SectionHeader
         title="Top 5 Domain Share Breakdown"
-        right={<span className="text-xs text-amber-600">Combined: 68.4% of all mentions</span>}
+        right={<span className="text-xs text-amber-600">Combined: 68.4% of total appearance share</span>}
       />
       <div className="max-w-2xl overflow-x-auto mt-3">
         <table className="w-full text-sm">
@@ -93,7 +93,7 @@ const CategorySummaryTab = () => (
               <th className="table-header text-left py-2 w-10">#</th>
               <th className="table-header text-left py-2 w-[180px]">Domain</th>
               <th className="table-header text-left py-2 w-[140px]">Authority Type</th>
-              <th className="table-header text-center py-2 w-[80px]">Mentions</th>
+              <th className="table-header text-center py-2 w-[80px]">Appearances</th>
               <th className="table-header text-center py-2 w-[120px]">Share of Total</th>
               <th className="table-header text-center py-2 w-[130px]">Cumulative Share</th>
             </tr>
