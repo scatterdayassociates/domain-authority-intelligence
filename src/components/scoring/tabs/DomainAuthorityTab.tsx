@@ -2,6 +2,7 @@ import { useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 // Foundational PDPE-derived measurements (WAS, NAS, RLP, AP) shown first.
 // Concentration metrics (Top 5 Share, HHI) and tier classification are downstream.
