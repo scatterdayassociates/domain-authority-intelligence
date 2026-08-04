@@ -145,7 +145,7 @@ const DomainSummaryCard = ({ leader, onDrillDown }: { leader: EnrichedDomain; on
     <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs text-slate-500 uppercase tracking-wide">Leading Domain</span>
-        <span className="text-[11px] text-slate-400">Execution: May 2026 · Ranking: mentions ↓ · persistence ↓</span>
+        <span className="text-[11px] text-slate-400">Execution: May 2026 · Ranking: WAS ↓ · RLP ↓</span>
       </div>
       <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
         <div>
@@ -207,11 +207,11 @@ const DomainSummaryCard = ({ leader, onDrillDown }: { leader: EnrichedDomain; on
 type SortKey = "mentions" | "persistence" | "share" | "avg_position" | "best_position";
 
 const METRIC_LABELS: Record<SortKey, { label: string; tip: string }> = {
-  mentions: { label: "WAS", tip: "Weighted Authority Score — position-weighted aggregation of domain appearances across runs." },
-  persistence: { label: "RLP", tip: "Run-Level Persistence — share of runs in which this domain appeared at least once." },
-  share: { label: "NAS", tip: "Normalized Authority Share — this domain's share of total weighted authority across all domains." },
-  avg_position: { label: "AP", tip: "Average Position — average rank position across appearances." },
-  best_position: { label: "BP", tip: "Best Position — best (lowest-numbered) rank position achieved." },
+  mentions: { label: "WAS", tip: "Weighted Authority Score. What it measures: the position-weighted sum of every appearance of this domain in SOURCES across all runs, where earlier positions carry more weight." },
+  persistence: { label: "RLP", tip: "Run-Level Persistence. What it measures: the share of runs in which this domain appeared at least once in SOURCES." },
+  share: { label: "NAS", tip: "Normalized Authority Share. What it measures: this domain's WAS divided by the total WAS of all observed domains, expressed as a 0–1 share." },
+  avg_position: { label: "AP", tip: "Average Position. What it measures: the mean rank position this domain held across the runs in which it appeared." },
+  best_position: { label: "BP", tip: "Best Position. What it measures: the lowest-numbered rank position this domain reached in any single run." },
 };
 
 const RankedDomainTable = ({

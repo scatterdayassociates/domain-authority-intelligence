@@ -34,16 +34,16 @@ type SortKey = "inclusion_rate" | "weighted_inclusion" | "top3" | "top5" | "avg_
 const METRICS: Record<SortKey, { label: string; tip: string }> = {
   inclusion_rate: {
     label: "Recommendation Inclusion Rate",
-    tip: "Share of runs in which the brand appears in the model's recommended-brands list.",
+    tip: "Recommendation-list presence. What it measures: the share of runs in which the brand appears anywhere in the parsed RECOMMENDED BRANDS list.",
   },
   weighted_inclusion: {
     label: "Weighted Inclusion",
     tip: "Measures cumulative brand recommendation strength. What it measures: the position-weighted sum of every recommendation appearance for this brand across all runs — not normalized, so it grows with both frequency and rank strength.",
   },
-  top3: { label: "Top 3 Presence", tip: "Share of runs in which the brand is recommended within the top 3 positions." },
-  top5: { label: "Top 5 Presence", tip: "Share of runs in which the brand is recommended within the top 5 positions." },
-  avg_position: { label: "AP", tip: "Average Position — average rank position across recommendation appearances." },
-  best_position: { label: "BP", tip: "Best Position — best (lowest-numbered) rank position achieved." },
+  top3: { label: "Top 3 Presence", tip: "Rank-band presence. What it measures: the share of runs in which the brand appears within positions 1–3 of the recommended-brands list." },
+  top5: { label: "Top 5 Presence", tip: "Rank-band presence. What it measures: the share of runs in which the brand appears within positions 1–5 of the recommended-brands list." },
+  avg_position: { label: "AP", tip: "Average Position. What it measures: the mean rank position this brand held across the runs in which it appeared in the recommended-brands list." },
+  best_position: { label: "BP", tip: "Best Position. What it measures: the lowest-numbered rank position this brand reached in any single run." },
 };
 
 const fmtPct = (v: number) => `${(v * 100).toFixed(1)}%`;
@@ -141,7 +141,7 @@ const BrandRankingTable = ({ onEvidence, selected, onSelect }: Props) => {
         </div>
         <p className="mt-1 text-[11px] text-slate-500 max-w-3xl">
           Brand Metrics are derived from structured recommendation output (RECOMMENDED BRANDS), not
-          from narrative mentions or free text.
+          from narrative text or free-text description.
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-slate-100">
