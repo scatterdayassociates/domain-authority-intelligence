@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { InsightMode } from "@/pages/Insights";
 import DeltaIndicator from "./DeltaIndicator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
@@ -342,7 +343,18 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1">
               {card.metrics.map((m, i) => (
                 <div key={i} className="flex items-center justify-between col-span-2">
-                  <span className="text-[11px] text-slate-500">{m.label}</span>
+                  {m.tip ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="text-[11px] text-slate-500 underline decoration-dotted underline-offset-2 cursor-help">
+                          {m.label}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs text-xs">{m.tip}</TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <span className="text-[11px] text-slate-500">{m.label}</span>
+                  )}
                   <span className="text-xs font-semibold text-slate-700 tabular-nums">{m.value}</span>
                 </div>
               ))}
