@@ -16,7 +16,10 @@ interface RawRun {
   model: string;
   status: "completed" | "failed";
   response_text: string;
+  sources_text: string;
+  recommended_text: string;
   domains: string[];
+  recommended_brands: string[];
 }
 
 const PROMPTS = [
@@ -24,6 +27,13 @@ const PROMPTS = [
   "Top business laptops 2026",
   "Reliable laptops for remote work",
   "Premium laptops for professionals",
+];
+
+const BRAND_SETS = [
+  ["Dell", "Apple", "Lenovo", "HP", "ASUS"],
+  ["Apple", "Dell", "ASUS", "Acer"],
+  ["Lenovo", "Dell", "HP", "Apple", "Framework"],
+  ["Dell", "HP", "Apple"],
 ];
 
 const RUNS: RawRun[] = Array.from({ length: 12 }, (_, i) => ({
@@ -34,7 +44,14 @@ const RUNS: RawRun[] = Array.from({ length: 12 }, (_, i) => ({
   status: "completed",
   response_text:
     "For home office, leading reviews from techradar.com and pcmag.com recommend the Dell XPS 13 for its build quality and battery life. Apple's MacBook Air is also frequently cited.",
+  sources_text:
+    "SOURCES:\n1. techradar.com — \"Best laptops for home working in 2026\"\n2. pcmag.com — \"The Best Laptops for Working From Home\"\n3. " +
+    (i % 3 === 0 ? "dell.com — Official XPS 13 product page" : "rtings.com — Laptop display and battery test data"),
+  recommended_text:
+    "RECOMMENDED BRANDS:\n" +
+    BRAND_SETS[i % 4].map((b, n) => `${n + 1}. ${b}`).join("\n"),
   domains: ["techradar.com", "pcmag.com", i % 3 === 0 ? "dell.com" : "rtings.com"],
+  recommended_brands: BRAND_SETS[i % 4],
 }));
 
 const RawOutputView = ({ context }: Props) => {
@@ -48,7 +65,8 @@ const RawOutputView = ({ context }: Props) => {
       (r) =>
         r.run_id.includes(q) ||
         r.prompt_text.toLowerCase().includes(q) ||
-        r.response_text.toLowerCase().includes(q),
+        r.response_text.toLowerCase().includes(q) ||
+        r.recommended_brands.some((b) => b.toLowerCase().includes(q)),
     );
   }, [query]);
 
@@ -93,6 +111,7 @@ const RawOutputView = ({ context }: Props) => {
               <th className="text-left px-4 py-2">Prompt</th>
               <th className="text-left px-4 py-2">Model</th>
               <th className="text-left px-4 py-2">Domains</th>
+              <th className="text-left px-4 py-2">Recommended Brands</th>
               <th className="text-right px-4 py-2 w-10"></th>
             </tr>
           </thead>
@@ -119,6 +138,17 @@ const RawOutputView = ({ context }: Props) => {
                         ))}
                       </div>
                     </td>
+                    <td className="px-4 py-2 text-xs text-slate-500">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {r.recommended_brands.map((b, n) => (
+                          <span key={b} className="inline-flex items-center gap-1 bg-teal-50 border border-teal-100 text-teal-700 rounded px-1.5 py-0.5">
+                            <span className="tabular text-[10px] text-teal-500">{n + 1}</span>
+                            {b}
+                            <McpContextTrigger scope="brand" subject={b} executionLabel="Snapshot: May 2026" variant="icon" />
+                          </span>
+                        ))}
+                      </div>
+                    </td>
                     <td className="px-4 py-2 text-right text-slate-400">
                       <ChevronRight
                         className={`w-3.5 h-3.5 inline transition-transform ${isOpen ? "rotate-90" : ""}`}
@@ -127,12 +157,32 @@ const RawOutputView = ({ context }: Props) => {
                   </tr>
                   {isOpen && (
                     <tr key={`${r.run_id}-detail`} className="bg-slate-50/60">
-                      <td colSpan={5} className="px-4 py-3">
+                      <td colSpan={6} className="px-4 py-3">
                         <div className="text-xs text-slate-500 mb-1">
                           prompt_id: <span className="font-mono">{r.prompt_id}</span> ·
                           response_id: <span className="font-mono">resp_{r.run_id.split("_").pop()}</span>
                         </div>
                         <p className="text-sm text-slate-700 leading-relaxed">{r.response_text}</p>
+
+                        <div className="mt-3 grid gap-3 md:grid-cols-2">
+                          <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                            <div className="px-3 py-1.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                              <span className="text-[10px] uppercase tracking-wide font-medium text-slate-600">Sources section</span>
+                              <span className="text-[10px] text-slate-400">output contract: SOURCES</span>
+                            </div>
+                            <pre className="px-3 py-2 text-xs font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">{r.sources_text}</pre>
+                          </div>
+                          <div className="bg-white border border-teal-200 rounded-lg overflow-hidden">
+                            <div className="px-3 py-1.5 bg-teal-50 border-b border-teal-200 flex items-center justify-between">
+                              <span className="text-[10px] uppercase tracking-wide font-medium text-teal-700">Recommended brands section</span>
+                              <span className="text-[10px] text-teal-500">output contract: RECOMMENDED BRANDS</span>
+                            </div>
+                            <pre className="px-3 py-2 text-xs font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">{r.recommended_text}</pre>
+                          </div>
+                        </div>
+                        <p className="text-[10px] text-slate-400 italic mt-1.5">
+                          Two distinct structured outputs parsed from the same raw response — shown unmodified.
+                        </p>
                         <div className="mt-3 pt-3 border-t border-slate-200 flex items-center gap-2 flex-wrap">
                           <span className="text-[10px] uppercase tracking-wide text-slate-500">Expand with MCP context:</span>
                           {r.domains.map((d) => (
