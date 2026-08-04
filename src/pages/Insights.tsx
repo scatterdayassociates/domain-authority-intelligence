@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AppSidebar from "@/components/AppSidebar";
 import InsightTopBar from "@/components/insights/InsightTopBar";
 import InsightTabs from "@/components/insights/InsightTabs";
@@ -7,6 +7,12 @@ import DomainAnalysisView from "@/components/insights/DomainAnalysisView";
 import BrandAnalysisView from "@/components/insights/BrandAnalysisView";
 import TimeSeriesView from "@/components/insights/TimeSeriesView";
 import BrandNarrativeView from "@/components/insights/BrandNarrativeView";
+import ComparabilityBanner from "@/components/insights/ComparabilityBanner";
+import {
+  COMPARE_SCENARIOS,
+  TRENDS_SCENARIOS,
+  checkComparability,
+} from "@/lib/comparability";
 
 import InsightEmptyState from "@/components/insights/InsightEmptyState";
 import { ChevronRight } from "lucide-react";
@@ -16,10 +22,21 @@ export type InsightMode = "snapshot" | "compare" | "trends";
 const Insights = () => {
   const [mode, setMode] = useState<InsightMode>("snapshot");
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [scenarioIdx, setScenarioIdx] = useState(0);
   const hasExecutions = true; // mock: Dell context has executions
 
   const activeProject = "Dell — Laptops — US";
   const activeContext = "Best laptops for home office";
+
+  const scenarios = mode === "trends" ? TRENDS_SCENARIOS : COMPARE_SCENARIOS;
+  const scenario = scenarios[Math.min(scenarioIdx, scenarios.length - 1)];
+  const comparability = useMemo(
+    () => checkComparability(scenario.executions),
+    [scenario]
+  );
+  const crossExecution = mode !== "snapshot";
+  const blocked = crossExecution && !comparability.comparable;
+
 
   return (
     <div className="flex min-h-screen bg-background">
