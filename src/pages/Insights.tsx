@@ -58,7 +58,7 @@ const Insights = () => {
         </header>
 
         {/* Top Bar */}
-        <InsightTopBar mode={mode} onModeChange={setMode} />
+        <InsightTopBar mode={mode} onModeChange={(m) => { setMode(m); setScenarioIdx(0); }} />
 
         {/* Tabs */}
         <InsightTabs activeTab={activeTab} onTabChange={setActiveTab} />
