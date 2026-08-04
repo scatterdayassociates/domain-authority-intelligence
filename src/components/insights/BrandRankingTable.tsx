@@ -132,6 +132,18 @@ const BrandRankingTable = ({ onEvidence, selected, onSelect }: Props) => {
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+      <div className="px-4 pt-3 pb-2 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-slate-800">Brand Ranking</h3>
+          <span className="text-[10px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+            Derived from Domain Data
+          </span>
+        </div>
+        <p className="mt-1 text-[11px] text-slate-500 max-w-3xl">
+          Brand Metrics are derived from structured recommendation output (RECOMMENDED BRANDS), not
+          from narrative mentions or free text.
+        </p>
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-slate-100">
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500">Filter:</span>
