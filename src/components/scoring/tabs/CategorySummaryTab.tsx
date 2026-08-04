@@ -5,8 +5,8 @@ const concentrationRows = [
   { metric: "Total Appearances", value: "312", interp: "Across 35 runs · 7 prompts · 24 domains", signal: null },
   { metric: "Unique Domains", value: "24", interp: "Distinct domains observed in SOURCES", signal: "green" },
   { metric: "Top 5 Share", value: "68.4%", interp: "Top 5 domains hold 68.4% of total appearance share", signal: "amber" },
-  { metric: "HHI", value: "0.142", interp: "Low-to-moderate dominance", signal: "amber" },
-  { metric: "Top Domain Share", value: "rtings.com · 15.4%", interp: "Single highest-share domain", signal: "green" },
+  { metric: "HHI", value: "0.142", interp: "Ecosystem-level distribution across all surfaced domains", signal: "amber" },
+  { metric: "Top Domain Share", value: "rtings.com · 15.4%", interp: "Single highest-share surfaced domain", signal: "green" },
 ];
 
 const top5 = [
