@@ -1,4 +1,5 @@
 import SectionHeader from "@/components/SectionHeader";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 const concentrationRows = [
   { metric: "Total Appearances", value: "312", interp: "Across 35 runs · 7 prompts · 24 domains", signal: null },
