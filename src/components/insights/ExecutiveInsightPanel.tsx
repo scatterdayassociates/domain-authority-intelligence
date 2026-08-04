@@ -15,6 +15,7 @@ import {
 import type { InsightMode } from "@/pages/Insights";
 import DeltaIndicator from "./DeltaIndicator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
