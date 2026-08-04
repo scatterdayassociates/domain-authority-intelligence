@@ -3,6 +3,7 @@ import { Globe, BarChart2, Target, MessageSquareQuote, ArrowUp, ArrowDown, Minus
 import type { InsightMode } from "@/pages/Insights";
 import McpContextTrigger from "@/components/mcp/McpContextTrigger";
 import DeltaIndicator from "./DeltaIndicator";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 interface Props {
   mode: InsightMode;
