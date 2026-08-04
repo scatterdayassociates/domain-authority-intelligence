@@ -22,7 +22,7 @@ const stats = [
   { label: "Inclusion Rate", value: "82%", delta: "+4pp vs. prev run", deltaColor: "text-green-600", valueColor: "text-green-600", hint: "% of runs containing ≥ 1 cited domain" },
 ];
 
-const tabs = ["Domain Authority", "Category Summary", "Brand Inclusion", "Execution Comparison"] as const;
+const tabs = ["Domain Authority", "Category Summary", "Brand Inclusion", "Brand Recommendation", "Execution Comparison"] as const;
 type Tab = typeof tabs[number];
 
 const ExecutionScoreDetail = ({ executionId, onBack, onExport }: Props) => {
@@ -87,6 +87,7 @@ const ExecutionScoreDetail = ({ executionId, onBack, onExport }: Props) => {
       {activeTab === "Domain Authority" && <DomainAuthorityTab />}
       {activeTab === "Category Summary" && <CategorySummaryTab />}
       {activeTab === "Brand Inclusion" && <BrandInclusionTab />}
+      {activeTab === "Brand Recommendation" && <BrandRecommendationTab />}
       {activeTab === "Execution Comparison" && <ComparisonTab />}
     </div>
   );
