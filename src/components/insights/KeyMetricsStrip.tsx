@@ -107,6 +107,8 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
             <span className="text-xs font-medium text-slate-700 tabular-nums">100%</span>
           </div>
         </div>
+        <p className="mt-2 text-[10px] leading-snug text-slate-400">{CONCENTRATION_SCOPE_NOTE}</p>
+
         {showCompare && (
           <div className="mt-3 text-[11px] text-slate-400">
             vs Apr 2026: HHI +0.012 / Top 5 Share: no change
