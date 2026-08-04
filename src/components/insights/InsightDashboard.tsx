@@ -23,7 +23,7 @@ const sampleEvidence = (statement: string): EvidenceData => ({
   statement,
   metrics: [
     { metric: "Persistence", value: "58.3%", threshold: "≥ 50% → HIGH confidence" },
-    { metric: "Mentions", value: "7 / 12 runs", threshold: "—" },
+    { metric: "Appearances", value: "7 / 12 runs", threshold: "—" },
     { metric: "Execution scope", value: "May 2026", threshold: "—" },
   ],
   rule: "Rule triggered: Domain persistence ≥ 0.50 across ≥ 2 executions → 'consistently selected source'",

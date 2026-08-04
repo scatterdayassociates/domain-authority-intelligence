@@ -36,15 +36,15 @@ const BrandRecommendationTab = () => (
       </span>
       <p className="mt-1 text-[11px] text-muted-foreground max-w-3xl">
         Brand Metrics are derived from structured recommendation output (RECOMMENDED BRANDS), not
-        from narrative mentions or free text.
+        from narrative text or free-text description.
       </p>
     </div>
 
     <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-4 mt-3 grid grid-cols-4 gap-6">
-      <span><strong>Inclusion Rate:</strong> % of runs where the brand appears in the recommended-brands list.</span>
-      <span className="border-l border-border pl-6"><strong>Weighted Inclusion:</strong> Unbounded cumulative position-weighted sum of recommendation appearances.</span>
-      <span className="border-l border-border pl-6"><strong>Top 3 Presence:</strong> % of runs where the brand ranks in positions 1–3.</span>
-      <span className="border-l border-border pl-6"><strong>Top 5 Presence:</strong> % of runs where the brand ranks in positions 1–5.</span>
+      <span><strong>Inclusion Rate:</strong> Recommendation-list presence. What it measures: the share of runs in which the brand appears anywhere in the parsed RECOMMENDED BRANDS list.</span>
+      <span className="border-l border-border pl-6"><strong>Weighted Inclusion:</strong> Cumulative recommendation strength. What it measures: the position-weighted sum of every recommendation appearance across all runs — unbounded and not normalized.</span>
+      <span className="border-l border-border pl-6"><strong>Top 3 Presence:</strong> Rank-band presence. What it measures: the share of runs in which the brand appears within positions 1–3 of the recommended-brands list.</span>
+      <span className="border-l border-border pl-6"><strong>Top 5 Presence:</strong> Rank-band presence. What it measures: the share of runs in which the brand appears within positions 1–5 of the recommended-brands list.</span>
     </div>
 
     <div className="overflow-x-auto">

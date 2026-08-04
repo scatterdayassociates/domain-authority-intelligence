@@ -77,7 +77,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           </span>
         </div>
         {hovered === "authority" && (
-          <Tooltip text="Top domain by WAS (Weighted Authority Score) across all runs in this execution. RLP (Run-Level Persistence) = runs_appeared ÷ total_runs." />
+          <Tooltip text="Highest-WAS domain in this execution. What it measures: WAS is the position-weighted sum of a domain's appearances in SOURCES; RLP is runs_appeared ÷ total_runs." />
         )}
       </div>
 
@@ -131,7 +131,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           </button>
         </div>
         {hovered === "concentration" && (
-          <Tooltip text="HHI (Herfindahl Index) measures how domain visibility is distributed. < 0.15 = Fragmented · 0.15–0.30 = Moderate · > 0.30 = Concentrated." />
+          <Tooltip text="Herfindahl–Hirschman Index. What it measures: the sum of squared domain shares — < 0.15 = Fragmented · 0.15–0.30 = Moderate · > 0.30 = Concentrated." />
         )}
       </div>
 
@@ -198,7 +198,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           </span>
         </div>
         {hovered === "brand" && (
-          <Tooltip text="Inclusion rate = runs containing brand domain ÷ total runs. Consistency tracks how evenly distributed those appearances are." />
+          <Tooltip text="Domain-derived brand presence. What it measures: the share of runs in which at least one domain mapped to the brand appeared in SOURCES; consistency reflects how evenly those runs are distributed." />
         )}
       </div>
 
@@ -284,7 +284,7 @@ const KeyMetricsStrip = ({ mode, onNavigate, onOpenEvidence }: Props) => {
           </button>
         </div>
         {hovered === "narrative" && (
-          <Tooltip text="Theme share = runs mentioning theme keywords ÷ total runs. Rule-based extraction from co-occurrence in raw outputs. No generative interpretation." />
+          <Tooltip text="Theme share. What it measures: the share of runs whose raw output contains the dictionary terms for a theme, extracted by rule-based co-occurrence with no generative interpretation." />
         )}
       </div>
     </div>

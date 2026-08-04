@@ -5,7 +5,7 @@ import {
   BarChart2,
   GitCompare,
   MessageSquareQuote,
-  Award,
+  ListOrdered,
   ArrowUp,
   ArrowDown,
   Minus,
@@ -69,7 +69,7 @@ const TYPE_STYLES: Record<
     card: "bg-teal-50 border-teal-200",
     badge: "bg-teal-100 text-teal-700",
     badgeLabel: "Brand Recommendation",
-    icon: Award,
+    icon: ListOrdered,
     link: "text-teal-600",
     border: "border-teal-200",
   },
@@ -192,7 +192,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
     {
       type: "recommendation",
       confidence: "medium",
-      statement: "Dell appears in the model's recommended-brand list in most runs",
+      statement: "Dell appears in the parsed recommended-brands list in 8 of 12 runs",
       metrics: [
         { label: "Inclusion Rate:", value: "66.7%" },
         {
@@ -266,7 +266,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
         source: "Generated from: theme co-occurrence (affordability 62%, general use 41%)",
         bullets: [
           "Rule: Top theme share ≥ 40% → dominant positioning",
-          "Threshold met: 62% mentions tied to affordability/value language",
+          "Threshold met: 62% of runs contain affordability/value language",
           "Confidence basis: 9 of 12 runs reference price or budget framing",
         ],
       },

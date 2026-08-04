@@ -16,10 +16,10 @@ interface Props {
 // Concentration metrics (Top 5 Share, HHI) and tier classification (Authority Core)
 // are downstream interpretations and live inside the Domain Authority tab.
 const stats = [
-  { label: "Unique Domains", value: "24", delta: "+3 vs. prev run", deltaColor: "text-primary", hint: "Distinct domains surfaced across runs" },
-  { label: "Dominant Domain NAS", value: "0.971", delta: "rtings.com · +0.014", deltaColor: "text-primary", hint: "Normalised Authority Score of the highest-ranked domain" },
-  { label: "Persistence Stability", value: "σ 0.18", delta: "−0.03 vs. prev run", deltaColor: "text-green-600", hint: "Std. dev. of run-level persistence across top domains" },
-  { label: "Inclusion Rate", value: "82%", delta: "+4pp vs. prev run", deltaColor: "text-green-600", valueColor: "text-green-600", hint: "% of runs containing ≥ 1 cited domain" },
+  { label: "Unique Domains", value: "24", delta: "+3 vs. prev run", deltaColor: "text-primary", hint: "Distinct domain count. What it measures: the number of different domains observed in SOURCES across all runs." },
+  { label: "Dominant Domain NAS", value: "0.971", delta: "rtings.com · +0.014", deltaColor: "text-primary", hint: "Normalized Authority Share of the highest-NAS domain. What it measures: that domain's share of total weighted authority across all observed domains." },
+  { label: "Persistence Stability", value: "σ 0.18", delta: "−0.03 vs. prev run", deltaColor: "text-green-600", hint: "Persistence spread. What it measures: the standard deviation of run-level persistence across the highest-WAS domains." },
+  { label: "Inclusion Rate", value: "82%", delta: "+4pp vs. prev run", deltaColor: "text-green-600", valueColor: "text-green-600", hint: "Domain-derived brand presence. What it measures: the share of runs in which at least one domain mapped to the target brand appeared in SOURCES." },
 ];
 
 const tabs = ["Domain Authority", "Category Summary", "Brand Inclusion", "Brand Recommendation", "Execution Comparison"] as const;

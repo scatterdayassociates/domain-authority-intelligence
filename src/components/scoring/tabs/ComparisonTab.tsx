@@ -45,7 +45,7 @@ const ComparisonTab = () => {
         right={<span className="text-xs text-muted-foreground">Dell — Laptops — US · GPT-4o · 3 executions</span>}
       />
       <p className="text-xs text-muted-foreground italic mt-1 mb-4">
-        Each execution is an independent, time-stamped snapshot. Comparing snapshots reveals structural change in the AI discovery environment over time.
+        Each execution is an independent, time-stamped snapshot. Comparing snapshots exposes structural change across executions over time.
       </p>
 
       {/* Selector */}
@@ -73,7 +73,7 @@ const ComparisonTab = () => {
             <tr className="border-b border-border">
               <th className="table-header text-left py-2 w-[130px]">Execution</th>
               <th className="table-header text-left py-2 w-[130px]">Date</th>
-              <th className="table-header text-center py-2 w-[110px]">Total Mentions</th>
+              <th className="table-header text-center py-2 w-[110px]">Total Appearances</th>
               <th className="table-header text-center py-2 w-[110px]">Unique Domains</th>
               <th className="table-header text-center py-2 w-[100px]">Top 5 Share</th>
               <th className="table-header text-center py-2 w-[80px]">HHI</th>
@@ -100,7 +100,7 @@ const ComparisonTab = () => {
 
       <div className="mt-3 bg-green-50 border border-green-100 rounded-md p-3 text-xs text-green-700 flex items-start gap-2">
         <TrendingDown className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-        <span>Top 5 Share has decreased from 74.8% → 68.4% over 3 executions (−6.4pp). HHI has decreased from 0.183 → 0.142 (−0.041). The authority ecosystem is becoming progressively more distributed.</span>
+        <span>Top 5 Share decreased from 74.8% → 68.4% over 3 executions (−6.4pp). HHI decreased from 0.183 → 0.142 (−0.041). Observed share is distributed across more domains than in the earlier executions.</span>
       </div>
 
       {/* Inclusion Trend */}
@@ -112,7 +112,7 @@ const ComparisonTab = () => {
               <th className="table-header text-left py-2 w-[130px]">Execution</th>
               <th className="table-header text-left py-2 w-[130px]">Date</th>
               <th className="table-header text-center py-2 w-[140px]">Dell Inclusion Rate</th>
-              <th className="table-header text-center py-2 w-[130px]">Runs Mentioned</th>
+              <th className="table-header text-center py-2 w-[130px]">Runs Surfaced</th>
               <th className="table-header text-center py-2 w-[130px]">Inclusion Stability</th>
               <th className="table-header text-center py-2 w-[130px]">Δ Inclusion Rate</th>
             </tr>
@@ -140,7 +140,7 @@ const ComparisonTab = () => {
 
       <div className="mt-3 bg-primary/5 border border-primary/20 rounded-md p-3 text-xs text-primary flex items-start gap-2">
         <TrendingUp className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-        <span>Dell's narrative inclusion rate has increased from 71.4% → 82.9% (+11.5pp) over 3 runs. Inclusion Stability has also improved (0.71 → 0.81), indicating a stronger and more consistent brand presence in AI-generated responses.</span>
+        <span>Dell's domain-derived Inclusion Rate moved from 71.4% → 82.9% (+11.5pp) across 3 executions. Inclusion Stability moved from 0.71 → 0.81, meaning surfaced runs were more evenly distributed in the most recent execution.</span>
       </div>
 
       {/* Authority Core Stability */}
@@ -172,7 +172,7 @@ const ComparisonTab = () => {
       </div>
 
       <div className="mt-3 bg-muted/50 border border-border rounded-md p-3 text-xs text-muted-foreground">
-        3 domains (rtings.com, notebookcheck.net, pcmag.com) have been Stable Core across all 3 executions, representing persistent structural authority. tomshardware.com and dell.com both improved to Core/Strong in the most recent execution — a positive structural signal.
+        3 domains (rtings.com, notebookcheck.net, pcmag.com) have been Stable Core across all 3 executions, representing persistent structural authority. tomshardware.com and dell.com both moved into Core/Strong bands in the most recent execution.
       </div>
     </div>
   );

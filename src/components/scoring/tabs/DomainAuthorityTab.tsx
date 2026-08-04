@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
-import { Info, Star } from "lucide-react";
+import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Foundational PDPE-derived measurements (WAS, NAS, RLP, AP) shown first.
@@ -66,18 +66,18 @@ const DomainAuthorityTab = () => {
     <div>
       <SectionHeader
         title="Domain Authority Measurements"
-        right={<span className="text-xs text-muted-foreground">PDPE aggregation across 35 runs · 24 unique domains · 312 total mentions</span>}
+        right={<span className="text-xs text-muted-foreground">PDPE aggregation across 35 runs · 24 unique domains · 312 total domain appearances</span>}
       />
 
       {/* Methodology / measurement-first definition block */}
       <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2.5 text-xs text-muted-foreground mb-4 mt-3">
         <div className="text-[11px] font-semibold uppercase tracking-wide text-foreground/70 mb-1.5">Foundational measurements (PDPE-derived)</div>
         <div className="flex flex-wrap gap-x-6 gap-y-1">
-          <span><strong className="text-foreground">WAS:</strong> Weighted Authority Score — position-weighted citation sum</span>
-          <span><strong className="text-foreground">NAS:</strong> Normalised Authority Score — WAS scaled to top domain (0–1)</span>
+          <span><strong className="text-foreground">WAS:</strong> Weighted Authority Score — position-weighted sum of domain appearances</span>
+          <span><strong className="text-foreground">NAS:</strong> Normalized Authority Share — WAS as a share of total WAS (0–1)</span>
           <span><strong className="text-foreground">RLP:</strong> Run-Level Persistence — share of runs containing the domain</span>
-          <span><strong className="text-foreground">AP:</strong> Average Position — mean citation rank (lower = more prominent)</span>
-          <span><strong className="text-foreground">BP:</strong> Best Position — best (lowest-numbered) rank achieved across runs</span>
+          <span><strong className="text-foreground">AP:</strong> Average Position — mean rank position across appearances</span>
+          <span><strong className="text-foreground">BP:</strong> Best Position — lowest-numbered rank position reached in any run</span>
         </div>
       </div>
 
@@ -109,20 +109,20 @@ const DomainAuthorityTab = () => {
               <th className="table-header text-left py-2 w-10">#</th>
               <th className="table-header text-left py-2 w-[180px]">Domain</th>
               <th className="table-header text-left py-2 w-[140px]">Authority Type</th>
-              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="WAS" tip="Weighted Authority Score — position-weighted aggregation of domain appearances across runs." /></th>
-              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="NAS" tip="Normalized Authority Share — this domain's share of total weighted authority across all domains." /></th>
-              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="RLP" tip="Run-Level Persistence — share of runs in which this domain appeared at least once." /></th>
-              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="AP" tip="Average Position — average rank position across appearances." /></th>
-              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="BP" tip="Best Position — best (lowest-numbered) rank position achieved." /></th>
-              <th className="table-header text-center py-2 w-[80px]">Mentions</th>
-              <th className="table-header text-center py-2 w-[100px]">Pos. Variance</th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="WAS" tip="Weighted Authority Score. What it measures: the position-weighted sum of every appearance of this domain in SOURCES across all runs, where earlier positions carry more weight." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="NAS" tip="Normalized Authority Share. What it measures: this domain's WAS divided by the total WAS of all observed domains, expressed as a 0–1 share." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="RLP" tip="Run-Level Persistence. What it measures: the share of runs in which this domain appeared at least once in SOURCES." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="AP" tip="Average Position. What it measures: the mean rank position this domain held across the runs in which it appeared." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="BP" tip="Best Position. What it measures: the lowest-numbered rank position this domain reached in any single run." /></th>
+              <th className="table-header text-center py-2 w-[80px]"><MetricHead label="Appearances" tip="Raw appearance count. What it measures: the number of times this domain was observed in SOURCES across all runs, unweighted by position." /></th>
+              <th className="table-header text-center py-2 w-[100px]"><MetricHead label="Pos. Variance" tip="Positional spread. What it measures: the variation in this domain's rank position across the runs in which it appeared." /></th>
               <th className="table-header text-center py-2 w-[110px]">
                 <span className="flex items-center gap-1 justify-center">
                   Authority Tier
                   <Tooltip>
                     <TooltipTrigger><Info className="w-3 h-3 text-muted-foreground" /></TooltipTrigger>
                     <TooltipContent className="max-w-xs text-xs">
-                      Rule-based classification derived from RLP and AP. Core = RLP ≥ 85% AND AP ≤ 3.5 · Strong = RLP 50–84% OR AP 3.5–5.5 · Peripheral = below these thresholds. Not a measurement.
+                      Rule-based classification, not a measurement. What it measures: which fixed threshold band a domain falls into — Core = RLP ≥ 85% AND AP ≤ 3.5 · Strong = RLP 50–84% OR AP 3.5–5.5 · Peripheral = below these thresholds.
                     </TooltipContent>
                   </Tooltip>
                 </span>
@@ -164,7 +164,7 @@ const DomainAuthorityTab = () => {
                         {promptBreakdown.map((p) => (
                           <div key={p.label} className="flex items-center gap-4 text-xs text-muted-foreground">
                             <span className="w-40 text-foreground">{p.label}:</span>
-                            <span className="tabular">{p.mentions} mentions</span>
+                            <span className="tabular">{p.mentions} appearances</span>
                             <span className="tabular">Avg pos {p.avgPos}</span>
                           </div>
                         ))}
@@ -189,26 +189,26 @@ const DomainAuthorityTab = () => {
           <div className="border border-border rounded-md px-3 py-2.5 bg-background">
             <div className="text-label">Top 5 Share</div>
             <div className="text-lg font-semibold tabular">68.4%</div>
-            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Share of total WAS held by top 5 domains</div>
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Share concentration. What it measures: the proportion of total WAS held by the five highest-WAS domains.</div>
           </div>
           <div className="border border-border rounded-md px-3 py-2.5 bg-background">
             <div className="text-label">HHI</div>
             <div className="text-lg font-semibold tabular">0.142</div>
-            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Herfindahl–Hirschman index over NAS shares</div>
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Herfindahl–Hirschman Index. What it measures: the sum of squared NAS shares; higher values mean share sits in fewer domains.</div>
           </div>
           <div className="border border-border rounded-md px-3 py-2.5 bg-background">
             <div className="text-label">Tier Distribution</div>
             <div className="text-sm font-medium tabular pt-1">4 Core · 4 Strong · 7 Peripheral</div>
-            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Rule-based classification over RLP × AP</div>
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">Rule-based grouping. What it measures: how many domains fall in each fixed RLP × AP threshold band.</div>
           </div>
         </div>
       </div>
 
       {/* Interpretive summary — explicitly framed, not canonical output */}
       <div className="mt-4 bg-muted/40 border border-border rounded-md px-4 py-3 text-xs text-muted-foreground flex items-start gap-2">
-        <Star className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground/60" />
+        <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground/60" />
         <span>
-          <strong className="text-foreground">Interpretation:</strong> authority signals are concentrated among a small group of repeatedly surfaced domains — top NAS values cluster within the publisher segment with rapid decay below rank 5. This is a narrative summary of the measurements above, not a canonical output.
+          <strong className="text-foreground">Observation:</strong> NAS is distributed across a small group of repeatedly surfaced domains, with the highest NAS values in the publisher segment and a rapid decay below rank 5. This restates the measurements above and implies no judgement about source quality.
         </span>
       </div>
     </div>

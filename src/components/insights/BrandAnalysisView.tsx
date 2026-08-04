@@ -526,7 +526,7 @@ const BrandComparisonTable = ({
         </table>
       </div>
       <div className="px-4 py-2 border-t border-slate-100 text-[11px] text-slate-500">
-        Inclusion measured as destination-level presence (domain mapped to brand), not text mentions.
+        Inclusion measured as destination-level presence (domain mapped to brand), not textual occurrence in prose.
       </div>
     </div>
   );

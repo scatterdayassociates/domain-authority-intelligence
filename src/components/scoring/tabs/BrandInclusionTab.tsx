@@ -67,16 +67,13 @@ const BrandInclusionTab = () => (
 
     <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-4 mt-3 grid grid-cols-3 gap-6">
       <span>
-        <strong>Inclusion Rate:</strong> % of executions where domains mapped to the brand were
-        surfaced in SOURCES.
+        <strong>Inclusion Rate:</strong> Domain-derived brand presence. What it measures: the share of runs in which at least one domain mapped to this brand appeared in SOURCES.
       </span>
       <span className="border-l border-border pl-6">
-        <strong>Frequency:</strong> Number of individual runs in which at least one mapped
-        brand domain appeared.
+        <strong>Frequency:</strong> Run count. What it measures: the number of individual runs in which at least one mapped brand domain appeared.
       </span>
       <span className="border-l border-border pl-6">
-        <strong>Consistency Rate:</strong> Consistency of brand-domain surfacing across runs
-        within the execution.
+        <strong>Consistency Rate:</strong> Distribution evenness. What it measures: how evenly the brand's surfaced runs are spread across the execution rather than clustered in a few runs.
       </span>
     </div>
 
@@ -147,16 +144,14 @@ const BrandInclusionTab = () => (
     <div className="mt-4 bg-primary/5 border border-primary/20 rounded-md p-3 text-xs text-primary flex items-start gap-2">
       <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
       <span>
-        Dell domains were surfaced in 82.9% of runs in this execution, the highest inclusion rate
-        in the competitive set. Stability (0.81) indicates consistent surfacing across individual
-        runs rather than concentration in a few outliers.
+        Dell domains were surfaced in 82.9% of runs in this execution. Consistency Rate (0.81) indicates surfacing spread across individual runs rather than clustered in a few runs. Values are reported per brand and imply no ranking of brands.
       </span>
     </div>
 
     <div className="mt-3 bg-muted/50 border border-border/60 rounded-md p-3 text-xs text-muted-foreground italic">
       Brand inclusion at the Scoring layer is strictly domain-derived: a brand is counted as
       included in a run only when one or more of its mapped domains appears in SOURCES. Textual
-      mention frequency, recommendation language, and attribute / positioning analysis (BNE) are
+      occurrence frequency, recommendation language, and attribute / positioning analysis (BNE) are
       not computed on this surface — they live in the Narrative / Insights layer, where the
       distinction between <em>where AI systems send users</em> and <em>how AI systems describe
       brands</em> is preserved.

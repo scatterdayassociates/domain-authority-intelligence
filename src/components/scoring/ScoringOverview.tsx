@@ -56,7 +56,7 @@ const ScoringOverview = ({ onView, onExport, onCompare }: Props) => (
                   <span className="inline-flex items-center gap-1 cursor-help">Top 5 Share <Info className="w-3 h-3 opacity-60" /></span>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs text-xs">
-                  Category-structure metric: share of all surfaced citations concentrated in the top 5 domains (publishers, retailers, aggregators, brand-owned sites combined). Describes the discovery landscape, not target-brand visibility.
+                  Category-structure metric: share of all surfaced domain appearances concentrated in the top 5 domains (publishers, retailers, aggregators, brand-owned sites combined). Describes the discovery landscape, not target-brand visibility.
                 </TooltipContent>
               </Tooltip>
             </th>

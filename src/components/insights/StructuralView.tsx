@@ -95,7 +95,7 @@ const StructuralView = ({ context }: Props) => {
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-2 flex items-center justify-between">
-            <span className="text-xs text-slate-500">Top 5 = 75% of all mentions</span>
+            <span className="text-xs text-slate-500">Top 5 = 75% of total appearance share</span>
             <span className="bg-amber-50 text-amber-600 text-xs px-2 py-0.5 rounded-full">HHI: 0.245 · Moderate</span>
           </div>
         </div>
