@@ -360,6 +360,10 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
               ))}
             </div>
 
+            {card.type === "concentration" && (
+              <p className="mt-2 text-[10px] leading-snug text-slate-400">{CONCENTRATION_SCOPE_NOTE}</p>
+            )}
+
             {/* Row 4 */}
             {showRow4 && dirData && (() => {
               const { Icon: DirIcon, color } = directionStyle(dirData.direction);
