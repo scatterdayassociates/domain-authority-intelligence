@@ -22,7 +22,7 @@ interface InsightCard {
   type: InsightType;
   confidence: Confidence;
   statement: string;
-  metrics: { label: string; value: string }[];
+  metrics: { label: string; value: string; tip?: string }[];
   change?: { direction: "up" | "down" | "flat"; text: string };
   trendChange?: { direction: "up" | "down" | "flat"; text: string };
   /** Per-metric deltas shown in Compare mode. */
@@ -194,7 +194,11 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       statement: "Dell appears in the model's recommended-brand list in most runs",
       metrics: [
         { label: "Inclusion Rate:", value: "66.7%" },
-        { label: "Weighted Inclusion:", value: "0.58" },
+        {
+          label: "Weighted Inclusion:",
+          value: "3.62",
+          tip: "Measures cumulative brand recommendation strength. What it measures: the position-weighted sum of every recommendation appearance for this brand across all runs — not normalized, so it grows with both frequency and rank strength.",
+        },
         { label: "Top 3 Presence:", value: "41.7%" },
         { label: "Top 5 Presence:", value: "58.3%" },
       ],
@@ -202,13 +206,13 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       trendChange: { direction: "up", text: "Increasing trend · 3 of 5 executions" },
       metricDeltas: [
         { label: "Δ Inclusion Rate", value: 8.4, unit: "pp" },
-        { label: "Δ Weighted Inclusion", value: 0.08, decimals: 2 },
+        { label: "Δ Weighted Inclusion", value: 0.44, decimals: 2 },
         { label: "Δ Top 3 Presence", value: 8.4, unit: "pp" },
         { label: "Δ Top 5 Presence", value: 8.3, unit: "pp" },
       ],
       evidenceTab: "brand",
       tooltip: {
-        source: "Generated from: recommended_brands list (8/12 runs), position-weighted inclusion (0.58)",
+        source: "Generated from: recommended_brands list (8/12 runs), cumulative position-weighted inclusion (3.62)",
         bullets: [
           "Rule: Brand named in the model's explicit recommendation list",
           "Weighted inclusion applies rank decay to list position",
