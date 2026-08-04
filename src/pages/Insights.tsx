@@ -63,12 +63,41 @@ const Insights = () => {
         {/* Tabs */}
         <InsightTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
+        {/* Cross-execution comparability guard */}
+        {crossExecution && (
+          <div className="px-6 mt-3 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-muted-foreground">Mock scenario:</span>
+              {scenarios.map((s, i) => (
+                <button
+                  key={s.key}
+                  onClick={() => setScenarioIdx(i)}
+                  className={`text-[11px] px-2 py-1 rounded-full border transition-colors ${
+                    scenario.key === s.key
+                      ? "bg-slate-800 text-white border-slate-800"
+                      : "bg-background text-muted-foreground border-border hover:bg-muted"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <ComparabilityBanner result={comparability} mode={mode === "trends" ? "trends" : "compare"} />
+          </div>
+        )}
+
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
           {!hasExecutions ? (
             <InsightEmptyState />
+          ) : blocked ? (
+            <div className="px-6 py-12 text-center text-sm text-muted-foreground">
+              {mode === "compare" ? "Side-by-side diff" : "Trend chart"} not rendered — resolve the
+              mismatch above or select comparable executions.
+            </div>
           ) : activeTab === "dashboard" ? (
             <InsightDashboard mode={mode} onNavigateTab={setActiveTab} onModeChange={setMode} context={activeContext} />
+
           ) : activeTab === "domain" ? (
             <div className="px-6 py-6">
               <DomainAnalysisView context={activeContext} />
