@@ -1,11 +1,12 @@
 import SectionHeader from "@/components/SectionHeader";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 const concentrationRows = [
   { metric: "Total Appearances", value: "312", interp: "Across 35 runs · 7 prompts · 24 domains", signal: null },
   { metric: "Unique Domains", value: "24", interp: "Distinct domains observed in SOURCES", signal: "green" },
   { metric: "Top 5 Share", value: "68.4%", interp: "Top 5 domains hold 68.4% of total appearance share", signal: "amber" },
-  { metric: "HHI", value: "0.142", interp: "Low-to-moderate dominance", signal: "amber" },
-  { metric: "Top Domain Share", value: "rtings.com · 15.4%", interp: "Single highest-share domain", signal: "green" },
+  { metric: "HHI", value: "0.142", interp: "Ecosystem-level distribution across all surfaced domains", signal: "amber" },
+  { metric: "Top Domain Share", value: "rtings.com · 15.4%", interp: "Single highest-share surfaced domain", signal: "green" },
 ];
 
 const top5 = [
@@ -34,10 +35,12 @@ const CategorySummaryTab = () => (
       right={<span className="text-xs text-muted-foreground">Execution EX-0329-001 · Dell — Laptops — US</span>}
     />
 
-    <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-4 mt-3 flex gap-6">
+    <div className="bg-muted/50 border border-border/60 rounded-md px-4 py-2 text-xs text-muted-foreground mb-2 mt-3 flex gap-6">
       <span><strong>Top 5 Share:</strong> Share concentration. What it measures: the proportion of total appearance share held by the five highest-share domains.</span>
       <span className="border-l border-border pl-6"><strong>HHI (Herfindahl–Hirschman Index):</strong> Distribution measure. What it measures: the sum of squared domain share values across all observed domains; higher values indicate share sits in fewer domains.</span>
     </div>
+    <p className="text-[11px] text-muted-foreground/80 mb-4">{CONCENTRATION_SCOPE_NOTE}</p>
+
 
     {/* Concentration table */}
     <div className="max-w-2xl overflow-x-auto">

@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from "recharts";
 import { PieChart, BarChart as BarChartIcon, Info, Download } from "lucide-react";
 import { downloadCsv, buildFilename } from "@/lib/csvExport";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 interface Props {
   context: string;
@@ -98,6 +99,8 @@ const StructuralView = ({ context }: Props) => {
             <span className="text-xs text-slate-500">Top 5 = 75% of total appearance share</span>
             <span className="bg-amber-50 text-amber-600 text-xs px-2 py-0.5 rounded-full">HHI: 0.245 · Moderate</span>
           </div>
+          <p className="mt-2 text-[10px] leading-snug text-slate-400">{CONCENTRATION_SCOPE_NOTE}</p>
+
         </div>
       </div>
     </div>

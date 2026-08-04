@@ -15,6 +15,7 @@ import {
 import type { InsightMode } from "@/pages/Insights";
 import DeltaIndicator from "./DeltaIndicator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CONCENTRATION_SCOPE_NOTE } from "@/lib/concentrationScope";
 
 export type InsightType = "authority" | "brand" | "recommendation" | "concentration" | "movement" | "narrative";
 export type Confidence = "high" | "medium" | "low";
@@ -248,7 +249,7 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
       trendDetail: {
         magnitude: "Stable concentration (Δ HHI < 0.02 across 5 executions)",
         range: "HHI 0.24–0.26",
-        driver: "Top 5 publishers retain consistent share of voice",
+        driver: "Top 5 surfaced domains retain consistent appearance share",
       },
     },
     {
@@ -359,6 +360,10 @@ const ExecutiveInsightPanel = ({ mode, onNavigate, onOpenEvidence }: Props) => {
                 </div>
               ))}
             </div>
+
+            {card.type === "concentration" && (
+              <p className="mt-2 text-[10px] leading-snug text-slate-400">{CONCENTRATION_SCOPE_NOTE}</p>
+            )}
 
             {/* Row 4 */}
             {showRow4 && dirData && (() => {
